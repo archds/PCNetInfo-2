@@ -1,0 +1,112 @@
+h1, h2, h3, h4, p {
+  color: #35495e;
+}
+
+p {
+  margin-bottom: 0.5rem;
+}
+
+h1 {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.opaq {
+  opacity: 0.75;
+}
+
+a.light {
+  font-weight: 500;
+}
+a.light::after {
+  display: none;
+}
+
+header {
+  height: 70px;
+  display: flex;
+  align-items: center;
+}
+
+header + hr {
+  width: 80%;
+  height: 2px !important;
+  margin: 20px auto;
+  opacity: 0.5;
+}
+
+a {
+  text-decoration: none;
+  color: #41b883;
+  position: relative;
+  font-size: 18px;
+  font-weight: 600;
+}
+a:hover {
+  color: #41b883;
+}
+a:hover::after {
+  background: transparent;
+}
+a::after {
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 1px;
+  width: 100%;
+  background: #41b883;
+  transition: 0.2s ease;
+}
+
+a.wrap::after {
+  display: none;
+}
+
+section.no_pcs * {
+  text-align: center;
+}
+
+section.pc_list .cards {
+  display: flex;
+  justify-content: space-around;
+}
+section.pc_list .cards .card {
+  margin: 10px;
+  display: grid;
+  grid-template-columns: 1.5fr 2fr;
+  border: none;
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+  border-radius: 5px;
+  height: 200px;
+  width: 350px;
+  transition: 0.2s ease;
+}
+section.pc_list .cards .card:hover {
+  transform: scale(1.03);
+}
+section.pc_list .cards .card .caption, section.pc_list .cards .card .chars {
+  padding: 15px;
+}
+section.pc_list .cards .card .caption p {
+  text-align: center;
+  font-weight: 600;
+}
+section.pc_list .cards .card .chars input {
+  margin-bottom: 0.5rem;
+  outline: none;
+  border: none;
+  border-bottom: 1px #41b883 solid;
+  font-size: 18px;
+  font-weight: 600;
+  width: 100%;
+}
+section.pc_list .cards .card .chars input::placeholder {
+  font-weight: 500;
+}
+section.pc_list .cards .card .chars span {
+  opacity: 0.75;
+}
+
+/*# sourceMappingURL=main.css.map */

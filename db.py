@@ -1,0 +1,171 @@
+from peewee import *
+import json
+from pathlib import Path
+from datetime import datetime
+
+DATABASE_PATH = Path.cwd().joinpath('database').joinpath('test.db')
+conn = SqliteDatabase(DATABASE_PATH)
+
+
+class BaseModel(Model):
+    class Meta:
+        database = conn
+
+
+class PC(BaseModel):
+    pc_id = AutoField(column_name='pc_id')
+    hardware_type = CharField(max_length=50, null=True)
+    os_name = CharField(max_length=50, null=True)
+    os_version = CharField(max_length=50, null=True)
+    os_architecture = CharField(max_length=50, null=True)
+    pc_name = CharField(max_length=50, unique=True)
+    domain = CharField(max_length=50, null=True)
+    ip = IPField(null=True)
+    cpu_name = CharField(max_length=100, null=True)
+    cpu_clock = SmallIntegerField(null=True)
+    cpu_cores = SmallIntegerField(null=True)
+    cpu_threads = SmallIntegerField(null=True)
+    cpu_socket = CharField(max_length=10, null=True)
+    motherboard_manufacturer = CharField(max_length=50, null=True)
+    motherboard_product = CharField(max_length=100, null=True)
+    motherboard_serial = CharField(max_length=100, null=True)
+    ram = IntegerField(null=True)
+    ram0_Configuredclockspeed = IntegerField(null=True)
+    ram0_Capacity = IntegerField(null=True)
+    ram1_Configuredclockspeed = IntegerField(null=True)
+    ram1_Capacity = IntegerField(null=True)
+    ram2_Configuredclockspeed = IntegerField(null=True)
+    ram2_Capacity = IntegerField(null=True)
+    ram3_Configuredclockspeed = IntegerField(null=True)
+    ram3_Capacity = IntegerField(null=True)
+    videocard = CharField(max_length=100, null=True)
+    resX = IntegerField(null=True)
+    resY = IntegerField(null=True)
+    username = CharField(max_length=100, null=True)
+    timezone = CharField(max_length=100, null=True)
+    user = CharField(max_length=200, null=True)
+    serial_number = IntegerField(null=True)
+    location = CharField(max_length=200, null=True)
+    updated = DateTimeField()
+    comment = TextField(null=True)
+
+    class Meta:
+        table_name = 'pc'
+
+
+class Monitor(BaseModel):
+    serial_number = CharField(max_length=50, unique=True)
+    model = CharField(max_length=100)
+    user = CharField(max_length=100, null=True)
+    pc = ForeignKeyField(PC, backref='pcs')
+
+    class Meta:
+        table_name = 'monitor'
+
+
+def getAll():
+    allPC = [get(pc['pc_name']) for pc in PC.select().dicts().execute()]
+    return sorted(allPC, key=lambda PC: PC['comment'])
+
+
+def get(pc_name):
+    def badDataMark(object: dict):
+        for key in object.keys():
+            if isinstance(object[key], str):
+                object[key] = object[key].replace('?', '').replace('()', '').strip()
+                if not object[key]:
+                    object[key] = 'No data'
+                object[key] = " ".join(object[key].split())
+            elif isinstance(object[key], dict):
+                object[key] = badDataMark(object[key])
+        return object
+
+    pc = PC.select().where(PC.pc_name == pc_name).dicts().get()
+    try:
+        monitors = Monitor.select().where(Monitor.pc == pc['pc_id']).dicts().get()
+    except DoesNotExist:
+        monitors = []
+    GB = 1073741824
+    memoryBanks = [
+        {'speed': pc['ram0_Configuredclockspeed'], 'capacity': pc['ram0_Capacity']},
+        {'speed': pc['ram1_Configuredclockspeed'], 'capacity': pc['ram1_Capacity']},
+        {'speed': pc['ram2_Configuredclockspeed'], 'capacity': pc['ram2_Capacity']},
+        {'speed': pc['ram3_Configuredclockspeed'], 'capacity': pc['ram3_Capacity']},
+    ]
+
+    c = 0
+    for memoryBank in memoryBanks:
+        if memoryBank['capacity']:
+            memoryBanks[c]['capacity'] = memoryBank['capacity'] / GB
+        c += 1
+
+    response = {
+        'id': pc['pc_id'],
+        'name': pc['pc_name'],
+        'domain': pc['domain'],
+        'ip': pc['ip'],
+        'hardware_type': pc['hardware_type'],
+        'username': pc['username'],
+        'timezone': pc['timezone'],
+        'user': pc['user'],
+        'serial_number': pc['serial_number'],
+        'location': pc['location'],
+        'updated': pc['updated'],
+        'comment': pc['comment'],
+        'os': {
+            'name': pc['os_name'],
+            'version': pc['os_version'],
+            'architecture': pc['os_architecture']
+        },
+        'cpu': {
+            'name': pc['cpu_name'],
+            'clock': pc['cpu_clock'],
+            'cores': pc['cpu_cores'],
+            'threads': pc['cpu_threads'],
+            'socket': pc['cpu_socket'],
+        },
+        'motherboard': {
+            'manufacturer': pc['motherboard_manufacturer'],
+            'product': pc['motherboard_product'],
+            'serial': pc['motherboard_serial'],
+        },
+        'ram': {
+            'size': pc['ram'],
+            'banks': memoryBanks
+        },
+        'videocard': {
+            'name': pc['videocard'],
+            'resX': pc['resX'],
+            'resY': pc['resY'],
+        },
+        'monitors': [monitors],
+    }
+    response['username'] = response['username'].split('\\')[1]
+    response = badDataMark(response)
+    response['timezone'] = response['timezone'].rstrip(' , -')
+    response['os']['architecture'] = response['os']['architecture'] + 'bit'
+    response['cpu']['clock'] = round(response['cpu']['clock'], 1)
+    return response
+
+
+def update(data, type, deviceID):
+    data = json.loads(data.decode())
+    if type == 'pc':
+        data = {
+            'serial_number': data.pop('serial', None),
+            'location': data.pop('location', None),
+            'user': data.pop('user', None),
+            'comment': data.pop('comment', None),
+            'updated': datetime.now()
+        }
+        PC.update(**{key: value for key, value in data.items() if value is not None}).where(
+            PC.pc_name == deviceID).execute()
+    else:
+        raise TypeError(f'Unknown type - {type}')
+
+
+def delete(type, deviceID):
+    if type == 'pc':
+        PC.delete().where(PC.pc_name == deviceID).execute()
+    else:
+        raise TypeError(f'Unknown type - {type}')
