@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     {% block head %}
-    <meta charset="UTF-8">
-    <title>{% block title %}Title{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/bootstrap-grid.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/main.css') }}">
+        <meta charset="UTF-8">
+        <title>{% block title %}Title{% endblock %}</title>
+        <link rel="stylesheet" href="{{ url_for('static', path='/css/bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', path='/css/bootstrap-grid.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', path='/css/main.css') }}">
     {% endblock %}
 </head>
 <body>
@@ -31,6 +31,6 @@
     {% endblock %}
 </div>
 <script src="{{ url_for('static', path='/js/bootstrap.js') }}"></script>
-<script type="module" src="{{ url_for('static', path='/js/bundle.js') }}"></script>
+<script src="{{ url_for('dist', path='main.bundle.js') }}"></script>
 </body>
 </html>

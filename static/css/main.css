@@ -81,10 +81,6 @@ section.pc_list .cards .card {
   border-radius: 5px;
   height: 200px;
   width: 350px;
-  transition: 0.2s ease;
-}
-section.pc_list .cards .card:hover {
-  transform: scale(1.03);
 }
 section.pc_list .cards .card .caption, section.pc_list .cards .card .chars {
   padding: 15px;
@@ -92,6 +88,9 @@ section.pc_list .cards .card .caption, section.pc_list .cards .card .chars {
 section.pc_list .cards .card .caption p {
   text-align: center;
   font-weight: 600;
+}
+section.pc_list .cards .card .caption img {
+  max-width: 100%;
 }
 section.pc_list .cards .card .chars input {
   margin-bottom: 0.5rem;

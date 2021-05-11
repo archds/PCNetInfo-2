@@ -99,10 +99,10 @@ section.pc_list {
       border-radius: 5px;
       height: 200px;
       width: 350px;
-      transition: .2s ease;
+      //transition: .2s ease;
 
       &:hover {
-        transform: scale(1.03);
+        //transform: scale(1.03);
       }
 
 
@@ -114,6 +114,10 @@ section.pc_list {
         p {
           text-align: center;
           font-weight: 600;
+        }
+
+        img {
+          max-width: 100%;
         }
       }
 

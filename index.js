@@ -1,10 +1,7 @@
-const Sortable = require('@shopify/draggable')
+import { Sortable } from '@shopify/draggable'
 
-document.addEventListener('DOMContentLoaded', () => {
-    main()
+console.log('loaded index.js')
+
+const list = new Sortable(document.querySelector('.cards'), {
+    draggable: '.card',
 })
-
-function main() {
-    console.log('Loaded')
-    const list = new Sortable(document.querySelector('#pc_list'))
-}

@@ -7,6 +7,7 @@ from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
 app.mount('/static', StaticFiles(directory='static'), name='static')
+app.mount('/dist', StaticFiles(directory='dist'), name='dist')
 templates = Jinja2Templates(directory='templates')
 db.conn.connect()
 db.conn.create_tables([db.PC, db.Monitor])

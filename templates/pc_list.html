@@ -7,13 +7,13 @@
                     <div class="card">
                         <a class="wrap" href="">
                             <div class="caption">
-                                <img src="" alt="">
+                                <img src="{{ url_for('static', path='/img/computer.png') }}" alt="">
                                 <p>{{ pc.name }}</p>
                             </div>
                         </a>
                         <div class="chars">
                             <input type="text" placeholder="Any label here">
-                            <p>CPU: <span>{{ pc.cpu.clock  / 1000}} GHz; {{ pc.cpu.cores }}/{{ pc.cpu.threads }}</span></p>
+                            <p>CPU: <span>{{ pc.cpu.clock  / 1000 }} GHz; {{ pc.cpu.cores }}/{{ pc.cpu.threads }}</span></p>
                             <p>Video: <span>{{ pc.videocard.name }}</span></p>
                             <p>RAM: <span>{{ pc.ram.size }} GB</span></p>
                         </div>
