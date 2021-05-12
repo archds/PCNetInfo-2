@@ -20,7 +20,7 @@
                                 <p>CPU:
                                     <span>{{ pc.cpu.clock  / 1000 }} GHz; {{ pc.cpu.cores }}/{{ pc.cpu.threads }}</span>
                                 </p>
-                                <p>Video: <span>{{ pc.videocard.name }}</span></p>
+                                <p>Video: <span>{{ pc.videocard.name[:25] }}</span></p>
                                 <p>RAM: <span>{{ pc.ram.size }} GB</span></p>
                             </div>
                         </div>
@@ -29,5 +29,4 @@
             </div>
         </div>
     </section>
-    <p>{{ items }}</p>
 {% endblock %}

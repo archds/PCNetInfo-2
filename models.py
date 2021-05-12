@@ -15,12 +15,13 @@ def DictFormatter(obj):
         return obj
 
 
-def PowerShellParse(raw_data, addr):
-    data = parse.load_str_bytes(raw_data)
+def PowerShellParse(data, addr):
+    print(data)
     data['ip'] = addr
     data['Videocard'] = DictFormatter(data['Videocard'])
     data['Motherboard'] = DictFormatter(data['Motherboard'])
     data['CsProcessors'] = DictFormatter(data['CsProcessors'])
+    data['OsArchitecture'] = data['OsArchitecture'].replace('?', '')
     if not isinstance(data['CsProcessors'], list):
         data['CsProcessors'] = [data['CsProcessors']]
     if not isinstance(data['Memory'], list):

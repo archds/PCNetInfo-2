@@ -3,11 +3,11 @@ $primary: #41b883;
 $secondary: #35495e;
 
 // Fonts
-h1, h2, h3, h4, p, {
+h1, h2, h3, h4, p, input, label, textarea {
   color: $secondary;
 }
 
-p {
+p, label, textarea, input {
   margin-bottom: 0.5rem;
   font-size: 17px;
 }
@@ -30,18 +30,33 @@ a.light {
 }
 
 // Form
-input {
+input, textarea {
   margin-bottom: 0.5rem;
   outline: none;
   border: none;
   border-bottom: 2px $primary solid;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
   width: 100%;
 
   &::placeholder {
     font-weight: 500;
   }
+}
+
+textarea {
+  resize: none;
+  height: max-content;
+  border: 1px solid $primary;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+button {
+  text-decoration: none;
+  outline: none;
+  background: none;
+  border: none;
 }
 
 // Header
@@ -114,6 +129,7 @@ section.pc_list {
   .cards {
     display: flex;
     justify-content: space-around;
+    flex-flow: row wrap;
 
     .card {
       margin: 10px;
@@ -202,9 +218,44 @@ section.pc_view {
   .data {
     margin-left: 50px;
 
-    input.head {
-      font-size: 24px;
-      margin-bottom: 1.5rem;
+    .head {
+      display: flex;
+      justify-content: space-between;
+
+      input {
+        font-size: 24px;
+        margin-bottom: 1.5rem;
+        width: 50%;
+      }
+
+      button#delete {
+        height: 40px;
+        background: url("/static/img/delete.png") center no-repeat white;
+        background-size: contain;
+        width: 30px;
+        position: relative;
+
+        &::after {
+          color: $secondary;
+          content: 'Delete';
+          display: block;
+          position: absolute;
+          padding: 5px 10px;
+          border-radius: 5px;
+          box-shadow: 4px 4px 8px 0 rgba(34, 60, 80, 0.2);
+          right: -17px;
+          top: 0;
+          opacity: 0;
+          width: max-content;
+          background: white;
+          transition: .3s ease;
+        }
+
+        &:hover::after {
+          opacity: 1;
+          transform: translateY(-35px);
+        }
+      }
     }
 
     p {
@@ -223,6 +274,7 @@ section.pc_view {
         margin: 0;
         padding: 0;
         text-align: right;
+        font-weight: 500;
       }
     }
 
@@ -238,6 +290,8 @@ section.pc_view {
         top: 20%;
         opacity: 0;
         animation: saved 1s ease;
+        background: white;
+        color: $secondary;
       }
 
       @keyframes saved {
@@ -263,6 +317,28 @@ section.pc_view {
     #pc_name {
       display: none;
     }
+
+    .comment {
+      position: relative;
+      margin-top: 50px;
+
+      label {
+        margin-bottom: 20px;
+        position: absolute;
+        top: -15px;
+        left: 20px;
+        background: $primary;
+        border-radius: 10px;
+        padding: 2px 10px;
+        color: white;
+      }
+
+      textarea {
+        border-bottom: 1px solid $primary;
+        height: max-content;
+      }
+    }
+
   }
 }
 

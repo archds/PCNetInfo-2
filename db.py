@@ -66,7 +66,7 @@ class Monitor(BaseModel):
 
 def getAll():
     allPC = [get(pc['pc_name']) for pc in PC.select().dicts().execute()]
-    return sorted(allPC, key=lambda PC: PC['comment'])
+    return sorted(allPC, key=lambda PC: PC['label'])
 
 
 def get(pc_name):
@@ -76,6 +76,7 @@ def get(pc_name):
             'user',
             'serial_number',
             'location',
+            'comment',
         ]
         for key in object.keys():
             if key in ignored:
@@ -167,8 +168,5 @@ def update_pc_field(field, value, pc_name):
         PC.pc_name == pc_name).execute()
 
 
-def delete(type, deviceID):
-    if type == 'pc':
-        PC.delete().where(PC.pc_name == deviceID).execute()
-    else:
-        raise TypeError(f'Unknown type - {type}')
+def delete_pc(pc_name):
+    PC.delete().where(PC.pc_name == pc_name).execute()

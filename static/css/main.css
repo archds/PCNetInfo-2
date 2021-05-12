@@ -1,8 +1,8 @@
-h1, h2, h3, h4, p {
+h1, h2, h3, h4, p, input, label, textarea {
   color: #35495e;
 }
 
-p {
+p, label, textarea, input {
   margin-bottom: 0.5rem;
   font-size: 17px;
 }
@@ -23,17 +23,32 @@ a.light::after {
   display: none;
 }
 
-input {
+input, textarea {
   margin-bottom: 0.5rem;
   outline: none;
   border: none;
   border-bottom: 2px #41b883 solid;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
   width: 100%;
 }
-input::placeholder {
+input::placeholder, textarea::placeholder {
   font-weight: 500;
+}
+
+textarea {
+  resize: none;
+  height: max-content;
+  border: 1px solid #41b883;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+button {
+  text-decoration: none;
+  outline: none;
+  background: none;
+  border: none;
 }
 
 header {
@@ -92,6 +107,7 @@ section.pc_list .loader-wrapper:hover {
 section.pc_list .cards {
   display: flex;
   justify-content: space-around;
+  flex-flow: row wrap;
 }
 section.pc_list .cards .card {
   margin: 10px;
@@ -162,9 +178,40 @@ section.pc_view .char p.head {
 section.pc_view .data {
   margin-left: 50px;
 }
-section.pc_view .data input.head {
+section.pc_view .data .head {
+  display: flex;
+  justify-content: space-between;
+}
+section.pc_view .data .head input {
   font-size: 24px;
   margin-bottom: 1.5rem;
+  width: 50%;
+}
+section.pc_view .data .head button#delete {
+  height: 40px;
+  background: url("/static/img/delete.png") center no-repeat white;
+  background-size: contain;
+  width: 30px;
+  position: relative;
+}
+section.pc_view .data .head button#delete::after {
+  color: #35495e;
+  content: "Delete";
+  display: block;
+  position: absolute;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 4px 4px 8px 0 rgba(34, 60, 80, 0.2);
+  right: -17px;
+  top: 0;
+  opacity: 0;
+  width: max-content;
+  background: white;
+  transition: 0.3s ease;
+}
+section.pc_view .data .head button#delete:hover::after {
+  opacity: 1;
+  transform: translateY(-35px);
 }
 section.pc_view .data p {
   display: flex;
@@ -181,6 +228,7 @@ section.pc_view .data p input {
   margin: 0;
   padding: 0;
   text-align: right;
+  font-weight: 500;
 }
 section.pc_view .data p.saved::after {
   content: "Saved";
@@ -193,6 +241,8 @@ section.pc_view .data p.saved::after {
   top: 20%;
   opacity: 0;
   animation: saved 1s ease;
+  background: white;
+  color: #35495e;
 }
 @keyframes saved {
   0% {
@@ -214,6 +264,24 @@ section.pc_view .data p.saved::after {
 }
 section.pc_view .data #pc_name {
   display: none;
+}
+section.pc_view .data .comment {
+  position: relative;
+  margin-top: 50px;
+}
+section.pc_view .data .comment label {
+  margin-bottom: 20px;
+  position: absolute;
+  top: -15px;
+  left: 20px;
+  background: #41b883;
+  border-radius: 10px;
+  padding: 2px 10px;
+  color: white;
+}
+section.pc_view .data .comment textarea {
+  border-bottom: 1px solid #41b883;
+  height: max-content;
 }
 
 .loader-wrapper {

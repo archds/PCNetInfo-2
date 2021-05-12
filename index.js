@@ -20,6 +20,7 @@ labels.forEach(function () {
 })
 
 const inputs = document.querySelector('.data').querySelectorAll('input')
+const textareas = document.querySelector('.data').querySelectorAll('textarea')
 const pcName = document.querySelector('#pc_name').value
 inputs.forEach((input) => {
     input.addEventListener('change', () => {
@@ -35,7 +36,32 @@ inputs.forEach((input) => {
             setTimeout(() => {
                 input.parentElement.classList.toggle('saved')
             }, 1000)
-
         })
     })
+})
+
+textareas.forEach((input) => {
+    input.addEventListener('change', () => {
+        let inputId = input.id
+        fetch(`/pc/${pcName}`,{
+            method: 'PUT',
+            body: JSON.stringify({
+                'field': inputId,
+                'value': input.value
+            })
+        }).then(() => {
+            input.parentElement.classList.toggle('saved')
+            setTimeout(() => {
+                input.parentElement.classList.toggle('saved')
+            }, 1000)
+        })
+    })
+})
+
+const delButton = document.querySelector('#delete')
+delButton.addEventListener('click', () => {
+    fetch(`/pc/${pcName}`, {
+        method: 'DELETE'
+    }).then(() => {window.location.assign(window.location.origin)})
+
 })
