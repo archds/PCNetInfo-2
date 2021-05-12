@@ -48,6 +48,7 @@ class PC(BaseModel):
     location = CharField(max_length=200, null=True)
     updated = DateTimeField()
     comment = TextField(null=True)
+    label = CharField(max_length=100, null=True)
 
     class Meta:
         table_name = 'pc'
@@ -70,7 +71,15 @@ def getAll():
 
 def get(pc_name):
     def badDataMark(object: dict):
+        ignored = [
+            'label',
+            'user',
+            'serial_number',
+            'location',
+        ]
         for key in object.keys():
+            if key in ignored:
+                continue
             if isinstance(object[key], str):
                 object[key] = object[key].replace('?', '').replace('()', '').strip()
                 if not object[key]:
@@ -100,45 +109,46 @@ def get(pc_name):
         c += 1
 
     response = {
-        'id': pc['pc_id'],
-        'name': pc['pc_name'],
-        'domain': pc['domain'],
-        'ip': pc['ip'],
-        'hardware_type': pc['hardware_type'],
-        'username': pc['username'],
-        'timezone': pc['timezone'],
-        'user': pc['user'],
-        'serial_number': pc['serial_number'],
-        'location': pc['location'],
-        'updated': pc['updated'],
-        'comment': pc['comment'],
+        'id': pc.pop('pc_id', None),
+        'name': pc.pop('pc_name', None),
+        'domain': pc.pop('domain', None),
+        'ip': pc.pop('ip', None),
+        'hardware_type': pc.pop('hardware_type', None),
+        'username': pc.pop('username', None),
+        'timezone': pc.pop('timezone', None),
+        'user': pc.pop('user', None),
+        'serial_number': pc.pop('serial_number', None),
+        'location': pc.pop('location', None),
+        'updated': pc.pop('updated', None),
+        'comment': pc.pop('comment', None),
+        'label': pc.pop('label', None),
         'os': {
-            'name': pc['os_name'],
-            'version': pc['os_version'],
-            'architecture': pc['os_architecture']
+            'name': pc.pop('os_name', None),
+            'version': pc.pop('os_version', None),
+            'architecture': pc.pop('os_architecture', None)
         },
         'cpu': {
-            'name': pc['cpu_name'],
-            'clock': pc['cpu_clock'],
-            'cores': pc['cpu_cores'],
-            'threads': pc['cpu_threads'],
-            'socket': pc['cpu_socket'],
+            'name': pc.pop('cpu_name', None),
+            'clock': pc.pop('cpu_clock', None),
+            'cores': pc.pop('cpu_cores', None),
+            'threads': pc.pop('cpu_threads', None),
+            'socket': pc.pop('cpu_socket', None),
         },
         'motherboard': {
-            'manufacturer': pc['motherboard_manufacturer'],
-            'product': pc['motherboard_product'],
-            'serial': pc['motherboard_serial'],
+            'manufacturer': pc.pop('motherboard_manufacturer', None),
+            'product': pc.pop('motherboard_product', None),
+            'serial': pc.pop('motherboard_serial', None),
         },
         'ram': {
-            'size': pc['ram'],
+            'size': pc.pop('ram', None),
             'banks': memoryBanks
         },
         'videocard': {
-            'name': pc['videocard'],
-            'resX': pc['resX'],
-            'resY': pc['resY'],
+            'name': pc.pop('videocard', None),
+            'resX': pc.pop('resX', None),
+            'resY': pc.pop('resY', None),
         },
-        'monitors': [monitors],
+        'monitors': [monitors]
     }
     response['username'] = response['username'].split('\\')[1]
     response = badDataMark(response)
@@ -148,20 +158,17 @@ def get(pc_name):
     return response
 
 
-def update(data, type, deviceID):
-    data = json.loads(data.decode())
-    if type == 'pc':
-        data = {
-            'serial_number': data.pop('serial', None),
-            'location': data.pop('location', None),
-            'user': data.pop('user', None),
-            'comment': data.pop('comment', None),
-            'updated': datetime.now()
-        }
-        PC.update(**{key: value for key, value in data.items() if value is not None}).where(
-            PC.pc_name == deviceID).execute()
-    else:
-        raise TypeError(f'Unknown type - {type}')
+def update_pc(data, pc_name):
+    data = {
+        'serial_number': data.pop('serial', None),
+        'location': data.pop('location', None),
+        'user': data.pop('user', None),
+        'comment': data.pop('comment', None),
+        'label': data.pop('label', None),
+        'updated': datetime.now()
+    }
+    PC.update(**{key: value for key, value in data.items() if value is not None}).where(
+        PC.pc_name == pc_name).execute()
 
 
 def delete(type, deviceID):

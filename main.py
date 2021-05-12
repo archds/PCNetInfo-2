@@ -1,5 +1,6 @@
 import uvicorn
 import db
+import json
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -29,19 +30,21 @@ async def root(request: Request):
     else:
         return templates.TemplateResponse('no_pcs.html', context)
 
-
-@app.get('/pc')
-async def pcMainHandler():
-    return db.getAll()
-
-
 @app.get('/pc/{pc_name}')
-async def get_pc(pc_name: str):
-    return db.get(pc_name)
+async def get_pc(pc_name: str, request: Request):
+    context['request'] = request
+    context['nav'] = [{'caption': 'Computers', 'href': app.url_path_for('root')}]
+    context['pc'] = db.get(pc_name)
+    return templates.TemplateResponse('pc_view.html', context)
 
 @app.get('/files/{file_name}')
 async def get_file(file_name: str):
     return FileResponse(f'filehost/{file_name}')
+
+@app.put('/pc/{pc_name}')
+async def update_pc(pc_name: str, request: Request):
+    body = json.loads(await request.body())
+    db.update_pc(body, pc_name)
 
 
 if __name__ == '__main__':

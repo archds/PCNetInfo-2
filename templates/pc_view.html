@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}{{ pc.name }}{% endblock %}
+{% block content %}
+    <section class="pc_view">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="row gx-md-5">
+                    <div class="col-md-6">
+                        <div class="char">
+                            <img src="{{ url_for('static', path='/img/computer.png') }}" alt="">
+                            <p class="head">{{ pc.name }}</p>
+                            <p>Username<span>{{ pc.username }}</span></p>
+                            <p>Timezone<span>{{ pc.timezone }}</span></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="char">
+                            <img src="{{ url_for('static', path='/img/win.png') }}" alt="">
+                            <p class="head">{{ pc.os.name }}</p>
+                            <p>Architecture <span>{{ pc.os.architecture }}</span></p>
+                            <p>OS Version <span>{{ pc.os.version }}</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row gx-md-5">
+                    <div class="col-md-6">
+                        <div class="char">
+                            <img src="{{ url_for('static', path='/img/pcComponents/075-cpu-1.png') }} " alt="">
+                            <p class="head">{{ pc.cpu.name }}</p>
+                            <p>Cores/Threads <span>{{ pc.cpu.cores }}/{{ pc.cpu.threads }}</span></p>
+                            <p>Base clock <span>{{ pc.cpu.clock }} MHz</span></p>
+                            <p>Socket <span>{{ pc.cpu.socket }}</span></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="char">
+                            <img src="{{ url_for('static', path='/img/pcComponents/088-ram-memory.png') }} " alt="">
+                            <p class="head" style="justify-content: space-between">RAM:
+                                <span>{{ pc.ram.size }} GB</span>
+                            </p>
+                            {% for bank in pc.ram.banks %}
+                                {% if bank.capacity %}
+                                    <p>Bank {{ loop.index }} <span>{{ bank.capacity|int }} GB</span></p>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row gx-md-5">
+                    <div class="col-md-6">
+                        <div class="char">
+                            <img src="{{ url_for('static', path='/img/pcComponents/070-motherboard.png') }} " alt="">
+                            <p class="head">{{ pc.motherboard.manufacturer }} {{ pc.motherboard.product }}</p>
+                            <p>Serial: <span>{{ pc.motherboard.serial }}</span></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="char">
+                            <img src="{{ url_for('static', path='/img/pcComponents/087-graphic-card.png') }} " alt="">
+                            <p class="head">{{ pc.videocard.name }}</p>
+                            <p>Resolution: <span>{{ pc.videocard.resX }}x{{ pc.videocard.resY }}</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="data">
+                    <input class="head" type="text" placeholder="Any label here" value="{% if pc.label %}{{ pc.label }}{% endif %}">
+                    <p>Computer name: <span>{{ pc.name }}</span></p>
+                    <p>Domain: <span>{{ pc.domain }}</span></p>
+                    <p>IP-address <span>{{ pc.ip }}</span></p>
+                    <p>Updated: <span>{{ pc.updated }}</span></p>
+                    <p class="saved">User: <input type="text" placeholder="Custom field" value="{% if pc.user %}{{ pc.user }}{% endif %}"></p>
+                    <p>Location: <input type="text" placeholder="Custom field" value="{% if pc.location %}{{ pc.location }}{% endif %}"></p>
+                    <p>Serial number: <input type="text" placeholder="Custom field" value="{% if pc.serial %}{{ pc.serial }}{% endif %}"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    {{ pc }}
+{% endblock %}
