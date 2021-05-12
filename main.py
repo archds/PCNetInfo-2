@@ -42,9 +42,9 @@ async def get_file(file_name: str):
     return FileResponse(f'filehost/{file_name}')
 
 @app.put('/pc/{pc_name}')
-async def update_pc(pc_name: str, request: Request):
+async def update_field(pc_name: str, request: Request):
     body = json.loads(await request.body())
-    db.update_pc(body, pc_name)
+    db.update_pc_field(body['field'], body['value'], pc_name)
 
 
 if __name__ == '__main__':

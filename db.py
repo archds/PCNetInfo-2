@@ -158,16 +158,12 @@ def get(pc_name):
     return response
 
 
-def update_pc(data, pc_name):
+def update_pc_field(field, value, pc_name):
     data = {
-        'serial_number': data.pop('serial', None),
-        'location': data.pop('location', None),
-        'user': data.pop('user', None),
-        'comment': data.pop('comment', None),
-        'label': data.pop('label', None),
+        field: value,
         'updated': datetime.now()
     }
-    PC.update(**{key: value for key, value in data.items() if value is not None}).where(
+    PC.update(**{key: value for key, value in data.items()}).where(
         PC.pc_name == pc_name).execute()
 
 

@@ -222,6 +222,7 @@ section.pc_view {
         border-bottom-width: 1px;
         margin: 0;
         padding: 0;
+        text-align: right;
       }
     }
 
@@ -233,7 +234,7 @@ section.pc_view {
         padding: 5px 10px;
         border-radius: 5px;
         box-shadow: 4px 4px 8px 0 rgba(34, 60, 80, 0.2);
-        right: -10%;
+        right: -12%;
         top: 20%;
         opacity: 0;
         animation: saved 1s ease;
@@ -242,7 +243,7 @@ section.pc_view {
       @keyframes saved {
         0% {
           opacity: 0;
-          top: 20%;
+          top: 10%;
         }
         25% {
           opacity: 1;
@@ -254,9 +255,13 @@ section.pc_view {
         }
         100% {
           opacity: 0;
-          top: 20%;
+          top: 10%;
         }
       }
+    }
+
+    #pc_name {
+      display: none;
     }
   }
 }

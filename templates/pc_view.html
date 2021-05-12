@@ -65,14 +65,15 @@
             </div>
             <div class="col-md-7">
                 <div class="data">
-                    <input class="head" type="text" placeholder="Any label here" value="{% if pc.label %}{{ pc.label }}{% endif %}">
+                    <input id="pc_name" type="text" value="{{ pc.name }}">
+                    <input id="label" class="head" type="text" placeholder="Any label here" value="{% if pc.label %}{{ pc.label }}{% endif %}">
                     <p>Computer name: <span>{{ pc.name }}</span></p>
                     <p>Domain: <span>{{ pc.domain }}</span></p>
                     <p>IP-address <span>{{ pc.ip }}</span></p>
                     <p>Updated: <span>{{ pc.updated }}</span></p>
-                    <p class="saved">User: <input type="text" placeholder="Custom field" value="{% if pc.user %}{{ pc.user }}{% endif %}"></p>
-                    <p>Location: <input type="text" placeholder="Custom field" value="{% if pc.location %}{{ pc.location }}{% endif %}"></p>
-                    <p>Serial number: <input type="text" placeholder="Custom field" value="{% if pc.serial %}{{ pc.serial }}{% endif %}"></p>
+                    <p>User: <input id="user" type="text" placeholder="Custom field" value="{% if pc.user %}{{ pc.user }}{% endif %}"></p>
+                    <p>Location: <input id="location" type="text" placeholder="Custom field" value="{% if pc.location %}{{ pc.location }}{% endif %}"></p>
+                    <p>Serial number: <input id="serial_number" type="text" placeholder="Custom field" value="{% if pc.serial_number %}{{ pc.serial_number }}{% endif %}"></p>
                 </div>
             </div>
         </div>
