@@ -157,6 +157,11 @@ section.pc_view .char {
   flex-direction: column;
   align-items: center;
 }
+section.pc_view .char input {
+  text-align: right;
+  border: none;
+  opacity: 0.7;
+}
 section.pc_view .char img {
   height: 80px;
   margin-bottom: 15px;

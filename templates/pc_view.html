@@ -9,7 +9,7 @@
                         <div class="char">
                             <img src="{{ url_for('static', path='/img/computer.png') }}" alt="">
                             <p class="head">{{ pc.name }}</p>
-                            <p>Username<span>{{ pc.username }}</span></p>
+                            <p>Username<input id="username" type="text" value="{{ pc.username }}"></p>
                             <p>Timezone<span>{{ pc.timezone }}</span></p>
                         </div>
                     </div>

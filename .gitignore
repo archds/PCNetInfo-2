@@ -9,6 +9,6 @@ gen
 __pycache__
 node_modules
 *.url
-start.bat
+*.bat
 dist
 *.zip

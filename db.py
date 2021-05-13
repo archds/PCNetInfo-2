@@ -151,7 +151,7 @@ def get(pc_name):
         },
         'monitors': [monitors]
     }
-    response['username'] = response['username'].split('\\')[1]
+    # response['username'] = response['username'].split('\\')[1]
     response = badDataMark(response)
     response['timezone'] = response['timezone'].rstrip(' , -')
     response['os']['architecture'] = response['os']['architecture'] + 'bit'

@@ -19,7 +19,7 @@ labels.forEach(function () {
     })
 })
 
-const inputs = document.querySelector('.data').querySelectorAll('input')
+const inputs = document.querySelector('.pc_view').querySelectorAll('input')
 const textareas = document.querySelector('.data').querySelectorAll('textarea')
 const pcName = document.querySelector('#pc_name').value
 inputs.forEach((input) => {

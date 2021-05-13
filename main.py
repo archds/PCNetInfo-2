@@ -1,6 +1,7 @@
 import uvicorn
 import db
 import json
+import requests
 from models import PowerShellParse
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, FileResponse
@@ -16,6 +17,19 @@ db.conn.create_tables([db.PC, db.Monitor])
 
 context = {}
 
+def checkForUpdates():
+    upd = json.loads(requests.get('https://api.github.com/repos/archds/PCNetInfo-2/releases').content)
+    rel = upd[0]['browser_download_url']
+    tag_name = upd[0]['tag_name']
+    with open('props.json', 'rw') as props:
+        content = props.read()
+        if content:
+            content = json.loads(content)
+            version = content.pop('version', None)
+        else:
+            content = {
+                'version': None
+            }
 
 @app.get("/")
 async def root(request: Request):
@@ -47,7 +61,6 @@ async def get_file(file_name: str):
 @app.put('/pc/{pc_name}')
 async def update_field(pc_name: str, request: Request):
     body = json.loads(await request.body())
-    print(body)
     db.update_pc_field(body['field'], body['value'], pc_name)
 
 
