@@ -8,4 +8,7 @@ out
 gen
 __pycache__
 node_modules
-package.json
+*.url
+start.bat
+dist
+*.zip
