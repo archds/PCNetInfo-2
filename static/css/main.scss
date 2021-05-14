@@ -35,7 +35,7 @@ input, textarea {
   outline: none;
   border: none;
   border-bottom: 2px $primary solid;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 500;
   width: 100%;
 
@@ -186,6 +186,7 @@ section.pc_list {
 }
 
 section.pc_view {
+
   .char {
     margin-bottom: 50px;
     display: flex;
@@ -196,6 +197,18 @@ section.pc_view {
       text-align: right;
       border: none;
       opacity: 0.7;
+      max-width: 150px;
+      height: 25px;
+    }
+
+    .add {
+      align-self: end;
+      padding: 2px 10px 4px 10px;
+      color: white;
+      background: $primary;
+      border-radius: 5px;
+      line-height: 25px;
+      cursor: pointer;
     }
 
 
@@ -219,6 +232,75 @@ section.pc_view {
       font-weight: 600;
       justify-content: center;
       font-size: 18px;
+    }
+
+    p.hide {
+      display: none;
+    }
+
+    p.saved::after {
+      right: 0;
+      animation-name: savedAlt;
+    }
+
+    @keyframes savedAlt {
+      0% {
+        opacity: 0;
+        top: 0;
+      }
+      25% {
+        opacity: 1;
+        top: -35px;
+      }
+      75% {
+        opacity: 1;
+        top: -35px;
+      }
+      100% {
+        opacity: 0;
+        top: 0;
+      }
+    }
+  }
+
+  p {
+    position: relative;
+
+    &.saved {
+      &::after {
+        content: 'Saved';
+        display: block;
+        position: absolute;
+        padding: 5px 10px;
+        border-radius: 5px;
+        box-shadow: 4px 4px 8px 0 rgba(34, 60, 80, 0.2);
+        right: -12%;
+        top: 20%;
+        opacity: 0;
+        animation: saved 1s ease;
+        background: white;
+        color: $secondary;
+      }
+  }
+
+
+    @keyframes saved {
+      0% {
+        opacity: 0;
+        top: 10%;
+      }
+      25% {
+        opacity: 1;
+        top: -20%;
+      }
+      75% {
+        opacity: 1;
+        top: -20%;
+      }
+      100% {
+        opacity: 0;
+        top: 10%;
+      }
     }
   }
 
@@ -282,42 +364,6 @@ section.pc_view {
         padding: 0;
         text-align: right;
         font-weight: 500;
-      }
-    }
-
-    p.saved {
-      &::after {
-        content: 'Saved';
-        display: block;
-        position: absolute;
-        padding: 5px 10px;
-        border-radius: 5px;
-        box-shadow: 4px 4px 8px 0 rgba(34, 60, 80, 0.2);
-        right: -12%;
-        top: 20%;
-        opacity: 0;
-        animation: saved 1s ease;
-        background: white;
-        color: $secondary;
-      }
-
-      @keyframes saved {
-        0% {
-          opacity: 0;
-          top: 10%;
-        }
-        25% {
-          opacity: 1;
-          top: -20%;
-        }
-        75% {
-          opacity: 1;
-          top: -20%;
-        }
-        100% {
-          opacity: 0;
-          top: 10%;
-        }
       }
     }
 

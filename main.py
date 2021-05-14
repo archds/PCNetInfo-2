@@ -61,6 +61,8 @@ async def get_file(file_name: str):
 @app.put('/pc/{pc_name}')
 async def update_field(pc_name: str, request: Request):
     body = json.loads(await request.body())
+    if 'ram' in body['field']:
+        body['field'] = body['field'] * 1024 * 1024 * 1024
     db.update_pc_field(body['field'], body['value'], pc_name)
 
 

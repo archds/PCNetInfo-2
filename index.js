@@ -65,3 +65,15 @@ delButton.addEventListener('click', () => {
     }).then(() => {window.location.assign(window.location.origin)})
 
 })
+
+const banks = document.querySelectorAll('input[id^=ram]')
+const addRam = document.querySelector('#addRam')
+addRam.addEventListener('click', () => {
+    banks.every((bank) => {
+        if (bank.parentElement.classList.contains('hide')) {
+            bank.parentElement.classList.remove('hide')
+            return false
+        }
+        return true
+    })
+})

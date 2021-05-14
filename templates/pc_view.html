@@ -5,20 +5,20 @@
         <div class="row">
             <div class="col-md-5">
                 <div class="row gx-md-5">
-                    <div class="col-md-6">
+                    <div class="col-md-6 chars">
                         <div class="char">
                             <img src="{{ url_for('static', path='/img/computer.png') }}" alt="">
                             <p class="head">{{ pc.name }}</p>
                             <p>Username<input id="username" type="text" value="{{ pc.username }}"></p>
-                            <p>Timezone<span>{{ pc.timezone }}</span></p>
+                            <p>Timezone<input id="timezone" type="text" value="{{ pc.timezone }}"></p>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="char">
                             <img src="{{ url_for('static', path='/img/win.png') }}" alt="">
                             <p class="head">{{ pc.os.name }}</p>
-                            <p>Architecture <span>{{ pc.os.architecture }}</span></p>
-                            <p>OS Version <span>{{ pc.os.version }}</span></p>
+                            <p>Architecture <input id="os_architecture" type="text" value="{{ pc.os.architecture }}"></p>
+                            <p>OS Version <input id="os_version" type="text" value="{{ pc.os.version }}"></p>
                         </div>
                     </div>
                 </div>
@@ -40,9 +40,12 @@
                             </p>
                             {% for bank in pc.ram.banks %}
                                 {% if bank.capacity %}
-                                    <p>Bank {{ loop.index }} <span>{{ bank.capacity|int }} GB</span></p>
+                                    <p>Bank {{ loop.index }} <input id="ram{{ loop.index0 }}_Capacity" type="text" value="{{ bank.capacity|int }}"><span>GB</span></p>
+                                {% else %}
+                                    <p class="hide">Bank {{ loop.index }} <input id="ram{{ loop.index0 }}_Capacity" type="text" placeholder="Capacity"> </p>
                                 {% endif %}
                             {% endfor %}
+                            <p><div id="addRam" class="add">Add</div></p>
                         </div>
                     </div>
                 </div>
