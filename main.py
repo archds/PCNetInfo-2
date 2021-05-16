@@ -1,44 +1,27 @@
 import uvicorn
-import db
+import re
 import json
 import requests
-from models import PowerShellParse
+import view.db as db
+import view.parser as parser
+import view.search
+from view.context import get_context
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
 app.mount('/static', StaticFiles(directory='static'), name='static')
-app.mount('/dist', StaticFiles(directory='dist'), name='dist')
 templates = Jinja2Templates(directory='templates')
-db.conn.connect()
-db.conn.create_tables([db.PC, db.Monitor])
 
-context = {}
-
-def checkForUpdates():
-    upd = json.loads(requests.get('https://api.github.com/repos/archds/PCNetInfo-2/releases').content)
-    rel = upd[0]['browser_download_url']
-    tag_name = upd[0]['tag_name']
-    with open('props.json', 'rw') as props:
-        content = props.read()
-        if content:
-            content = json.loads(content)
-            version = content.pop('version', None)
-        else:
-            content = {
-                'version': None
-            }
 
 @app.get("/")
 async def root(request: Request):
     pcs = db.getAll()
     for pc in pcs:
         pc['href'] = app.url_path_for('get_pc', pc_name=pc['name'])
-    context['request'] = request
-    context['nav'] = [{'caption': 'Computers', 'href': app.url_path_for('root')}]
-    context['items'] = pcs
+    context = get_context(app, request, items=sorted(pcs, key=lambda x: x['label']))
     if len(context['items']):
         return templates.TemplateResponse('pc_list.html', context)
     else:
@@ -47,9 +30,7 @@ async def root(request: Request):
 
 @app.get('/pc/{pc_name}')
 async def get_pc(pc_name: str, request: Request):
-    context['request'] = request
-    context['nav'] = [{'caption': 'Computers', 'href': app.url_path_for('root')}]
-    context['pc'] = db.get(pc_name)
+    context = get_context(app, request, pc=db.get(pc_name))
     return templates.TemplateResponse('pc_view.html', context)
 
 
@@ -61,8 +42,9 @@ async def get_file(file_name: str):
 @app.put('/pc/{pc_name}')
 async def update_field(pc_name: str, request: Request):
     body = json.loads(await request.body())
-    if 'ram' in body['field']:
-        body['field'] = body['field'] * 1024 * 1024 * 1024
+    if re.match(r'ram\d_Capacity', body['field']):
+        body['value'] = body['value'] if body['value'] else 0
+        body['value'] = int(body['value']) * 1024 * 1024 * 1024
     db.update_pc_field(body['field'], body['value'], pc_name)
 
 
@@ -70,12 +52,18 @@ async def update_field(pc_name: str, request: Request):
 async def post_pc(request: Request):
     body = json.loads(await request.body())
     ip = request.client[0]
-    pc = PowerShellParse(body, ip)
+    pc = parser.PowerShellParse(body, ip)
     return pc.post()
+
 
 @app.delete('/pc/{pc_name}')
 async def delete_pc(pc_name: str):
     db.delete_pc(pc_name)
+
+
+@app.get('/search/pc')
+async def search():
+    return view.search.get()
 
 
 if __name__ == '__main__':

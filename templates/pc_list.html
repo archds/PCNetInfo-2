@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
+    <div class="search">
+        <input id="search" type="text" placeholder="Work in progress...">
+        <i class="fas fa-search"></i>
+    </div>
     <section class="pc_list">
         <div class="container">
             <div class="cards" id="pc_list">
@@ -9,7 +13,7 @@
                         <div class="card">
                             <a class="wrap" href="{{ pc.href }}">
                                 <div class="caption">
-                                    <img src="{{ url_for('static', path='/img/computer.png') }}" alt="">
+                                    {{ hwTypeImg(pc.hardware_type) }}
                                     <p>{{ pc.name }}</p>
                                 </div>
                             </a>

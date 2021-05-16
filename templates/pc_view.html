@@ -7,7 +7,16 @@
                 <div class="row gx-md-5">
                     <div class="col-md-6 chars">
                         <div class="char">
-                            <img src="{{ url_for('static', path='/img/computer.png') }}" alt="">
+                            <div class="dots"></div>
+                            {{ hwTypeImg(hw_type=pc.hardware_type) }}
+                            <div id="hw_type_popup" class="img_popup animate__animated animate__faster">
+                                <div id="desktop" class="img">
+                                    <img src="{{ url_for('static', path='/img/computer.png') }}" alt="">
+                                </div>
+                                <div id="laptop" class="img">
+                                    <img src="{{ url_for('static', path='/img/laptop.png') }}" alt="">
+                                </div>
+                            </div>
                             <p class="head">{{ pc.name }}</p>
                             <p>Username<input id="username" type="text" value="{{ pc.username }}"></p>
                             <p>Timezone<input id="timezone" type="text" value="{{ pc.timezone }}"></p>
@@ -17,7 +26,8 @@
                         <div class="char">
                             <img src="{{ url_for('static', path='/img/win.png') }}" alt="">
                             <p class="head">{{ pc.os.name }}</p>
-                            <p>Architecture <input id="os_architecture" type="text" value="{{ pc.os.architecture }}"></p>
+                            <p>Architecture <input id="os_architecture" type="text" value="{{ pc.os.architecture }}">
+                            </p>
                             <p>OS Version <input id="os_version" type="text" value="{{ pc.os.version }}"></p>
                         </div>
                     </div>
@@ -27,9 +37,11 @@
                         <div class="char">
                             <img src="{{ url_for('static', path='/img/pcComponents/075-cpu-1.png') }} " alt="">
                             <p class="head">{{ pc.cpu.name }}</p>
-                            <p>Cores/Threads <span>{{ pc.cpu.cores }}/{{ pc.cpu.threads }}</span></p>
-                            <p>Base clock <span>{{ pc.cpu.clock }} MHz</span></p>
-                            <p>Socket <span>{{ pc.cpu.socket }}</span></p>
+                            <p>Cores/Threads <span><input id="cpu_cores" type="text" value="{{ pc.cpu.cores }}">/<input
+                                    id="cpu_threads" type="text" value="{{ pc.cpu.threads }}"></span></p>
+                            <p>Base clock <input id="cpu_clock" type="text" value="{{ pc.cpu.clock }}"><span> MHz</span>
+                            </p>
+                            <p>Socket <input id="cpu_socket" type="text" value="{{ pc.cpu.socket }}"></p>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -40,12 +52,14 @@
                             </p>
                             {% for bank in pc.ram.banks %}
                                 {% if bank.capacity %}
-                                    <p>Bank {{ loop.index }} <input id="ram{{ loop.index0 }}_Capacity" type="text" value="{{ bank.capacity|int }}"><span>GB</span></p>
+                                    <p>Bank {{ loop.index }} <input id="ram{{ loop.index0 }}_Capacity" type="text"
+                                                                    value="{{ bank.capacity|int }}"><span>GB</span></p>
                                 {% else %}
-                                    <p class="hide">Bank {{ loop.index }} <input id="ram{{ loop.index0 }}_Capacity" type="text" placeholder="Capacity"> </p>
+                                    <p class="hide">Bank {{ loop.index }} <input id="ram{{ loop.index0 }}_Capacity"
+                                                                                 type="text" placeholder="Capacity"></p>
                                 {% endif %}
                             {% endfor %}
-                            <p><div id="addRam" class="add">Add</div></p>
+                            <div id="addRam" class="add">Add</div>
                         </div>
                     </div>
                 </div>
@@ -93,4 +107,6 @@
             </div>
         </div>
     </section>
+{% endblock %}
+{% block footer %}
 {% endblock %}
