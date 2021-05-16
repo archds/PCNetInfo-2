@@ -13,7 +13,6 @@ from peewee import (
 )
 
 DATABASE_PATH = Path.cwd().joinpath('./database/test.db')
-print(DATABASE_PATH)
 conn = SqliteDatabase(DATABASE_PATH)
 
 

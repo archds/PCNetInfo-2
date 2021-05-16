@@ -121,7 +121,6 @@ def get(pc_name):
 def update_pc_field(field, value, pc_name):
     def recalc_ram():
         banks = get(pc_name)['ram']['banks']
-        print(banks)
         return sum([int(bank['capacity']) for bank in banks if bank['capacity']])
 
     data = {
