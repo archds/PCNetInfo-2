@@ -21,3 +21,31 @@ export function pcLabelHandler(labels: NodeListOf<HTMLInputElement>): void {
 }
 
 
+export function inputsHandler(elements: NodeListOf<HTMLInputElement> | NodeListOf<HTMLTextAreaElement>, pcName: string): void {
+    elements.forEach(element => {
+        element.addEventListener('change', () => {
+            fetch(`/pc/${pcName}`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    'field': element.id,
+                    'value': element.value
+                })
+            }).then(() => {
+                element.parentElement.classList.toggle('saved')
+                setTimeout(() => {
+                    element.parentElement.classList.toggle('saved')
+                }, 1000)
+            })
+        })
+    })
+}
+
+export function deleteHandler(delBtn: HTMLElement, pcName: string): void {
+    delBtn.addEventListener('click', () => {
+        fetch(`/pc/${pcName}`, {
+            method: 'DELETE'
+        }).then(() => {
+            window.location.assign(window.location.origin)
+        })
+    })
+}
