@@ -1,5 +1,4 @@
 export function pcCard(data) {
-    const pc = data['PC']
     const html = `<div class="loader-wrapper">
                         <div class="loading" style="visibility: visible"></div>
                         <div class="card" style="opacity: 0.6">

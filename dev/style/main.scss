@@ -556,3 +556,20 @@ hr {
   margin: 20px auto;
   opacity: 0.5;
 }
+
+// Notification
+.notification {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  padding: 30px;
+
+  a {
+    font-size: 0.875rem;
+    font-weight: 400;
+
+    &::after {
+      display: none;
+    }
+  }
+}
