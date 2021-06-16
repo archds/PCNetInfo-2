@@ -1,0 +1,58 @@
+type Query {
+    hello: String!
+    PC(name: String): PC
+    AllPC: [PC!]!
+}
+
+type Subscription {
+    PC: PC!
+}
+
+type PC {
+    type: String
+    name: String!
+    domain: String
+    username: String
+    timezone: String
+    ip: String
+    comment: String
+    label: String
+    os: OS
+    cpu: CPU
+    ram: RAM
+    motherboard: Motherboard
+    videocard: Videocard
+}
+
+# Software types definition
+type OS {
+    name: String
+    version: String
+    architecture: String
+}
+
+# Hardware types definition
+type CPU {
+    name: String
+    clock: String
+    cores: String
+    threads: String
+    socket: String
+}
+
+type RAM {
+    capacity: Int
+    banks: [String]
+}
+
+type Motherboard {
+    manufacturer: String
+    product: String
+    serial: String
+}
+
+type Videocard {
+    name: String
+    resX: String
+    resY: String
+}

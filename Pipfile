@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-uvicorn = "*"
+uvicorn = {extras = ["standard"], version = "*"}
 fastapi = "*"
 aiofiles = "*"
 peewee = "*"
@@ -12,6 +12,8 @@ jinja2 = "*"
 requests = "*"
 beautifulsoup4 = "*"
 nested-lookup = "*"
+ariadne = "*"
+websockets = "*"
 
 [dev-packages]
 

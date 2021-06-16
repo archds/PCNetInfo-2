@@ -76,7 +76,7 @@ class Computer(BaseModel):
             'Monitors': self.monitors,
             'Not transited': [i for i in data if data[i] is None],
         }
-        with open('../consoleResponse.txt', encoding='UTF-8') as art:
+        with open('consoleResponse.txt', encoding='UTF-8') as art:
             response = f'\n{art.read()}\n'
             now = datetime.now().strftime('%H:%M:%S, %d:%m:%Y')
             for key, value in schema_response.items():

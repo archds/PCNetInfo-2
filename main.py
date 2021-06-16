@@ -1,18 +1,21 @@
 import uvicorn
 import re
 import json
-import requests
+import asyncio
 import view.db as db
 import view.parser as parser
 import view.search
 from view.context import get_context
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, WebSocket
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from api import schema, queues
+from ariadne.asgi import GraphQL
 
 app = FastAPI()
 app.mount('/static', StaticFiles(directory='static'), name='static')
+app.mount("/api", GraphQL(schema, debug=True))
 templates = Jinja2Templates(directory='templates')
 
 
@@ -53,6 +56,8 @@ async def post_pc(request: Request):
     body = json.loads(await request.body())
     ip = request.client[0]
     pc = parser.PowerShellParse(body, ip)
+    for queue in queues:
+        await queue.put(pc)
     return pc.post()
 
 

@@ -9,7 +9,8 @@ from peewee import (
     IntegerField,
     DateTimeField,
     TextField,
-    ForeignKeyField
+    ForeignKeyField,
+    IntegrityError
 )
 
 DATABASE_PATH = Path.cwd().joinpath('./database/test.db')
