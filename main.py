@@ -1,6 +1,7 @@
 import uvicorn
 import re
 import json
+import django
 import asyncio
 import view.db as db
 import view.parser as parser
@@ -12,12 +13,15 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from api import schema, queues, filters
 from ariadne.asgi import GraphQL
+import os
 
 app = FastAPI()
 app.mount('/static', StaticFiles(directory='static'), name='static')
 app.mount("/api", GraphQL(schema, debug=True))
 templates = Jinja2Templates(directory='templates')
 
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dj_service.settings')
+django.setup()
 
 @app.get("/")
 async def root(request: Request):

@@ -1,5 +1,4 @@
 from django.db.models import (
-    AutoField,
     CharField,
     GenericIPAddressField,
     SmallIntegerField,
@@ -10,6 +9,13 @@ from django.db.models import (
 )
 from django.db.models import Model
 from django.db.models import CASCADE
+
+
+class Monitor(Model):
+    serial_number = CharField(max_length=50, unique=True)
+    model = CharField(max_length=100)
+    user = CharField(max_length=100)
+
 
 
 class PC(Model):
@@ -45,14 +51,9 @@ class PC(Model):
     user = CharField(max_length=200)
     serial_number = IntegerField(null=True)
     location = CharField(max_length=200)
-    updated = DateTimeField()
+    updated = DateTimeField(auto_now=True)
     comment = TextField(null=True)
     label = CharField(max_length=100)
     form_factor = CharField(max_length=20)
-    monitor = ForeignKey('Monitor', on_delete=CASCADE, null=True)
+    monitor = ForeignKey(Monitor, on_delete=CASCADE, null=True)
 
-
-class Monitor(Model):
-    serial_number = CharField(max_length=50, unique=True)
-    model = CharField(max_length=100)
-    user = CharField(max_length=100)
