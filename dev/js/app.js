@@ -1,12 +1,15 @@
 // JS
 import * as funcs from './func'
-import {subOn} from "./api";
+import {makeQuery, subOn} from "./api";
 import {pcCard} from "./card";
 import {Toast} from "bootstrap";
+import Search from "./search";
+import Sort from "./sort";
 
 // Style
 import '@fortawesome/fontawesome-free/js/all.min'
 import '../style/main.scss'
+import {gqSelectHandler, pcListRender} from "./func";
 
 function notification(options = {}) {
     const standart = {
@@ -52,6 +55,8 @@ function pcNotify(data) {
     if (window.location.href === window.location.origin + '/') {
         const pcList = document.querySelector('#pc_list')
         const newPC = pcCard(pc)
+        newPC.querySelector('.loading').style.visibility = 'visible'
+        newPC.querySelector('.card').style.opacity = '0.6'
         setTimeout(() => {
             newPC.querySelector('.loading').style.visibility = 'hidden'
             newPC.querySelector('.card').style.opacity = '1'
@@ -82,15 +87,70 @@ function test() {
     }
 }
 
+class ViewController {
+    query = `{
+    AllPC {
+            label
+            name
+            form_factor
+            cpu {
+                clock
+                cores
+                threads
+                }
+            videocard {
+                name
+                }
+            ram {
+                size
+                }
+        }
+    }`
+
+    constructor(sortSelector, filterSelectors, searchSelector) {
+        this.sorterEl = document.querySelector(sortSelector)
+        this.searchEl = document.querySelector(searchSelector)
+        // this.filterEl = document.querySelector(filterSelectors)
+        this.data = makeQuery(this.query)
+            .then(r => r.data.AllPC)
+        this.sorter = new Sort()
+        for (const child of this.sorterEl.children) {
+            child.addEventListener('click', () => {
+                for (const child of this.sorterEl.children) {
+                    child.classList.remove('checked')
+                }
+                child.classList.add('checked')
+                this.render()
+            })
+        }
+        this.searchEl.addEventListener('change', () => {
+            this.render()
+        })
+    }
+    get sortType() {
+        return this.sorterEl.querySelector('.checked').firstChild.attributes.sort.value
+    }
+    render() {
+        this.data.then(data => {
+            let result = this.sorter.sort(data, this.sortType)
+            pcListRender(result)
+        })
+    }
+}
+
 function main() {
     if (window.location.pathname.startsWith('/pc/')) {
         funcs.hwTypeHandler()
         funcs.deleteHandler()
         funcs.inputsHandler()
         funcs.ramHandler()
+        funcs.gqSelectHandler()
     }
     if (window.location.href === window.location.origin + '/') {
         funcs.pcLabelHandlerMain()
+        const view = new ViewController('.dropdown-menu', '', '#searchInput')
+        const mainpageSearch = new Search('#searchInput', ['name'])
+
     }
     const query = `subscription {
         PC {
@@ -105,7 +165,7 @@ function main() {
                 name
                 }
             ram {
-                capacity
+                size
                 }
             }
         }`

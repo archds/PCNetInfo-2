@@ -8,10 +8,19 @@ conn.create_tables([PC, Monitor])
 
 
 def getAll(raw=False):
+    def sort_by_label(pc: dict):
+        if not pc['label']:
+            return -1
+        for item in pc['label'].split():
+            try:
+                item = int(item)
+                return item
+            except:
+                return -1
     if raw:
         return PC.select().dicts().get()
     allPC = [get(pc['pc_name']) for pc in PC.select().dicts().execute()]
-    return sorted(allPC, key=lambda PC: PC['label'])
+    return sorted(allPC, key=sort_by_label)
 
 
 def get(pc_name):
@@ -22,6 +31,7 @@ def get(pc_name):
             'serial_number',
             'location',
             'comment',
+            'form_factor',
         ]
         for key in object.keys():
             if key in ignored:
@@ -67,7 +77,6 @@ def get(pc_name):
             memoryBanks[c]['capacity'] = memoryBank['capacity'] / GB
         c += 1
 
-
     response = {
         'id': pc.pop('pc_id', None),
         'name': pc.pop('pc_name', None),
@@ -82,6 +91,7 @@ def get(pc_name):
         'updated': pc.pop('updated', None),
         'comment': pc.pop('comment', None),
         'label': pc.pop('label', None),
+        'form_factor': pc.pop('form_factor', None),
         'os': {
             'name': pc.pop('os_name', None),
             'version': pc.pop('os_version', None),
@@ -134,4 +144,3 @@ def update_pc_field(field, value, pc_name):
 
 def delete_pc(pc_name):
     PC.delete().where(PC.pc_name == pc_name).execute()
-

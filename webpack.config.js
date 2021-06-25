@@ -1,10 +1,11 @@
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CopyPlugin = require("copy-webpack-plugin")
+require('babel-polyfill')
 
 module.exports = {
     entry: {
-        main: path.resolve(__dirname, 'dev', 'js', 'app'),
+        main: ['babel-polyfill' ,path.resolve(__dirname, 'dev', 'js', 'app')],
     },
     output: {
         path: path.resolve(__dirname, './static'),

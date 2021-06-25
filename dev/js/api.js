@@ -10,8 +10,6 @@ export function subOn(query, todo) {
         }
     });
     client.request({query})
-    const subscription = client.request({query})
-        // so lets actually do something with the response
         .subscribe({
             next ({data}) {
                 if (data) {
@@ -19,4 +17,18 @@ export function subOn(query, todo) {
                 }
             }
         })
+}
+
+export async function makeQuery(query) {
+    const source = await fetch('/api', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({
+                query: query
+            })
+        })
+    return await source.json()
 }

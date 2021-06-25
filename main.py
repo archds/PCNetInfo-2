@@ -10,7 +10,7 @@ from fastapi import FastAPI, Request, WebSocket
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from api import schema, queues
+from api import schema, queues, filters
 from ariadne.asgi import GraphQL
 
 app = FastAPI()
@@ -24,7 +24,7 @@ async def root(request: Request):
     pcs = db.getAll()
     for pc in pcs:
         pc['href'] = app.url_path_for('get_pc', pc_name=pc['name'])
-    context = get_context(app, request, items=sorted(pcs, key=lambda x: x['label']))
+    context = get_context(app, request, items=pcs, filters=filters)
     if len(context['items']):
         return templates.TemplateResponse('pc_list.html', context)
     else:

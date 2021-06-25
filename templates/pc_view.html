@@ -86,18 +86,23 @@
                     <div class="head">
                         <input id="label" class="head" type="text" placeholder="Any label here"
                                value="{% if pc.label %}{{ pc.label }}{% endif %}">
-                        <button id="delete"></button>
+                        <button id="delete"><i class="fas fa-trash-alt"></i></button>
                     </div>
                     <p>Computer name: <span>{{ pc.name }}</span></p>
                     <p>Domain: <span>{{ pc.domain }}</span></p>
                     <p>IP-address <span>{{ pc.ip }}</span></p>
-                    <p>Updated: <span>{{ pc.updated }}</span></p>
+                    <p>Updated: <span>{{ pc.updated.strftime('%Y-%m-%d') }}</span></p>
                     <p>User: <input id="user" type="text" placeholder="Custom field"
                                     value="{% if pc.user %}{{ pc.user }}{% endif %}"></p>
                     <p>Location: <input id="location" type="text" placeholder="Custom field"
                                         value="{% if pc.location %}{{ pc.location }}{% endif %}"></p>
                     <p>Serial number: <input id="serial_number" type="text" placeholder="Custom field"
                                              value="{% if pc.serial_number %}{{ pc.serial_number }}{% endif %}"></p>
+                    <p>Form-factor: <select class="form-select form-select-sm gq" id="form_factor">
+                        <option {% if pc.form_factor == 'ATX' %} selected{% endif %} value="ATX">ATX</option>
+                        <option {% if pc.form_factor == 'MicroATX' %} selected{% endif %} value="MicroATX">MicroATX</option>
+                        <option {% if pc.form_factor == 'Mini-ITX' %} selected{% endif %} value="Mini-ITX">Mini-ITX</option>
+                    </select></p>
                     <div class="comment">
                         <label for="comment">Comment:</label>
                         <textarea name="comment" id="comment" placeholder="Comment field" rows="3">{% if pc.comment %}

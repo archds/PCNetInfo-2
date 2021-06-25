@@ -1,28 +1,39 @@
-import autoComplete from "@tarekraafat/autocomplete.js";
-import 'regenerator-runtime/runtime'
+import {pcCard} from "./card";
+import {pcListRender} from "./func";
+import {makeQuery} from "./api";
 
-export function searchHandler() {
-    const search = document.querySelector('#search')
-    const PCs = document.querySelectorAll('.card')
-    const route = new URL(window.location.origin + '/search/pc')
-    const PC_data = fetch('/search/pc')
-    search.addEventListener('input', () => {
-        fetch('/search/pc')
-    })
-}
-
-export function autocomplete() {
-    new autoComplete({
-        selector: '#search',
-        data: {
-            src: async () => {
-                const source = await fetch('/search/pc')
-                return await source.json()
-            },
-            key: ['pc_name'],
-            cache: true,
-        },
-        threshold: 3,
-        debounce: 300,
-    })
+export default class Search {
+    constructor(selector, keys) {
+        this.selector = selector
+        this.keys = keys
+        const searchInput = document.querySelector(selector)
+        searchInput.addEventListener('change', () => {
+            if (this.value.length > 2) {
+                this.render(this.search())
+            } else if (this.value.length === 0) {
+                this.data.then(data => {
+                    this.render(data)
+                })
+            }
+        })
+    }
+    get value() {
+        return document.querySelector(this.selector).value
+    }
+    search(data) {
+        const result = []
+        this.data.then(data => {
+            data.forEach(item => {
+                this.keys.forEach(key => {
+                    if (item[key].includes(this.value)) {
+                        result.push(item)
+                    }
+                })
+            })
+        })
+        return result
+    }
+    render(items) {
+        pcListRender(items)
+    }
 }

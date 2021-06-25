@@ -1,16 +1,19 @@
-@import "~bootstrap/dist/css/bootstrap.css";
 @import "~animate.css/animate.css";
-
+@import "~@tarekraafat/autocomplete.js/dist/css/autoComplete.css";
 $primary: #41b883;
 $secondary: #35495e;
 
+@import "~bootstrap";
+
+
+
 // Fonts
-h1, h2, h3, h4, p, input, label, textarea {
+h1, h2, h3, h4, p, input, label, textarea, select {
   color: $secondary;
 }
 
 
-p, label, textarea, input {
+p, label, textarea, input, select {
   margin-bottom: 0.5rem;
   font-size: 17px;
 }
@@ -81,13 +84,17 @@ button {
   }
 }
 
-// Header
+//.btn-outline-primary:hover,
+//.btn-outline-primary:active,
+//.btn-outline-primary.dropdown-toggle.show {
+//  color: white;
+//}
+  // Header
 header {
   height: 70px;
   display: flex;
   align-items: center;
 }
-
 
 // Links
 a {
@@ -149,6 +156,7 @@ section.pc_list {
     display: flex;
     justify-content: space-around;
     flex-flow: row wrap;
+    transition: .3s ease-in-out;
 
     .card {
       margin: 10px;
@@ -198,6 +206,29 @@ section.pc_list {
 
         span {
           opacity: 0.75;
+        }
+      }
+    }
+  }
+
+  .view-controller {
+    margin-bottom: 20px;
+
+    #search {
+      .search-input {
+        background: #ededed;
+        border-radius: 0.25rem;
+        display: flex;
+        align-items: center;
+        padding: 5px 5px 5px 10px;
+        color: #909090;
+
+
+        input {
+          background: #ededed;
+          margin-bottom: 0;
+          border-bottom: none;
+          padding-left: 15px;
         }
       }
     }
@@ -360,7 +391,8 @@ section.pc_view {
 
       button#delete {
         height: 40px;
-        background: url("../img/delete.png") center no-repeat white;
+        font-size: 25px;
+        color: red;
         background-size: contain;
         width: 30px;
         position: relative;
@@ -379,6 +411,7 @@ section.pc_view {
           width: max-content;
           background: white;
           transition: .3s ease;
+          font-size: 16px;
         }
 
         &:hover::after {
@@ -405,6 +438,10 @@ section.pc_view {
         padding: 0;
         text-align: right;
         font-weight: 500;
+      }
+
+      select.form-select {
+        max-width: 300px;
       }
     }
 
@@ -434,7 +471,6 @@ section.pc_view {
     }
 
   }
-
 }
 
 // Footer
@@ -570,6 +606,38 @@ hr {
 
     &::after {
       display: none;
+    }
+  }
+}
+
+.autoComplete_result:hover {
+  background-color: transparentize($primary, 0.85);
+}
+
+.btn-check:checked + .btn-outline-primary,
+.btn-check:active + .btn-outline-primary,
+.btn-outline-primary:active,
+.btn-outline-primary.active,
+.btn-outline-primary.dropdown-toggle.show,
+.btn-outline-primary:hover {
+  color: white;
+}
+
+.dropdown-menu {
+  li {
+    cursor: pointer;
+
+    &:hover a {
+      color: #1e2125;
+      background-color: #e9ecef;
+    }
+
+    a {
+      pointer-events: none;
+
+      &::after {
+        display: none;
+      }
     }
   }
 }

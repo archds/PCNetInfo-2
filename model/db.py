@@ -59,6 +59,7 @@ class PC(BaseModel):
     updated = DateTimeField()
     comment = TextField(null=True)
     label = CharField(max_length=100, null=True)
+    form_factor = CharField(max_length=20, null=False)
 
     class Meta:
         table_name = 'pc'

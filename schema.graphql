@@ -2,10 +2,15 @@ type Query {
     hello: String!
     PC(name: String): PC
     AllPC: [PC!]!
+    filters: [Filter!]!
 }
 
 type Subscription {
     PC: PC!
+}
+
+type Mutation {
+    updateField(field: String, value: String, pcName: String): Boolean
 }
 
 type PC {
@@ -17,6 +22,7 @@ type PC {
     ip: String
     comment: String
     label: String
+    form_factor: String
     os: OS
     cpu: CPU
     ram: RAM
@@ -41,7 +47,7 @@ type CPU {
 }
 
 type RAM {
-    capacity: Int
+    size: Int
     banks: [String]
 }
 
@@ -55,4 +61,10 @@ type Videocard {
     name: String
     resX: String
     resY: String
+}
+
+type Filter {
+    name: String,
+    id: String,
+    options: [String!]!,
 }

@@ -1,11 +1,50 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="search">
-        <input id="search" type="text" placeholder="Work in progress...">
-        <i class="fas fa-search"></i>
-    </div>
     <section class="pc_list">
         <div class="container">
+            <div class="view-controller d-flex gap-4">
+                <div class="buttons d-flex gap-4">
+                    <div class="dropdown sort-control">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="sorter"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-sort-amount-down"></i> Sorting
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="sorter">
+                            <li><a sort="label" class="dropdown-item" href="">Label</a></li>
+                            <li><a sort="cpu" class="dropdown-item" href="">CPU Performance</a></li>
+                            <li><a sort="form" class="dropdown-item" href="">Form-factor</a></li>
+                        </ul>
+                    </div>
+                    <div class="dropdown filter-control">
+                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#filter-content" aria-expanded="false" aria-controls="filter-content">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                    </div>
+
+                </div>
+                <div id="search">
+                    <div class="search-input">
+                        <i class="fas fa-search"></i>
+                        <input id="searchInput" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="collapse" id="filter-content">
+                {% for filter in filters %}
+                    <div class="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="{{ filter.id }}"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ filter.name }}: <span class="selected">{{ filter.options[0] }}</span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="{{ filter.id }}">
+                            {% for option in filter.options %}
+                                <li><a class="dropdown-item" href="#">{{ option }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endfor %}
+            </div>
             <div class="cards" id="pc_list">
                 {% for pc in items %}
                     <div class="loader-wrapper">
