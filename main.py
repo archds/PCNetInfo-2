@@ -1,3 +1,5 @@
+from pprint import pprint
+
 import uvicorn
 import re
 import json
@@ -7,11 +9,11 @@ import view.db as db
 import view.parser as parser
 import view.search
 from view.context import get_context
-from fastapi import FastAPI, Request, WebSocket
+from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from api import schema, queues, filters
+from api import schema, filters
 from ariadne.asgi import GraphQL
 import os
 
@@ -22,6 +24,8 @@ templates = Jinja2Templates(directory='templates')
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dj_service.settings')
 django.setup()
+from hardware.views import add_pc
+
 
 @app.get("/")
 async def root(request: Request):
@@ -59,10 +63,11 @@ async def update_field(pc_name: str, request: Request):
 async def post_pc(request: Request):
     body = json.loads(await request.body())
     ip = request.client[0]
-    pc = parser.PowerShellParse(body, ip)
-    for queue in queues:
-        await queue.put(pc)
-    return pc.post()
+    pc = parser.powershell(body, ip)
+    return await add_pc(pc)
+    # for queue in queues:
+    #     await queue.put(pc)
+    # return pc.post()
 
 
 @app.delete('/pc/{pc_name}')

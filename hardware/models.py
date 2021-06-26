@@ -52,7 +52,7 @@ class PC(Model):
     serial_number = IntegerField(null=True)
     location = CharField(max_length=200)
     updated = DateTimeField(auto_now=True)
-    comment = TextField(null=True)
+    comment = TextField()
     label = CharField(max_length=100)
     form_factor = CharField(max_length=20)
     monitor = ForeignKey(Monitor, on_delete=CASCADE, null=True)

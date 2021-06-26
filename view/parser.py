@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from model.hardware import Computer, Monitor
 from model.software import OS
 from model.parts import *
@@ -12,8 +14,7 @@ def DictFormatter(obj):
         return obj
 
 
-def PowerShellParse(data, addr):
-    print(data)
+def powershell(data, addr):
     data['ip'] = addr
     data['Videocard'] = DictFormatter(data['Videocard'])
     data['Motherboard'] = DictFormatter(data['Motherboard'])
@@ -23,17 +24,31 @@ def PowerShellParse(data, addr):
         data['CsProcessors'] = [data['CsProcessors']]
     if not isinstance(data['Memory'], list):
         data['Memory'] = [data['Memory']]
-    return Computer.parse_obj({
-        'type': data['Hardwaretype'],
-        'name': data['CsCaption'],
+    parsed_data = {
+        'hardware_type': data['Hardwaretype'],
+        'pc_name': data['CsCaption'],
         'domain': data['CsDomain'],
         'ip': data['ip'],
         'username': data['CsUserName'],
         'timezone': data['TimeZone'],
-        'os': OS.parse_obj(data),
-        'cpu': CPU.parse_obj(data['CsProcessors'][0]),
-        'ram': RAM.parse_obj(data),
-        'motherboard': Motherboard.parse_obj(data['Motherboard']),
-        'videocard': Videocard.parse_obj(data['Videocard']),
-        'monitors': [Monitor.parse_obj(monitor) for monitor in data['Monitors']],
-    })
+        'os_name': data['WindowsProductName'],
+        'os_version': data['WindowsVersion'],
+        'os_architecture': data['OsArchitecture'],
+        'cpu_name': data['CsProcessors'][0]['Name'],
+        'cpu_clock': data['CsProcessors'][0]['CurrentClockSpeed'],
+        'cpu_cores': data['CsProcessors'][0]['NumberOfCores'],
+        'cpu_threads': data['CsProcessors'][0]['NumberOfLogicalProcessors'],
+        'cpu_socket': data['CsProcessors'][0]['SocketDesignation'],
+        'motherboard_manufacturer': data['Motherboard']['Manufacturer'],
+        'motherboard_product': data['Motherboard']['Product'],
+        'motherboard_serial': data['Motherboard']['SerialNumber'],
+        'ram': data['CsPhyicallyInstalledMemory'],
+        'videocard': data['Videocard']['Caption'],
+        'resX': data['Videocard']['CurrentHorizontalResolution'],
+        'resY': data['Videocard']['CurrentVerticalResolution'],
+    }
+    for i, memory_bank in enumerate(data['Memory']):
+        parsed_data[f'ram{i}_Capacity'] = memory_bank['Capacity']
+        parsed_data[f'ram{i}_Configuredclockspeed'] = memory_bank['Configuredclockspeed']
+    return parsed_data
+
