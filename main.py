@@ -41,7 +41,8 @@ async def root(request: Request):
 
 @app.get('/pc/{pc_name}')
 async def get_pc(pc_name: str, request: Request):
-    context = get_context(app, request, pc=db.get(pc_name))
+    context = get_context(app, request, pc=await pc_single_context(pc_name))
+    pprint(context)
     return templates.TemplateResponse('pc_view.html', context)
 
 
@@ -65,9 +66,7 @@ async def post_pc(request: Request):
     ip = request.client[0]
     pc = parser.powershell(body, ip)
     return await add_pc(pc)
-    # for queue in queues:
-    #     await queue.put(pc)
-    # return pc.post()
+
 
 
 @app.delete('/pc/{pc_name}')

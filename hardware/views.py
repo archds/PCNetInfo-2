@@ -9,7 +9,7 @@ from hardware.models import PC
 
 
 @sync_to_async
-def add_pc(parsed_data: dict):
+def add_pc(parsed_data: dict) -> str:
     pc = PC(**parsed_data)
     schema_response = {
         'Name': pc.pc_name,
@@ -51,11 +51,16 @@ def add_pc(parsed_data: dict):
 
 
 @sync_to_async
-def pc_main_context():
+def pc_main_context() -> list[dict]:
     return [response_formatter(pc) for pc in PC.objects.order_by('label').all()]
 
 
-def response_formatter(pc: PC):
+@sync_to_async
+def pc_single_context(pc_name: str) -> dict:
+    return response_formatter(PC.objects.get(pc_name=pc_name))
+
+
+def response_formatter(pc: PC) -> dict:
     def badDataMark(hw_elem: dict):
         ignored = [
             'label',
@@ -103,7 +108,7 @@ def response_formatter(pc: PC):
         'user': pc.user,
         'serial_number': pc.serial_number,
         'location': pc.location,
-        'updated': pc.updated,
+        'updated': pc.updated and pc.updated.strftime('%d.%m.%Y'),
         'comment': pc.comment,
         'label': pc.label,
         'form_factor': pc.form_factor,
@@ -139,6 +144,7 @@ def response_formatter(pc: PC):
             'resY': pc.resY,
         },
     }
+    pprint(response['updated'])
 
     response = badDataMark(response)
     response['timezone'] = response['timezone'].rstrip(' , -')
