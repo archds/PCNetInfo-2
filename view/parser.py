@@ -1,10 +1,3 @@
-from pprint import pprint
-
-from model.hardware import Computer, Monitor
-from model.software import OS
-from model.parts import *
-
-
 def DictFormatter(obj):
     if obj is None:
         return {}

@@ -1,7 +1,15 @@
-from ariadne import QueryType, make_executable_schema, load_schema_from_path, SubscriptionType, MutationType, convert_kwargs_to_snake_case, ObjectType, convert_camel_case_to_snake
-import view.db as db
 import asyncio
-from markupsafe import Markup
+
+from ariadne import (
+    QueryType,
+    make_executable_schema,
+    load_schema_from_path,
+    SubscriptionType,
+    MutationType,
+    convert_kwargs_to_snake_case
+)
+
+from hardware.views import pc_single_context, pc_main_context
 
 # GraphQL definition
 type_defs = load_schema_from_path('schema.graphql')
@@ -30,7 +38,7 @@ def resolve_hello(*_):
 
 @query.field('PC')
 def resolve_pc(obj, info, name):
-    return db.get(name)
+    return pc_single_context(name)
 
 @query.field('filters')
 def resolve_filters(*_):
@@ -39,7 +47,7 @@ def resolve_filters(*_):
 
 @query.field('AllPC')
 def resolve_allpc(*_):
-    return db.getAll()
+    return pc_main_context()
 
 
 @subscription.source('PC')

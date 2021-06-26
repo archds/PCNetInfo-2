@@ -52,107 +52,11 @@ def add_pc(parsed_data: dict) -> str:
 
 @sync_to_async
 def pc_main_context() -> list[dict]:
-    return [response_formatter(pc) for pc in PC.objects.order_by('label').all()]
+    return [pc.to_schema() for pc in PC.objects.order_by('label').all()]
 
 
 @sync_to_async
 def pc_single_context(pc_name: str) -> dict:
-    return response_formatter(PC.objects.get(pc_name=pc_name))
+    return PC.objects.get(pc_name=pc_name).to_schema()
 
 
-def response_formatter(pc: PC) -> dict:
-    def badDataMark(hw_elem: dict):
-        ignored = [
-            'label',
-            'user',
-            'serial_number',
-            'location',
-            'comment',
-            'form_factor',
-        ]
-        for key in hw_elem.keys():
-            if key in ignored:
-                continue
-            if isinstance(hw_elem[key], str):
-                hw_elem[key] = hw_elem[key].replace('?', '').replace('()', '').strip()
-                if not hw_elem[key]:
-                    hw_elem[key] = 'No data'
-                hw_elem[key] = " ".join(hw_elem[key].split())
-            elif isinstance(hw_elem[key], dict):
-                hw_elem[key] = badDataMark(hw_elem[key])
-        return hw_elem
-
-    def rename_cpu(name: str):
-        special_ignored = ['(R)', '(TM)', 'CPU ', '@', '(tm)']
-        for char in special_ignored:
-            name = name.replace(char, '')
-        match_clock = re.search(r'\d\.\d{1,2}\wHz', name)
-        match_apu = name.find('APU')
-        if match_apu:
-            name = name[:match_apu]
-        if match_clock:
-            idx = match_clock.span()[0]
-            name = name[:idx].strip()
-        return name
-
-    GB = 1073741824
-
-    response = {
-        'id': pc.pk,
-        'name': pc.pc_name,
-        'domain': pc.domain,
-        'ip': pc.ip,
-        'hardware_type': pc.hardware_type,
-        'username': pc.username,
-        'timezone': pc.timezone,
-        'user': pc.user,
-        'serial_number': pc.serial_number,
-        'location': pc.location,
-        'updated': pc.updated and pc.updated.strftime('%d.%m.%Y'),
-        'comment': pc.comment,
-        'label': pc.label,
-        'form_factor': pc.form_factor,
-        'os': {
-            'name': pc.os_name,
-            'version': pc.os_version,
-            'architecture': pc.os_architecture
-        },
-        'cpu': {
-            'name': pc.cpu_name,
-            'clock': pc.cpu_clock,
-            'cores': pc.cpu_cores,
-            'threads': pc.cpu_threads,
-            'socket': pc.cpu_socket,
-        },
-        'motherboard': {
-            'manufacturer': pc.motherboard_manufacturer,
-            'product': pc.motherboard_product,
-            'serial': pc.motherboard_serial,
-        },
-        'ram': {
-            'size': pc.ram,
-            'banks': [
-                {'speed': pc.ram0_Configuredclockspeed, 'capacity': pc.ram0_Capacity and pc.ram0_Capacity / GB},
-                {'speed': pc.ram1_Configuredclockspeed, 'capacity': pc.ram1_Capacity and pc.ram1_Capacity / GB},
-                {'speed': pc.ram2_Configuredclockspeed, 'capacity': pc.ram2_Capacity and pc.ram2_Capacity / GB},
-                {'speed': pc.ram3_Configuredclockspeed, 'capacity': pc.ram3_Capacity and pc.ram3_Capacity / GB},
-            ]
-        },
-        'videocard': {
-            'name': pc.videocard,
-            'resX': pc.resX,
-            'resY': pc.resY,
-        },
-    }
-    pprint(response['updated'])
-
-    response = badDataMark(response)
-    response['timezone'] = response['timezone'].rstrip(' , -')
-
-    if 'bit' not in response['os']['architecture']:
-        response['os']['architecture'] = response['os']['architecture'] + 'bit'
-
-    response['cpu']['clock'] = round(response['cpu']['clock'], 1)
-    response['cpu']['name'] = rename_cpu(response['cpu']['name'])
-
-    return response
