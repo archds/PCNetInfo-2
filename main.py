@@ -24,12 +24,12 @@ templates = Jinja2Templates(directory='templates')
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dj_service.settings')
 django.setup()
-from hardware.views import add_pc
+from hardware.views import *
 
 
 @app.get("/")
 async def root(request: Request):
-    pcs = db.getAll()
+    pcs = await pc_main_context()
     for pc in pcs:
         pc['href'] = app.url_path_for('get_pc', pc_name=pc['name'])
     context = get_context(app, request, items=pcs, filters=filters)
