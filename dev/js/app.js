@@ -110,13 +110,18 @@ class ViewController {
     }
 
     collectViewOptions() {
-        return {
+        let options = {
             sort: this.sorter.element.querySelector('.active').attributes.sort.value,
             filter: {
                 serialNumber: this.filter.element.querySelector('ul[aria-labelledby="serialNumber"]')
                     .querySelector('.active').attributes.filter.value
             }
         }
+        this.filter.controllers.forEach(controller => {
+            options.filter[controller.id] = this.filter.element.querySelector(`ul[aria-labelledby="${controller.id}"]`)
+                    .querySelector('.active').attributes.filter.value
+        })
+        return options
     }
 
     render(options) {

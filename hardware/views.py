@@ -72,7 +72,7 @@ def pc_view_controller(view: dict):
     sorters = {
         'label': 'label',
         'cpu': F('cpu_threads') * F('cpu_clock'),
-        'form': 'form-factor',
+        'form': 'form_factor',
     }
     filters = {
         'serial_number': {
