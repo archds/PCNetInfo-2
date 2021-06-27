@@ -88,52 +88,60 @@ function test() {
 }
 
 class ViewController {
-    query = `{
-    AllPC {
-            label
-            name
-            form_factor
-            cpu {
-                clock
-                cores
-                threads
-                }
-            videocard {
-                name
-                }
-            ram {
-                size
-                }
+    constructor(sortSelector, filterSelector, searchSelector) {
+        this.sorter = {
+            element: document.querySelector(sortSelector).querySelector('ul'),
+            triggers: document.querySelector(sortSelector).querySelector('ul').querySelectorAll('a')
         }
-    }`
-
-    constructor(sortSelector, filterSelectors, searchSelector) {
-        this.sorterEl = document.querySelector(sortSelector)
-        this.searchEl = document.querySelector(searchSelector)
-        // this.filterEl = document.querySelector(filterSelectors)
-        this.data = makeQuery(this.query)
-            .then(r => r.data.AllPC)
-        this.sorter = new Sort()
-        for (const child of this.sorterEl.children) {
-            child.addEventListener('click', () => {
-                for (const child of this.sorterEl.children) {
-                    child.classList.remove('checked')
-                }
-                child.classList.add('checked')
-                this.render()
+        this.filter = {
+            element: document.querySelector(filterSelector),
+            controllers: document.querySelector(filterSelector).querySelectorAll('button')
+        }
+        this.sorter.triggers.forEach(trigger => {
+            trigger.parentElement.addEventListener('click', () => {
+                this.render(this.collectViewOptions())
             })
-        }
-        this.searchEl.addEventListener('change', () => {
-            this.render()
         })
     }
-    get sortType() {
-        return this.sorterEl.querySelector('.checked').firstChild.attributes.sort.value
+
+    collectViewOptions() {
+        return {
+            sort: this.sorter.element.querySelector('.active').attributes.sort.value,
+            filter: {
+                serialNumber: this.filter.element.querySelector('ul[aria-labelledby="serialNumber"]')
+                    .querySelector('.active').attributes.filter.value
+            }
+        }
     }
-    render() {
-        this.data.then(data => {
-            let result = this.sorter.sort(data, this.sortType)
-            pcListRender(result)
+
+    render(options) {
+        const query = `{
+            getFilteredItems(
+            view: {
+                sort: "${options.sort}"
+                filter: {
+                    serialNumber: ${options.filter.serialNumber}
+                }
+            }
+            ) {
+                    name
+                    ip
+                    label
+                    cpu {
+                        clock
+                        cores
+                        threads
+                        }
+                    videocard {
+                        name
+                        }
+                    ram {
+                        size
+                        }
+                    }
+                }`
+        makeQuery(query).then(data => {
+            pcListRender(data.data.getFilteredItems)
         })
     }
 }
@@ -148,7 +156,7 @@ function main() {
     }
     if (window.location.href === window.location.origin + '/') {
         funcs.pcLabelHandlerMain()
-        const view = new ViewController('.dropdown-menu', '', '#searchInput')
+        const view = new ViewController('.sort-control', '#filter-content')
         const mainpageSearch = new Search('#searchInput', ['name'])
 
     }

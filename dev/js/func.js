@@ -8,18 +8,19 @@ export function pcLabelHandlerMain() {
             let input = event.target
             let loader = event.target.parentElement.parentElement.parentElement.querySelector('.loading')
             let card = event.target.parentElement.parentElement.parentElement.querySelector('.card')
+            let query = `mutation {
+            updateLabel(value:"${input.value}", pcName:"${input.id}")
+            }`
             loader.style.visibility = 'visible'
             card.style.opacity = '0.6'
-            fetch(`/pc/${input.id}`, {
-                method: 'PUT',
-                body: JSON.stringify({
-                    'label': input.value
-                })
+            makeQuery(query).then(response => {
+                if (response.data.updateLabel) {
+                    setTimeout(() => {
+                        loader.style.visibility = 'hidden'
+                        card.style.opacity = '1'
+                    }, 1500)
+                }
             })
-            setTimeout(() => {
-                loader.style.visibility = 'hidden'
-                card.style.opacity = '1'
-            }, 1500)
         })
     })
 }
@@ -30,18 +31,18 @@ export function inputsHandler() {
     const pcName = document.querySelector('#pc_name').value
     inputs.forEach((input) => {
         input.addEventListener('change', () => {
-            let inputId = input.id
-            fetch(`/pc/${pcName}`, {
-                method: 'PUT',
-                body: JSON.stringify({
-                    'field': inputId,
-                    'value': input.value
-                })
-            }).then(() => {
-                input.parentElement.classList.toggle('saved')
-                setTimeout(() => {
+            let query = `mutation {
+            updateField(field:"${input.id}", value:"${input.value}", pcName:"${pcName}")
+            }`
+            makeQuery(query).then((response) => {
+                if (response.data.updateField) {
                     input.parentElement.classList.toggle('saved')
-                }, 1000)
+                    setTimeout(() => {
+                        input.parentElement.classList.toggle('saved')
+                    }, 1000)
+                } else {
+                    console.log(response)
+                }
             })
         })
     })

@@ -3,6 +3,23 @@ type Query {
     PC(name: String): PC
     AllPC: [PC!]!
     filters: [Filter!]!
+    getFilteredItems(view: ViewControllerInput!): [PC]!
+}
+
+
+input ViewControllerInput {
+    sort: String!
+    filter: FilterInput!
+}
+
+input FilterInput {
+    serialNumber: SerialNumberFilter!
+}
+
+enum SerialNumberFilter {
+    ANY
+    SPECIFIED
+    NOT_SPECIFIED
 }
 
 type Subscription {
@@ -10,7 +27,8 @@ type Subscription {
 }
 
 type Mutation {
-    updateField(field: String, value: String, pcName: String): Boolean
+    updateField(field: String, value: String, pcName: String): Boolean!
+    updateLabel(value: String, pcName: String): Boolean!
 }
 
 type PC {

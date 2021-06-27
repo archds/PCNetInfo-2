@@ -55,4 +55,4 @@ async def post_pc(request: Request):
 
 
 if __name__ == '__main__':
-    uvicorn.run(app)
+    uvicorn.run('main:app', reload=True)

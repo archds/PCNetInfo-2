@@ -19,7 +19,6 @@ class Monitor(Model):
     user = CharField(max_length=100)
 
 
-
 class PC(Model):
     hardware_type = CharField(max_length=50)
     os_name = CharField(max_length=50)
@@ -94,7 +93,8 @@ class PC(Model):
                 name = name[:idx].strip()
             return name
 
-        GB = 1073741824
+        bytes_in_gb = 1073741824
+        kb_in_gb = 1048576
 
         response = {
             'id': self.pk,
@@ -129,12 +129,24 @@ class PC(Model):
                 'serial': self.motherboard_serial,
             },
             'ram': {
-                'size': self.ram,
+                'size': self.ram and int(self.ram / kb_in_gb),
                 'banks': [
-                    {'speed': self.ram0_Configuredclockspeed, 'capacity': self.ram0_Capacity and self.ram0_Capacity / GB},
-                    {'speed': self.ram1_Configuredclockspeed, 'capacity': self.ram1_Capacity and self.ram1_Capacity / GB},
-                    {'speed': self.ram2_Configuredclockspeed, 'capacity': self.ram2_Capacity and self.ram2_Capacity / GB},
-                    {'speed': self.ram3_Configuredclockspeed, 'capacity': self.ram3_Capacity and self.ram3_Capacity / GB},
+                    {
+                        'speed': self.ram0_Configuredclockspeed,
+                        'capacity': self.ram0_Capacity and self.ram0_Capacity / bytes_in_gb
+                    },
+                    {
+                        'speed': self.ram1_Configuredclockspeed,
+                        'capacity': self.ram1_Capacity and self.ram1_Capacity / bytes_in_gb
+                    },
+                    {
+                        'speed': self.ram2_Configuredclockspeed,
+                        'capacity': self.ram2_Capacity and self.ram2_Capacity / bytes_in_gb
+                    },
+                    {
+                        'speed': self.ram3_Configuredclockspeed,
+                        'capacity': self.ram3_Capacity and self.ram3_Capacity / bytes_in_gb
+                    },
                 ]
             },
             'videocard': {
@@ -154,5 +166,3 @@ class PC(Model):
         response['cpu']['name'] = rename_cpu(response['cpu']['name'])
 
         return response
-
-

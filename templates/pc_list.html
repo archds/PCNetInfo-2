@@ -10,7 +10,7 @@
                             <i class="fas fa-sort-amount-down"></i> Sorting
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="sorter">
-                            <li><a sort="label" class="dropdown-item" href="">Label</a></li>
+                            <li><a sort="label" class="dropdown-item active" href="">Label</a></li>
                             <li><a sort="cpu" class="dropdown-item" href="">CPU Performance</a></li>
                             <li><a sort="form" class="dropdown-item" href="">Form-factor</a></li>
                         </ul>
@@ -35,11 +35,12 @@
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="{{ filter.id }}"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ filter.name }}: <span class="selected">{{ filter.options[0] }}</span>
+                            {{ filter.name }}: <span class="selected">{{ filter.options[0].name }}</span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="{{ filter.id }}">
                             {% for option in filter.options %}
-                                <li><a class="dropdown-item" href="#">{{ option }}</a></li>
+                                <li><a class="dropdown-item {% if loop.index == 1 %}active{% endif %}"
+                                       href="#" filter="{{ option.value }}">{{ option.name }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>
