@@ -73,19 +73,6 @@ function pcNotify(data) {
     }
 }
 
-function test() {
-    if (window.location.pathname.startsWith('/pc/')) {
-        let notifOptions = {
-            toastOptions: {
-                delay: 1200000
-            }
-        }
-        const testToast = notification(notifOptions)
-        setTimeout(() => {
-            testToast.show()
-        }, 2000)
-    }
-}
 
 class ViewController {
     constructor(sortSelector, filterSelector, searchSelector) {
@@ -99,7 +86,25 @@ class ViewController {
         }
         this.sorter.triggers.forEach(trigger => {
             trigger.parentElement.addEventListener('click', () => {
+                this.sorter.triggers.forEach(trigger => {
+                    trigger.classList.remove('active')
+                })
+                trigger.classList.add('active')
                 this.render(this.collectViewOptions())
+            })
+        })
+        this.filter.controllers.forEach(controller => {
+            const triggers = this.filter.element.querySelector(`ul[aria-labelledby="${controller.id}"]`)
+                .querySelectorAll('li')
+            triggers.forEach(trigger => {
+                trigger.addEventListener('click', () => {
+                    triggers.forEach(trigger => {
+                        trigger.firstElementChild.classList.remove('active')
+                    })
+                    trigger.firstElementChild.classList.add('active')
+                    controller.querySelector('.selected').textContent = trigger.firstElementChild.textContent
+                    this.render(this.collectViewOptions())
+                })
             })
         })
     }
@@ -115,6 +120,7 @@ class ViewController {
     }
 
     render(options) {
+        console.log(options)
         const query = `{
             getFilteredItems(
             view: {
@@ -157,8 +163,6 @@ function main() {
     if (window.location.href === window.location.origin + '/') {
         funcs.pcLabelHandlerMain()
         const view = new ViewController('.sort-control', '#filter-content')
-        const mainpageSearch = new Search('#searchInput', ['name'])
-
     }
     const query = `subscription {
         PC {
