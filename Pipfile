@@ -4,7 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-uvicorn = {extras = ["standard"], version = "*"}
 fastapi = "*"
 aiofiles = "*"
 peewee = "*"
@@ -14,8 +13,13 @@ beautifulsoup4 = "*"
 nested-lookup = "*"
 ariadne = "*"
 websockets = "*"
+django = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.9"
+
+[packages.uvicorn]
+extras = [ "standard",]
+version = "*"

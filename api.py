@@ -1,7 +1,16 @@
-from ariadne import QueryType, make_executable_schema, load_schema_from_path, SubscriptionType, MutationType, convert_kwargs_to_snake_case, ObjectType, convert_camel_case_to_snake
-import view.db as db
 import asyncio
-from markupsafe import Markup
+from pprint import pprint
+
+from ariadne import (
+    QueryType,
+    make_executable_schema,
+    load_schema_from_path,
+    SubscriptionType,
+    MutationType,
+    convert_kwargs_to_snake_case
+)
+
+from hardware.views import pc_single_context, pc_main_context, pc_update, pc_view_controller
 
 # GraphQL definition
 type_defs = load_schema_from_path('schema.graphql')
@@ -15,9 +24,18 @@ filters = [
         'name': 'Serial number',
         'id': 'serialNumber',
         'options': [
-            'Any',
-            'Specified',
-            'Not specified',
+            {
+                'name': 'Any',
+                'value': 'ANY',
+            },
+            {
+                'name': 'Specified',
+                'value': 'SPECIFIED',
+            },
+            {
+                'name': 'Not specified',
+                'value': 'NOT_SPECIFIED',
+            },
         ]
     }
 ]
@@ -30,7 +48,8 @@ def resolve_hello(*_):
 
 @query.field('PC')
 def resolve_pc(obj, info, name):
-    return db.get(name)
+    return pc_single_context(name)
+
 
 @query.field('filters')
 def resolve_filters(*_):
@@ -39,7 +58,7 @@ def resolve_filters(*_):
 
 @query.field('AllPC')
 def resolve_allpc(*_):
-    return db.getAll()
+    return pc_main_context()
 
 
 @subscription.source('PC')
@@ -60,8 +79,19 @@ def counter_resolver(pc, info):
 @mutation.field('updateField')
 @convert_kwargs_to_snake_case
 def update_field_resolver(obj, info, field, value, pc_name):
-    db.update_pc_field(field, value, pc_name)
-    return True
+    return pc_update(pc_name, {field: value})
+
+
+@mutation.field('updateLabel')
+@convert_kwargs_to_snake_case
+def update_field_resolver(obj, info, value, pc_name):
+    return pc_update(pc_name, {'label': value})
+
+
+@query.field('getFilteredItems')
+@convert_kwargs_to_snake_case
+def view_resolver(obj, info, view):
+    return pc_view_controller(view)
 
 
 resolvers = [query, subscription, mutation]

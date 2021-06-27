@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "dev": "webpack --watch"
+    "dev": "webpack --watch --progress"
   },
   "author": "archds",
   "license": "ISC",
@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.3",
+    "@popperjs/core": "^2.9.2",
     "@shopify/draggable": "^1.0.0-beta.8",
     "@tarekraafat/autocomplete.js": "^9.1.1",
     "animate.css": "^4.1.1",

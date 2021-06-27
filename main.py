@@ -1,17 +1,21 @@
-import uvicorn
-import re
+import os
 import json
-import asyncio
-import view.db as db
+import uvicorn
+import django
 import view.parser as parser
-import view.search
-from view.context import get_context
-from fastapi import FastAPI, Request, WebSocket
+
+from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from api import schema, queues, filters
 from ariadne.asgi import GraphQL
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dj_service.settings')
+django.setup()
+
+from api import schema, filters
+from hardware.views import pc_single_context, pc_main_context, add_pc
+from view.context import get_context
 
 app = FastAPI()
 app.mount('/static', StaticFiles(directory='static'), name='static')
@@ -21,7 +25,7 @@ templates = Jinja2Templates(directory='templates')
 
 @app.get("/")
 async def root(request: Request):
-    pcs = db.getAll()
+    pcs = await pc_main_context()
     for pc in pcs:
         pc['href'] = app.url_path_for('get_pc', pc_name=pc['name'])
     context = get_context(app, request, items=pcs, filters=filters)
@@ -33,7 +37,7 @@ async def root(request: Request):
 
 @app.get('/pc/{pc_name}')
 async def get_pc(pc_name: str, request: Request):
-    context = get_context(app, request, pc=db.get(pc_name))
+    context = get_context(app, request, pc=await pc_single_context(pc_name))
     return templates.TemplateResponse('pc_view.html', context)
 
 
@@ -42,34 +46,13 @@ async def get_file(file_name: str):
     return FileResponse(f'filehost/{file_name}')
 
 
-@app.put('/pc/{pc_name}')
-async def update_field(pc_name: str, request: Request):
-    body = json.loads(await request.body())
-    if re.match(r'ram\d_Capacity', body['field']):
-        body['value'] = body['value'] if body['value'] else 0
-        body['value'] = int(body['value']) * 1024 * 1024 * 1024
-    db.update_pc_field(body['field'], body['value'], pc_name)
-
-
 @app.post('/pc')
 async def post_pc(request: Request):
     body = json.loads(await request.body())
     ip = request.client[0]
-    pc = parser.PowerShellParse(body, ip)
-    for queue in queues:
-        await queue.put(pc)
-    return pc.post()
-
-
-@app.delete('/pc/{pc_name}')
-async def delete_pc(pc_name: str):
-    db.delete_pc(pc_name)
-
-
-@app.get('/search/pc')
-async def search():
-    return view.search.get()
+    pc = parser.powershell(body, ip)
+    return await add_pc(pc)
 
 
 if __name__ == '__main__':
-    uvicorn.run(app)
+    uvicorn.run('main:app', reload=True)
