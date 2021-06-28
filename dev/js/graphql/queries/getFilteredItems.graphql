@@ -1,0 +1,23 @@
+query ($sortOption: String!, $filter: FilterInput!){
+            getFilteredItems(
+            view: {
+                sort: $sortOption
+                filter: $filter
+            }
+            ) {
+                    name
+                    ip
+                    label
+                    cpu {
+                        clock
+                        cores
+                        threads
+                        }
+                    videocard {
+                        name
+                        }
+                    ram {
+                        size
+                        }
+                    }
+                }

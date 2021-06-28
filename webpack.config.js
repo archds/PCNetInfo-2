@@ -5,7 +5,7 @@ require('babel-polyfill')
 
 module.exports = {
     entry: {
-        main: ['babel-polyfill' ,path.resolve(__dirname, 'dev', 'js', 'app')],
+        main: ['babel-polyfill', path.resolve(__dirname, 'dev', 'js', 'app')],
     },
     output: {
         path: path.resolve(__dirname, './static'),
@@ -19,7 +19,7 @@ module.exports = {
         }),
         new CopyPlugin({
             patterns: [
-                { from: "./dev/img", to: "./img" },
+                {from: "./dev/img", to: "./img"},
             ],
         }),
     ],
@@ -52,6 +52,11 @@ module.exports = {
             {
                 test: /\.(?:ico|gif|png|jpg|jpeg|svg)$/i,
                 type: 'asset/resource',
+            },
+            {
+                test: /\.(graphql|gql)$/,
+                exclude: /node_modules/,
+                loader: 'graphql-tag/loader',
             },
         ]
     },
