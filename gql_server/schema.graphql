@@ -3,13 +3,19 @@ type Query {
     PC(name: String): PC
     AllPC: [PC!]!
     filters: [Filter!]!
-    getFilteredItems(view: ViewControllerInput!): [PC]!
+    getView(view: ViewControllerInput!): [PC]!
 }
 
 
 input ViewControllerInput {
     sort: String!
     filter: FilterInput!
+    search: SearchInput
+}
+
+input SearchInput {
+    searchType: SearchField
+    searchValue: String!
 }
 
 input FilterInput {
@@ -20,6 +26,16 @@ enum SerialNumberFilter {
     ANY
     SPECIFIED
     NOT_SPECIFIED
+}
+
+enum SearchField {
+    label
+    serial_number
+    comment
+    user
+    pc_name
+    cpu_name
+    videocard
 }
 
 type Subscription {

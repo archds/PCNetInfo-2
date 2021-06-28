@@ -13,7 +13,7 @@ from ariadne.asgi import GraphQL
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dj_service.settings')
 django.setup()
 
-from api import schema, filters
+from gql_server.api import schema, filters
 from hardware.views import pc_single_context, pc_main_context, add_pc
 from view.context import get_context
 
