@@ -5,6 +5,7 @@ import {pcCard} from "./card";
 import {Toast} from "bootstrap";
 import Search from "./search";
 import Sort from "./sort";
+import {ViewController} from "./viewController";
 
 // Style
 import '@fortawesome/fontawesome-free/js/all.min'
@@ -74,88 +75,7 @@ function pcNotify(data) {
 }
 
 
-class ViewController {
-    constructor(sortSelector, filterSelector, searchSelector) {
-        this.sorter = {
-            element: document.querySelector(sortSelector).querySelector('ul'),
-            triggers: document.querySelector(sortSelector).querySelector('ul').querySelectorAll('a')
-        }
-        this.filter = {
-            element: document.querySelector(filterSelector),
-            controllers: document.querySelector(filterSelector).querySelectorAll('button')
-        }
-        this.sorter.triggers.forEach(trigger => {
-            trigger.parentElement.addEventListener('click', () => {
-                this.sorter.triggers.forEach(trigger => {
-                    trigger.classList.remove('active')
-                })
-                trigger.classList.add('active')
-                this.render(this.collectViewOptions())
-            })
-        })
-        this.filter.controllers.forEach(controller => {
-            const triggers = this.filter.element.querySelector(`ul[aria-labelledby="${controller.id}"]`)
-                .querySelectorAll('li')
-            triggers.forEach(trigger => {
-                trigger.addEventListener('click', () => {
-                    triggers.forEach(trigger => {
-                        trigger.firstElementChild.classList.remove('active')
-                    })
-                    trigger.firstElementChild.classList.add('active')
-                    controller.querySelector('.selected').textContent = trigger.firstElementChild.textContent
-                    this.render(this.collectViewOptions())
-                })
-            })
-        })
-    }
 
-    collectViewOptions() {
-        let options = {
-            sort: this.sorter.element.querySelector('.active').attributes.sort.value,
-            filter: {
-                serialNumber: this.filter.element.querySelector('ul[aria-labelledby="serialNumber"]')
-                    .querySelector('.active').attributes.filter.value
-            }
-        }
-        this.filter.controllers.forEach(controller => {
-            options.filter[controller.id] = this.filter.element.querySelector(`ul[aria-labelledby="${controller.id}"]`)
-                    .querySelector('.active').attributes.filter.value
-        })
-        return options
-    }
-
-    render(options) {
-        console.log(options)
-        const query = `{
-            getFilteredItems(
-            view: {
-                sort: "${options.sort}"
-                filter: {
-                    serialNumber: ${options.filter.serialNumber}
-                }
-            }
-            ) {
-                    name
-                    ip
-                    label
-                    cpu {
-                        clock
-                        cores
-                        threads
-                        }
-                    videocard {
-                        name
-                        }
-                    ram {
-                        size
-                        }
-                    }
-                }`
-        makeQuery(query).then(data => {
-            pcListRender(data.data.getFilteredItems)
-        })
-    }
-}
 
 function main() {
     if (window.location.pathname.startsWith('/pc/')) {
