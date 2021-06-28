@@ -1,10 +1,6 @@
 import {pcListRender} from "./func";
-import {
-    gql,
-    useQuery,
-    useMutation
-} from "@apollo/client";
-import GET_ITEMS from './graphql/queries/getFilteredItems.graphql'
+import {makeQuery} from "./api";
+// import GET_ITEMS from './graphql/queries/getFilteredItems.graphql'
 
 export class ViewController {
     // TODO: make controller for notification in this class
@@ -59,15 +55,33 @@ export class ViewController {
     }
 
     render(options) {
-        console.log(options)
-        const query = gql(GET_ITEMS)
-        useQuery(query, {
-            variables: {
-                sortOption: options.sort,
+        const query = `query {
+            getFilteredItems(
+            view: {
+                sort: "${options.sort}"
                 filter: {
-                    serialNumber: options.filter.serialNumber
+                    serialNumber: ${options.filter.serialNumber}
                 }
             }
+            ) {
+                    name
+                    ip
+                    label
+                    cpu {
+                        clock
+                        cores
+                        threads
+                        }
+                    videocard {
+                        name
+                        }
+                    ram {
+                        size
+                        }
+                    }
+                }`
+        makeQuery(query).then(data => {
+            pcListRender(data.data.getFilteredItems)
         })
 
     }
