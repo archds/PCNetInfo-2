@@ -7,13 +7,13 @@ from ariadne import (
     load_schema_from_path,
     SubscriptionType,
     MutationType,
-    convert_kwargs_to_snake_case
+    convert_kwargs_to_snake_case,
 )
 
 from hardware.views import pc_single_context, pc_main_context, pc_update, pc_view_controller
 
 # GraphQL definition
-type_defs = load_schema_from_path('schema.graphql')
+type_defs = load_schema_from_path('gql_server/schema.graphql')
 
 query = QueryType()
 mutation = MutationType()
@@ -88,7 +88,7 @@ def update_field_resolver(obj, info, value, pc_name):
     return pc_update(pc_name, {'label': value})
 
 
-@query.field('getFilteredItems')
+@query.field('getView')
 @convert_kwargs_to_snake_case
 def view_resolver(obj, info, view):
     return pc_view_controller(view)

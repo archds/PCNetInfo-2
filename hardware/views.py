@@ -67,8 +67,10 @@ def pc_update(pc_name: str, data: dict) -> bool:
     PC.objects.filter(pc_name=pc_name).update(**data)
     return True
 
+
 @sync_to_async
 def pc_view_controller(view: dict):
+    pprint(view)
     sorters = {
         'label': 'label',
         'cpu': F('cpu_threads') * F('cpu_clock'),
@@ -90,4 +92,12 @@ def pc_view_controller(view: dict):
 
     if view['sort'] == 'cpu':
         query = query.reverse()
+
+    if search := view.get('search'):
+        if search_type := search.get('search_type'):
+            query = query.filter(**{f'{search_type}__contains': search["search_value"]})
+        else:
+            query = query.filter(**{'label__contains': search['search_value']})
+
     return [pc.to_schema() for pc in query]
+
