@@ -88,7 +88,7 @@ function main() {
     }
     if (window.location.href === window.location.origin + '/') {
         funcs.pcLabelHandlerMain()
-        const view = new ViewController('.sort-control', '#filter-content')
+        const view = new ViewController('.sort-control', '#filter-content', '#searchInput')
         subOn(query, view.pcLiveUpdate)
     }
 

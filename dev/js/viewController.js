@@ -21,6 +21,9 @@ export class ViewController {
             element: document.querySelector(filterSelector),
             controllers: document.querySelector(filterSelector).querySelectorAll('button')
         }
+        this.search = {
+            element: document.querySelector(searchSelector),
+        }
         this.sorter.triggers.forEach(trigger => {
             trigger.parentElement.addEventListener('click', () => {
                 this.sorter.triggers.forEach(trigger => {
@@ -44,14 +47,20 @@ export class ViewController {
                 })
             })
         })
+        this.search.element.addEventListener('change', () => {
+            // const searchValue = this.search.element.value
+            // if (searchValue.length < 2) return
+            this.render(this.collectViewOptions())
+        })
     }
 
     collectViewOptions() {
         let options = {
             sort: this.sorter.element.querySelector('.active').attributes.sort.value,
-            filter: {
-                serialNumber: this.filter.element.querySelector('ul[aria-labelledby="serialNumber"]')
-                    .querySelector('.active').attributes.filter.value
+            filter: {},
+            search: {
+                searchValue: this.search.element.value.length > 2 ? this.search.element.value : '',
+                searchType: this.search.element.attributes.search.value
             }
         }
         this.filter.controllers.forEach(controller => {
@@ -62,14 +71,9 @@ export class ViewController {
     }
 
     render(options) {
-        const query = gql`{
+        const query = gql`query getView($view: ViewControllerInput!){
             getView(
-                view: {
-                    sort: "${options.sort}"
-                    filter: {
-                        serialNumber: ${options.filter.serialNumber}
-                    }
-                }
+                view: $view
             ) {
                 name
                 ip
@@ -87,7 +91,7 @@ export class ViewController {
                 }
             }
         }`
-        this.client.request(query).then(data => {
+        this.client.request(query, {view: options}).then(data => {
             pcListRender(data.getView)
         })
     }

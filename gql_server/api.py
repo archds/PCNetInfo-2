@@ -91,6 +91,7 @@ def update_field_resolver(obj, info, value, pc_name):
 @query.field('getView')
 @convert_kwargs_to_snake_case
 def view_resolver(obj, info, view):
+    pprint(view)
     return pc_view_controller(view)
 
 
