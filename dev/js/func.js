@@ -1,4 +1,3 @@
-import {makeQuery} from "./api";
 import {pcCard} from "./card";
 
 export function pcLabelHandlerMain() {

@@ -1,10 +1,8 @@
 // JS
 import * as funcs from './func'
-import {makeQuery, subOn} from "./api";
+import {subOn} from "./api";
 import {pcCard} from "./card";
 import {Toast} from "bootstrap";
-import Search from "./search";
-import Sort from "./sort";
 import {ViewController} from "./viewController";
 
 // Style
