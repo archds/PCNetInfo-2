@@ -3,7 +3,7 @@ from datetime import datetime
 from pprint import pprint
 
 from django.db import IntegrityError
-from django.db.models import F, Q
+from django.db.models import F, Q, Value, When, Case
 from django.shortcuts import render
 
 from asgiref.sync import sync_to_async
@@ -74,7 +74,7 @@ def pc_view_controller(view: dict):
     sorters = {
         'label': 'label',
         'cpu': F('cpu_threads') * F('cpu_clock'),
-        'form': 'form_factor',
+        'form': 'form_factor_enum',
     }
     filters = {
         'serial_number': {
@@ -83,15 +83,27 @@ def pc_view_controller(view: dict):
         }
     }
 
-    query = PC.objects.order_by(sorters[view['sort']])
+    query = PC.objects
+
+    if view['sort'] == 'form':
+        query = query.annotate(
+            form_factor_enum=Case(
+                When(form_factor='ATX', then=0),
+                When(form_factor='MicroATX', then=1),
+                When(form_factor='Mini-ITX', then=2),
+            )
+        )
+
+    query = query.order_by(sorters[view['sort']])
     for filter_type, filter_value in view['filter'].items():
         if filter_value in filters[filter_type]:
             filter_value = filters[filter_type].get(filter_value)
             if isinstance(filter_value, bool):
                 query = query.filter(**{f'{filter_type}__isnull': filter_value})
 
-    if view['sort'] == 'cpu':
+    if view['sort'] == 'cpu' or view['sort'] == 'form':
         query = query.reverse()
+
 
     if search := view.get('search'):
         if search_type := search.get('search_type'):

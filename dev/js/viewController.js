@@ -1,6 +1,6 @@
 import {pcListRender} from "./func";
 import {makeQuery} from "./api";
-// import GET_ITEMS from './graphql/queries/getFilteredItems.graphql'
+// import GET_ITEMS from './graphql/queries/getView.graphql'
 
 export class ViewController {
     // TODO: make controller for notification in this class
@@ -56,7 +56,7 @@ export class ViewController {
 
     render(options) {
         const query = `query {
-            getFilteredItems(
+            getView(
             view: {
                 sort: "${options.sort}"
                 filter: {
@@ -81,7 +81,7 @@ export class ViewController {
                     }
                 }`
         makeQuery(query).then(data => {
-            pcListRender(data.data.getFilteredItems)
+            pcListRender(data.data.getView)
         })
 
     }

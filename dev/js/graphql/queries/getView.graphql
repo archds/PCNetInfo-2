@@ -1,5 +1,5 @@
 query ($sortOption: String!, $filter: FilterInput!){
-            getFilteredItems(
+            getView(
             view: {
                 sort: $sortOption
                 filter: $filter
