@@ -1,13 +1,16 @@
 import {pcListRender} from "./func";
 import {gql, GraphQLClient} from 'graphql-request'
+import {pcCard} from "./card";
 
 
 // import GET_ITEMS from './graphql/queries/getView.graphql'
 
 export class ViewController {
     client = new GraphQLClient('/api')
+    pcListWrapper = document.querySelector('#pc_list')
 
     // TODO: make controller for notification in this class
+    // TODO: make func.js in this module
 
     constructor(sortSelector, filterSelector, searchSelector) {
         this.sorter = {
@@ -87,5 +90,17 @@ export class ViewController {
         this.client.request(query).then(data => {
             pcListRender(data.getView)
         })
+    }
+
+    pcLiveUpdate(data) {
+        const pc = data['PC']
+        const newPC = pcCard(pc)
+        newPC.querySelector('.loading').style.visibility = 'visible'
+        newPC.querySelector('.card').style.opacity = '0.6'
+        setTimeout(() => {
+            newPC.querySelector('.loading').style.visibility = 'hidden'
+            newPC.querySelector('.card').style.opacity = '1'
+        }, 1500)
+        this.pcListWrapper.insertBefore(newPC, this.pcListWrapper.firstChild)
     }
 }

@@ -1,7 +1,6 @@
 // JS
 import * as funcs from './func'
 import {subOn} from "./api";
-import {pcCard} from "./card";
 import {Toast} from "bootstrap";
 import {ViewController} from "./viewController";
 
@@ -50,43 +49,18 @@ function notification(options = {}) {
 }
 
 function pcNotify(data) {
+    console.log('shoot pcNotify')
     const pc = data['PC']
-    if (window.location.href === window.location.origin + '/') {
-        const pcList = document.querySelector('#pc_list')
-        const newPC = pcCard(pc)
-        newPC.querySelector('.loading').style.visibility = 'visible'
-        newPC.querySelector('.card').style.opacity = '0.6'
-        setTimeout(() => {
-            newPC.querySelector('.loading').style.visibility = 'hidden'
-            newPC.querySelector('.card').style.opacity = '1'
-        }, 1500)
-        pcList.insertBefore(newPC, pcList.firstChild)
+    const notifOptions = {
+        heading: pc.name,
+        text: `New PC added. <a href="/pc/${pc.name}">Take a look.</a>`,
+        smallText: pc.ip,
     }
-    if (window.location.pathname.startsWith('/pc/')) {
-        const notifOptions = {
-            heading: pc.name,
-            text: `New PC added. <a href="/pc/${pc.name}">Take a look.</a>`,
-            smallText: pc.ip,
-        }
-        notification(notifOptions).show()
-    }
+    notification(notifOptions).show()
 }
 
 
-
-
 function main() {
-    if (window.location.pathname.startsWith('/pc/')) {
-        funcs.hwTypeHandler()
-        funcs.deleteHandler()
-        funcs.inputsHandler()
-        funcs.ramHandler()
-        funcs.gqSelectHandler()
-    }
-    if (window.location.href === window.location.origin + '/') {
-        funcs.pcLabelHandlerMain()
-        const view = new ViewController('.sort-control', '#filter-content')
-    }
     const query = `subscription {
         PC {
             name
@@ -95,16 +69,29 @@ function main() {
                 clock
                 cores
                 threads
-                }
+            }
             videocard {
                 name
-                }
+            }
             ram {
                 size
-                }
             }
-        }`
-    subOn(query, pcNotify)
+        }
+    }`
+    if (window.location.pathname.startsWith('/pc/')) {
+        funcs.hwTypeHandler()
+        funcs.deleteHandler()
+        funcs.inputsHandler()
+        funcs.ramHandler()
+        funcs.gqSelectHandler()
+        subOn(query, pcNotify)
+    }
+    if (window.location.href === window.location.origin + '/') {
+        funcs.pcLabelHandlerMain()
+        const view = new ViewController('.sort-control', '#filter-content')
+        subOn(query, view.pcLiveUpdate)
+    }
+
 
 }
 
