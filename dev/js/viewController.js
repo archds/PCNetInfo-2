@@ -1,8 +1,12 @@
 import {pcListRender} from "./func";
-import {makeQuery} from "./api";
+import {gql, GraphQLClient} from 'graphql-request'
+
+
 // import GET_ITEMS from './graphql/queries/getView.graphql'
 
 export class ViewController {
+    client = new GraphQLClient('/api')
+
     // TODO: make controller for notification in this class
 
     constructor(sortSelector, filterSelector, searchSelector) {
@@ -49,40 +53,39 @@ export class ViewController {
         }
         this.filter.controllers.forEach(controller => {
             options.filter[controller.id] = this.filter.element.querySelector(`ul[aria-labelledby="${controller.id}"]`)
-                    .querySelector('.active').attributes.filter.value
+                .querySelector('.active').attributes.filter.value
         })
         return options
     }
 
     render(options) {
-        const query = `query {
+        const query = gql`{
             getView(
-            view: {
-                sort: "${options.sort}"
-                filter: {
-                    serialNumber: ${options.filter.serialNumber}
+                view: {
+                    sort: "${options.sort}"
+                    filter: {
+                        serialNumber: ${options.filter.serialNumber}
+                    }
+                }
+            ) {
+                name
+                ip
+                label
+                cpu {
+                    clock
+                    cores
+                    threads
+                }
+                videocard {
+                    name
+                }
+                ram {
+                    size
                 }
             }
-            ) {
-                    name
-                    ip
-                    label
-                    cpu {
-                        clock
-                        cores
-                        threads
-                        }
-                    videocard {
-                        name
-                        }
-                    ram {
-                        size
-                        }
-                    }
-                }`
-        makeQuery(query).then(data => {
-            pcListRender(data.data.getView)
+        }`
+        this.client.request(query).then(data => {
+            pcListRender(data.getView)
         })
-
     }
 }
