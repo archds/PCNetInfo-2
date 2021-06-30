@@ -5,6 +5,7 @@ from pprint import pprint
 from django.db import IntegrityError
 from django.db.models import F, Q, Value, When, Case
 from django.shortcuts import render
+from django.views.decorators.http import require_http_methods
 
 from asgiref.sync import sync_to_async
 from hardware.models import PC
@@ -104,7 +105,6 @@ def pc_view_controller(view: dict):
     if view['sort'] == 'cpu' or view['sort'] == 'form':
         query = query.reverse()
 
-
     if search := view.get('search'):
         if search_type := search.get('search_type'):
             query = query.filter(**{f'{search_type}__contains': search["search_value"]})
@@ -113,3 +113,13 @@ def pc_view_controller(view: dict):
 
     return [pc.to_schema() for pc in query]
 
+
+@require_http_methods(['GET'])
+def test_mainpage(request):
+    context = {}
+    return render(request, 'pc_list.html', context=context)
+
+@require_http_methods(['GET'])
+def test_pc_page(request, pc_name):
+    context = {}
+    return render(request, 'pc_view.html', context=context)

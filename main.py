@@ -54,5 +54,13 @@ async def post_pc(request: Request):
     return await add_pc(pc)
 
 
+@app.get('/monitor')
+def monitor_root(requst: Request):
+    # return cover
+    context = get_context(app, requst)
+    return templates.TemplateResponse('wip_cover.html', context)
+
+
+
 if __name__ == '__main__':
     uvicorn.run('main:app', reload=True)

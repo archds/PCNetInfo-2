@@ -1,6 +1,7 @@
 def get_nav(app):
     return [
-        {'caption': 'Computers', 'href': app.url_path_for('root')}
+        {'caption': 'Computers', 'href': app.url_path_for('root')},
+        {'caption': 'Monitors', 'href': app.url_path_for('monitor_root')}
     ]
 
 

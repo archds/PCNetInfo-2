@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}{{ pc.name }}{% endblock %}
 {% block content %}
     <section class="pc_view">
@@ -8,13 +9,18 @@
                     <div class="col-md-6 chars">
                         <div class="char">
                             <div class="dots"></div>
-                            {{ hwTypeImg(hw_type=pc.hardware_type) }}
+                            {% if hw_type == 'desktop' %}
+                                <img id="hw_type" src="{% static '/img/computer.png' %}" alt="">
+                            {% endif %}
+                            {% if hw_type == 'laptop' %}
+                                <img id="hw_type" src="{% static '/img/laptop.png' %}" alt="">
+                            {% endif %}
                             <div id="hw_type_popup" class="img_popup animate__animated animate__faster">
                                 <div id="desktop" class="img">
-                                    <img src="{{ url_for('static', path='/img/computer.png') }}" alt="">
+                                    <img src="{% static '/img/computer.png' %}" alt="">
                                 </div>
                                 <div id="laptop" class="img">
-                                    <img src="{{ url_for('static', path='/img/laptop.png') }}" alt="">
+                                    <img src="{% static '/img/laptop.png' %}" alt="">
                                 </div>
                             </div>
                             <p class="head">{{ pc.name }}</p>
@@ -24,7 +30,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="char">
-                            <img src="{{ url_for('static', path='/img/win.png') }}" alt="">
+                            <img src="{% static '/img/win.png' %}" alt="">
                             <p class="head">{{ pc.os.name }}</p>
                             <p>Architecture <input id="os_architecture" type="text" value="{{ pc.os.architecture }}">
                             </p>
@@ -35,7 +41,7 @@
                 <div class="row gx-md-5">
                     <div class="col-md-6">
                         <div class="char">
-                            <img src="{{ url_for('static', path='/img/pcComponents/075-cpu-1.png') }} " alt="">
+                            <img src="{% static '/img/pcComponents/075-cpu-1.png' %} " alt="">
                             <p class="head">{{ pc.cpu.name }}</p>
                             <p>Cores/Threads <span><input id="cpu_cores" type="text" value="{{ pc.cpu.cores }}">/<input
                                     id="cpu_threads" type="text" value="{{ pc.cpu.threads }}"></span></p>
@@ -46,14 +52,14 @@
                     </div>
                     <div class="col-md-6">
                         <div class="char">
-                            <img src="{{ url_for('static', path='/img/pcComponents/088-ram-memory.png') }} " alt="">
+                            <img src="{% static '/img/pcComponents/088-ram-memory.png' %} " alt="">
                             <p class="head" style="justify-content: space-between">RAM:
                                 <span>{{ pc.ram.size }} GB</span>
                             </p>
                             {% for bank in pc.ram.banks %}
                                 {% if bank.capacity %}
                                     <p>Bank {{ loop.index }} <input id="ram{{ loop.index0 }}_Capacity" type="text"
-                                                                    value="{{ bank.capacity|int }}"><span>GB</span></p>
+                                                                    value="{{ bank.capacity|floatformat }}"><span>GB</span></p>
                                 {% else %}
                                     <p class="hide">Bank {{ loop.index }} <input id="ram{{ loop.index0 }}_Capacity"
                                                                                  type="text" placeholder="Capacity"></p>
@@ -66,14 +72,14 @@
                 <div class="row gx-md-5">
                     <div class="col-md-6">
                         <div class="char">
-                            <img src="{{ url_for('static', path='/img/pcComponents/070-motherboard.png') }} " alt="">
+                            <img src="{% static '/img/pcComponents/070-motherboard.png' %} " alt="">
                             <p class="head">{{ pc.motherboard.manufacturer }} {{ pc.motherboard.product }}</p>
                             <p>Serial: <span>{{ pc.motherboard.serial }}</span></p>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="char">
-                            <img src="{{ url_for('static', path='/img/pcComponents/087-graphic-card.png') }} " alt="">
+                            <img src="{% static '/img/pcComponents/087-graphic-card.png' %} " alt="">
                             <p class="head">{{ pc.videocard.name }}</p>
                             <p>Resolution: <span>{{ pc.videocard.resX }}x{{ pc.videocard.resY }}</span></p>
                         </div>
@@ -100,8 +106,10 @@
                                              value="{% if pc.serial_number %}{{ pc.serial_number }}{% endif %}"></p>
                     <p>Form-factor: <select class="form-select form-select-sm gq" id="form_factor">
                         <option {% if pc.form_factor == 'ATX' %} selected{% endif %} value="ATX">ATX</option>
-                        <option {% if pc.form_factor == 'MicroATX' %} selected{% endif %} value="MicroATX">MicroATX</option>
-                        <option {% if pc.form_factor == 'Mini-ITX' %} selected{% endif %} value="Mini-ITX">Mini-ITX</option>
+                        <option {% if pc.form_factor == 'MicroATX' %} selected{% endif %} value="MicroATX">MicroATX
+                        </option>
+                        <option {% if pc.form_factor == 'Mini-ITX' %} selected{% endif %} value="Mini-ITX">Mini-ITX
+                        </option>
                     </select></p>
                     <div class="comment">
                         <label for="comment">Comment:</label>

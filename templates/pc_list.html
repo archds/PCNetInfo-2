@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
     <section class="pc_list">
         <div class="container">
@@ -35,7 +36,7 @@
                     <div class="dropdown">
                         <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="{{ filter.id }}"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ filter.name }}: <span class="selected">{{ filter.options[0].name }}</span>
+                            {{ filter.name }}: <span class="selected">{{ filter.options.0.name }}</span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="{{ filter.id }}">
                             {% for option in filter.options %}
@@ -53,7 +54,12 @@
                         <div class="card">
                             <a class="wrap" href="{{ pc.href }}">
                                 <div class="caption">
-                                    {{ hwTypeImg(pc.hardware_type) }}
+                                    {% if hw_type == 'desktop' %}
+                                        <img id="hw_type" src="{% static '/img/computer.png' %}" alt="">
+                                    {% endif %}
+                                    {% if hw_type == 'laptop' %}
+                                        <img id="hw_type" src="{% static '/img/laptop.png' %}" alt="">
+                                    {% endif %}
                                     <p>{{ pc.name }}</p>
                                 </div>
                             </a>
@@ -62,9 +68,9 @@
                                        value="{% if pc.label %}{{ pc.label }}{% endif %}" type="text"
                                        placeholder="Any label here">
                                 <p>CPU:
-                                    <span>{{ pc.cpu.clock  / 1000 }} GHz; {{ pc.cpu.cores }}/{{ pc.cpu.threads }}</span>
+                                    <span>{{ pc.cpu.clock }} GHz; {{ pc.cpu.cores }}/{{ pc.cpu.threads }}</span>
                                 </p>
-                                <p>Video: <span>{{ pc.videocard.name[:25] }}</span></p>
+                                <p>Video: <span>{{ pc.videocard.name|slice:':25' }}</span></p>
                                 <p>RAM: <span>{{ pc.ram.size }} GB</span></p>
                             </div>
                         </div>
