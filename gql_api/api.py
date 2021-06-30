@@ -10,10 +10,10 @@ from ariadne import (
     convert_kwargs_to_snake_case,
 )
 
-from hardware.views import pc_view, pc_list, pc_update, pc_view_controller
+from hardware.models import PC
 
 # GraphQL definition
-type_defs = load_schema_from_path('gql_server/schema.graphql')
+type_defs = load_schema_from_path('gql_api/schema.graphql')
 
 query = QueryType()
 mutation = MutationType()
@@ -47,8 +47,8 @@ def resolve_hello(*_):
 
 
 @query.field('PC')
-def resolve_pc(obj, info, name):
-    return pc_view(name)
+def resolve_pc(obj, info, pc_name):
+    return PC.objects.get(pc_name=pc_name).to_schema()
 
 
 @query.field('filters')
@@ -58,7 +58,7 @@ def resolve_filters(*_):
 
 @query.field('AllPC')
 def resolve_allpc(*_):
-    return pc_list()
+    return [pc.to_schema() for pc in PC.objects.order_by('label').all()]
 
 
 @subscription.source('PC')

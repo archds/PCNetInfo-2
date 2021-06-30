@@ -1,3 +1,7 @@
+from typing import Dict
+
+from hardware.models import PC
+
 def DictFormatter(obj):
     if obj is None:
         return {}
@@ -7,7 +11,7 @@ def DictFormatter(obj):
         return obj
 
 
-def powershell(data, addr):
+def parse_powershell(data: Dict, addr: str) -> dict:
     data['ip'] = addr
     data['Videocard'] = DictFormatter(data['Videocard'])
     data['Motherboard'] = DictFormatter(data['Motherboard'])

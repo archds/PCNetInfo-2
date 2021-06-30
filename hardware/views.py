@@ -1,16 +1,19 @@
+import json
 import re
 from datetime import datetime
 from pprint import pprint
+from typing import Union
 
 from django.db import IntegrityError
 from django.db.models import F, Q, Value, When, Case
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
 from django.http.response import HttpResponse, FileResponse
+from django.views.decorators.csrf import csrf_exempt
 
-from asgiref.sync import sync_to_async
 from hardware.models import PC
 from hardware.context import get_nav
+from hardware.parser import parse_powershell
 
 filters = [
     {
@@ -34,8 +37,7 @@ filters = [
 ]
 
 
-def add_pc(parsed_data: dict) -> str:
-    pc = PC(**parsed_data)
+def generate_add_pc_response(pc: PC, create: bool) -> str:
     schema_response = {
         'Name': pc.pc_name,
         'Domain': pc.domain,
@@ -63,16 +65,23 @@ def add_pc(parsed_data: dict) -> str:
             else:
                 response += f'{key}: {value}\n'
 
-    try:
-        pc.save()
+    if create:
         response += f'\n{now} - New database object created'
-        return response
-
-    except IntegrityError:
-        to_update = PC.objects.get(pc_name=parsed_data['pc_name'])
-        PC(id=to_update.pk, **parsed_data).save()
+    else:
         response += f'\n{now} - Existed database object updated!\n'
-        return response
+
+    return response
+
+
+@require_http_methods(['POST'])
+@csrf_exempt
+def add_pc(request) -> HttpResponse:
+    new_pc = parse_powershell(
+        data=json.loads(request.body),
+        addr=request.META.get('REMOTE_ADDR')
+    )
+    new_pc, created = PC.objects.update_or_create(**new_pc)
+    return HttpResponse(generate_add_pc_response(new_pc, created))
 
 
 def pc_list(request) -> HttpResponse:

@@ -16,13 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from ariadne.contrib.django.views import GraphQLView
 
 import hardware.views
+from gql_api.api import schema
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', hardware.views.pc_list, name='root'),
     path('files/<str:file_name>', hardware.views.get_file, name='file'),
     path('pc/', include('hardware.urls')),
-    path('monitor/', TemplateView.as_view(template_name='wip_cover.html'), name='monitor')
+    path('monitor/', TemplateView.as_view(template_name='wip_cover.html'), name='monitor'),
+    path('api/', GraphQLView.as_view(schema=schema), name='api')
 ]
