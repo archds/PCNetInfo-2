@@ -29,7 +29,7 @@
                 <div class="row justify-content-around">
                     <div class="col-auto menu-items">
                         {% for item in nav %}
-                            <a href="{{ item.href }}">{{ item.caption }}</a>
+                            <a href="{% url item.path_name %}">{{ item.caption }}</a>
                         {% endfor %}
                     </div>
                 </div>

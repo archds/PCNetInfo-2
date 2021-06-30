@@ -52,12 +52,12 @@
                     <div class="loader-wrapper">
                         <div class="loading" style="visibility: hidden"></div>
                         <div class="card">
-                            <a class="wrap" href="{{ pc.href }}">
+                            <a class="wrap" href="{% url 'pc_view' pc_name=pc.name %}">
                                 <div class="caption">
-                                    {% if hw_type == 'desktop' %}
+                                    {% if pc.hardware_type == 'desktop' %}
                                         <img id="hw_type" src="{% static '/img/computer.png' %}" alt="">
                                     {% endif %}
-                                    {% if hw_type == 'laptop' %}
+                                    {% if pc.hardware_type == 'laptop' %}
                                         <img id="hw_type" src="{% static '/img/laptop.png' %}" alt="">
                                     {% endif %}
                                     <p>{{ pc.name }}</p>

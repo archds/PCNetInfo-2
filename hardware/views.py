@@ -6,12 +6,34 @@ from django.db import IntegrityError
 from django.db.models import F, Q, Value, When, Case
 from django.shortcuts import render
 from django.views.decorators.http import require_http_methods
+from django.http.response import HttpResponse, FileResponse
 
 from asgiref.sync import sync_to_async
 from hardware.models import PC
+from hardware.context import get_nav
+
+filters = [
+    {
+        'name': 'Serial number',
+        'id': 'serialNumber',
+        'options': [
+            {
+                'name': 'Any',
+                'value': 'ANY',
+            },
+            {
+                'name': 'Specified',
+                'value': 'SPECIFIED',
+            },
+            {
+                'name': 'Not specified',
+                'value': 'NOT_SPECIFIED',
+            },
+        ]
+    }
+]
 
 
-@sync_to_async
 def add_pc(parsed_data: dict) -> str:
     pc = PC(**parsed_data)
     schema_response = {
@@ -53,23 +75,48 @@ def add_pc(parsed_data: dict) -> str:
         return response
 
 
-@sync_to_async
-def pc_main_context() -> list[dict]:
-    return [pc.to_schema() for pc in PC.objects.order_by('label').all()]
+def pc_list(request) -> HttpResponse:
+    context = {
+        'items': [pc.to_schema() for pc in PC.objects.order_by('label').all()],
+        'filters': filters,
+        'nav': get_nav()
+    }
+    return render(
+        request,
+        template_name='pc_list.html',
+        context=context
+    )
 
 
-@sync_to_async
-def pc_single_context(pc_name: str) -> dict:
-    return PC.objects.get(pc_name=pc_name).to_schema()
+def pc_view(request, pc_name: str) -> HttpResponse:
+    context = {
+        'pc': PC.objects.get(pc_name=pc_name).to_schema(),
+        'nav': get_nav()
+    }
+    return render(
+        request,
+        template_name='pc_view.html',
+        context=context
+    )
 
 
-@sync_to_async
+def monitor_list(request):
+    pass
+
+
+def monitor_view(request):
+    pass
+
+
+def get_file(request, file_name: str) -> FileResponse:
+    return FileResponse(f'filehost/{file_name}')
+
+
 def pc_update(pc_name: str, data: dict) -> bool:
     PC.objects.filter(pc_name=pc_name).update(**data)
     return True
 
 
-@sync_to_async
 def pc_view_controller(view: dict):
     pprint(view)
     sorters = {
@@ -112,14 +159,3 @@ def pc_view_controller(view: dict):
             query = query.filter(**{'label__contains': search['search_value']})
 
     return [pc.to_schema() for pc in query]
-
-
-@require_http_methods(['GET'])
-def test_mainpage(request):
-    context = {}
-    return render(request, 'pc_list.html', context=context)
-
-@require_http_methods(['GET'])
-def test_pc_page(request, pc_name):
-    context = {}
-    return render(request, 'pc_view.html', context=context)

@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
 
 import hardware.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', hardware.views.test_mainpage, name='root'),
-    path('pc/', include('hardware.urls'))
+    path('', hardware.views.pc_list, name='root'),
+    path('files/<str:file_name>', hardware.views.get_file, name='file'),
+    path('pc/', include('hardware.urls')),
+    path('monitor/', TemplateView.as_view(template_name='wip_cover.html'), name='monitor')
 ]

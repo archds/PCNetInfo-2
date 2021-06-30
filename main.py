@@ -14,8 +14,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dj_service.settings')
 django.setup()
 
 from gql_server.api import schema, filters
-from hardware.views import pc_single_context, pc_main_context, add_pc
-from view.context import get_context
+from hardware.views import pc_view, pc_list, add_pc
+from hardware.context import get_context
 
 app = FastAPI()
 app.mount('/static', StaticFiles(directory='static'), name='static')
@@ -25,7 +25,7 @@ templates = Jinja2Templates(directory='templates')
 
 @app.get("/")
 async def root(request: Request):
-    pcs = await pc_main_context()
+    pcs = await pc_list()
     for pc in pcs:
         pc['href'] = app.url_path_for('get_pc', pc_name=pc['name'])
     context = get_context(app, request, items=pcs, filters=filters)
@@ -37,7 +37,7 @@ async def root(request: Request):
 
 @app.get('/pc/{pc_name}')
 async def get_pc(pc_name: str, request: Request):
-    context = get_context(app, request, pc=await pc_single_context(pc_name))
+    context = get_context(app, request, pc=await pc_view(pc_name))
     return templates.TemplateResponse('pc_view.html', context)
 
 

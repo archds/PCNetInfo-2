@@ -10,7 +10,7 @@ from ariadne import (
     convert_kwargs_to_snake_case,
 )
 
-from hardware.views import pc_single_context, pc_main_context, pc_update, pc_view_controller
+from hardware.views import pc_view, pc_list, pc_update, pc_view_controller
 
 # GraphQL definition
 type_defs = load_schema_from_path('gql_server/schema.graphql')
@@ -48,7 +48,7 @@ def resolve_hello(*_):
 
 @query.field('PC')
 def resolve_pc(obj, info, name):
-    return pc_single_context(name)
+    return pc_view(name)
 
 
 @query.field('filters')
@@ -58,7 +58,7 @@ def resolve_filters(*_):
 
 @query.field('AllPC')
 def resolve_allpc(*_):
-    return pc_main_context()
+    return pc_list()
 
 
 @subscription.source('PC')
