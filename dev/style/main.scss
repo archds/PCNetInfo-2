@@ -495,7 +495,6 @@ section.not-found {
 footer {
   padding-top: 5px;
 
-
   .nav {
     width: 100%;
     display: flex;
@@ -515,6 +514,53 @@ footer {
 
       &:hover {
         color: $primary;
+      }
+    }
+  }
+
+  .tech-logos {
+    display: flex;
+    gap: 20px;
+    justify-content: end;
+
+    .tech-logo {
+      display: block;
+      margin-top: 5px;
+      height: max-content;
+
+      &::after {
+        display: none;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+      }
+
+      span {
+        display: block;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        height: 40px;
+      }
+
+      .django-logo {
+        background-image: url("../img/techs/django.png");
+        width: 90px;
+      }
+
+      .ariadne-logo {
+        background-image: url("../img/techs/ariadne.png");
+        width: 100px;
+      }
+      .webpack-logo {
+        background-image: url("../img/techs/webpack.png");
+        width: 110px;
+      }
+      .graphql-logo {
+        background-image: url("../img/techs/graphql.png");
+        width: 100px;
       }
     }
   }
