@@ -1,5 +1,6 @@
 import re
 
+from django.db.models import CASCADE
 from django.db.models import (
     CharField,
     GenericIPAddressField,
@@ -10,7 +11,6 @@ from django.db.models import (
     ForeignKey,
 )
 from django.db.models import Model
-from django.db.models import CASCADE
 
 
 class Monitor(Model):
@@ -118,7 +118,7 @@ class PC(Model):
             },
             'cpu': {
                 'name': self.cpu_name,
-                'clock': self.cpu_clock,
+                'clock': self.cpu_clock / 1000,
                 'cores': self.cpu_cores,
                 'threads': self.cpu_threads,
                 'socket': self.cpu_socket,

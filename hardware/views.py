@@ -1,18 +1,38 @@
-import re
+import json
 from datetime import datetime
-from pprint import pprint
 
-from django.db import IntegrityError
-from django.db.models import F, Q, Value, When, Case
+from django.http.response import HttpResponse, FileResponse
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 
-from asgiref.sync import sync_to_async
+from hardware.context import get_nav
 from hardware.models import PC
+from hardware.parser import parse_powershell
+
+filters = [
+    {
+        'name': 'Serial number',
+        'id': 'serialNumber',
+        'options': [
+            {
+                'name': 'Any',
+                'value': 'ANY',
+            },
+            {
+                'name': 'Specified',
+                'value': 'SPECIFIED',
+            },
+            {
+                'name': 'Not specified',
+                'value': 'NOT_SPECIFIED',
+            },
+        ]
+    }
+]
 
 
-@sync_to_async
-def add_pc(parsed_data: dict) -> str:
-    pc = PC(**parsed_data)
+def generate_add_pc_response(pc: PC, create: bool) -> str:
     schema_response = {
         'Name': pc.pc_name,
         'Domain': pc.domain,
@@ -40,76 +60,76 @@ def add_pc(parsed_data: dict) -> str:
             else:
                 response += f'{key}: {value}\n'
 
-    try:
-        pc.save()
+    if create:
         response += f'\n{now} - New database object created'
-        return response
-
-    except IntegrityError:
-        to_update = PC.objects.get(pc_name=parsed_data['pc_name'])
-        PC(id=to_update.pk, **parsed_data).save()
+    else:
         response += f'\n{now} - Existed database object updated!\n'
-        return response
+
+    return response
 
 
-@sync_to_async
-def pc_main_context() -> list[dict]:
-    return [pc.to_schema() for pc in PC.objects.order_by('label').all()]
+@require_http_methods(['POST'])
+@csrf_exempt
+def add_pc(request) -> HttpResponse:
+    new_pc = parse_powershell(
+        data=json.loads(request.body),
+        addr=request.META.get('REMOTE_ADDR')
+    )
+    new_pc, created = PC.objects.update_or_create(**new_pc)
+    return HttpResponse(generate_add_pc_response(new_pc, created))
 
 
-@sync_to_async
-def pc_single_context(pc_name: str) -> dict:
-    return PC.objects.get(pc_name=pc_name).to_schema()
-
-
-@sync_to_async
-def pc_update(pc_name: str, data: dict) -> bool:
-    PC.objects.filter(pc_name=pc_name).update(**data)
-    return True
-
-
-@sync_to_async
-def pc_view_controller(view: dict):
-    pprint(view)
-    sorters = {
-        'label': 'label',
-        'cpu': F('cpu_threads') * F('cpu_clock'),
-        'form': 'form_factor_enum',
+def pc_list(request) -> HttpResponse:
+    context = {
+        'items': [pc.to_schema() for pc in PC.objects.order_by('label').all()],
+        'filters': filters,
+        'nav': get_nav()
     }
-    filters = {
-        'serial_number': {
-            'SPECIFIED': False,
-            'NOT_SPECIFIED': True,
-        }
+    return render(
+        request,
+        template_name='pc_list.html',
+        context=context
+    )
+
+
+def pc_view(request, pc_name: str) -> HttpResponse:
+    context = {
+        'pc': PC.objects.get(pc_name=pc_name).to_schema(),
+        'nav': get_nav()
     }
-
-    query = PC.objects
-
-    if view['sort'] == 'form':
-        query = query.annotate(
-            form_factor_enum=Case(
-                When(form_factor='ATX', then=0),
-                When(form_factor='MicroATX', then=1),
-                When(form_factor='Mini-ITX', then=2),
-            )
-        )
-
-    query = query.order_by(sorters[view['sort']])
-    for filter_type, filter_value in view['filter'].items():
-        if filter_value in filters[filter_type]:
-            filter_value = filters[filter_type].get(filter_value)
-            if isinstance(filter_value, bool):
-                query = query.filter(**{f'{filter_type}__isnull': filter_value})
-
-    if view['sort'] == 'cpu' or view['sort'] == 'form':
-        query = query.reverse()
+    return render(
+        request,
+        template_name='pc_view.html',
+        context=context
+    )
 
 
-    if search := view.get('search'):
-        if search_type := search.get('search_type'):
-            query = query.filter(**{f'{search_type}__contains': search["search_value"]})
-        else:
-            query = query.filter(**{'label__contains': search['search_value']})
+def monitor_list(request):
+    context = {
+        'monitors': None,
+        'nav': get_nav(),
+    }
+    return render(
+        request,
+        template_name='wip_cover.html',
+        context=context
+    )
 
-    return [pc.to_schema() for pc in query]
 
+def monitor_view(request):
+    pass
+
+
+def get_file(request, file_name: str) -> FileResponse:
+    return FileResponse(f'filehost/{file_name}')
+
+
+def not_found(request, exception) -> HttpResponse:
+    context = {
+        'nav': get_nav()
+    }
+    return render(
+        request,
+        template_name='wip_cover.html',
+        context=context,
+    )

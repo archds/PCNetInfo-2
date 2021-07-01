@@ -54,6 +54,6 @@ $Body | Add-Member -NotePropertyName Videocard -NotePropertyValue $Videocard
 $Body | Add-Member -NotePropertyName Memory -NotePropertyValue $Memory
 $ip = $args[0]
 $port = $args[1]
-$Uri = "http://${ip}:${port}/pc"
+$Uri = "http://${ip}:${port}/pc/"
 $JsonBody = $Body | ConvertTo-Json
 Invoke-RestMethod -ContentType "application/json" -Uri $Uri -Method Post -Body $JsonBody
