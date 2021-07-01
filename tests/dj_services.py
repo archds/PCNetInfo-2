@@ -1,6 +1,7 @@
-import os
 import json
+import os
 import unittest
+
 import django
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dj_service.settings')

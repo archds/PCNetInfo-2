@@ -1,6 +1,5 @@
 from typing import Dict
 
-from hardware.models import PC
 
 def DictFormatter(obj):
     if obj is None:

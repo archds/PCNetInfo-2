@@ -1,4 +1,5 @@
 from django.urls import path
+
 from hardware.views import pc_view, add_pc
 
 urlpatterns = [

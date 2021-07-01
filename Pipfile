@@ -4,22 +4,14 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-fastapi = "*"
 aiofiles = "*"
-peewee = "*"
-jinja2 = "*"
 requests = "*"
-beautifulsoup4 = "*"
-nested-lookup = "*"
 ariadne = "*"
 websockets = "*"
 django = "*"
+uvicorn = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.9"
-
-[packages.uvicorn]
-extras = [ "standard",]
-version = "*"

@@ -1,18 +1,13 @@
 import json
-import re
 from datetime import datetime
-from pprint import pprint
-from typing import Union
 
-from django.db import IntegrityError
-from django.db.models import F, Q, Value, When, Case
-from django.shortcuts import render
-from django.views.decorators.http import require_http_methods
 from django.http.response import HttpResponse, FileResponse
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 
-from hardware.models import PC
 from hardware.context import get_nav
+from hardware.models import PC
 from hardware.parser import parse_powershell
 
 filters = [
@@ -110,7 +105,15 @@ def pc_view(request, pc_name: str) -> HttpResponse:
 
 
 def monitor_list(request):
-    pass
+    context = {
+        'monitors': None,
+        'nav': get_nav(),
+    }
+    return render(
+        request,
+        template_name='wip_cover.html',
+        context=context
+    )
 
 
 def monitor_view(request):
@@ -121,50 +124,12 @@ def get_file(request, file_name: str) -> FileResponse:
     return FileResponse(f'filehost/{file_name}')
 
 
-def pc_update(pc_name: str, data: dict) -> bool:
-    PC.objects.filter(pc_name=pc_name).update(**data)
-    return True
-
-
-def pc_view_controller(view: dict):
-    pprint(view)
-    sorters = {
-        'label': 'label',
-        'cpu': F('cpu_threads') * F('cpu_clock'),
-        'form': 'form_factor_enum',
+def not_found(request, exception) -> HttpResponse:
+    context = {
+        'nav': get_nav()
     }
-    filters = {
-        'serial_number': {
-            'SPECIFIED': False,
-            'NOT_SPECIFIED': True,
-        }
-    }
-
-    query = PC.objects
-
-    if view['sort'] == 'form':
-        query = query.annotate(
-            form_factor_enum=Case(
-                When(form_factor='ATX', then=0),
-                When(form_factor='MicroATX', then=1),
-                When(form_factor='Mini-ITX', then=2),
-            )
-        )
-
-    query = query.order_by(sorters[view['sort']])
-    for filter_type, filter_value in view['filter'].items():
-        if filter_value in filters[filter_type]:
-            filter_value = filters[filter_type].get(filter_value)
-            if isinstance(filter_value, bool):
-                query = query.filter(**{f'{filter_type}__isnull': filter_value})
-
-    if view['sort'] == 'cpu' or view['sort'] == 'form':
-        query = query.reverse()
-
-    if search := view.get('search'):
-        if search_type := search.get('search_type'):
-            query = query.filter(**{f'{search_type}__contains': search["search_value"]})
-        else:
-            query = query.filter(**{'label__contains': search['search_value']})
-
-    return [pc.to_schema() for pc in query]
+    return render(
+        request,
+        template_name='wip_cover.html',
+        context=context,
+    )

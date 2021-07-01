@@ -7,7 +7,6 @@ import {ViewController} from "./viewController";
 // Style
 import '@fortawesome/fontawesome-free/js/all.min'
 import '../style/main.scss'
-import {gqSelectHandler, pcListRender} from "./func";
 
 function notification(options = {}) {
     const standart = {
@@ -89,7 +88,7 @@ function main() {
     if (window.location.href === window.location.origin + '/') {
         funcs.pcLabelHandlerMain()
         const view = new ViewController('.sort-control', '#filter-content', '#searchInput')
-        subOn(query, view.pcLiveUpdate)
+        // subOn(query, view.pcLiveUpdate)
     }
 
 
