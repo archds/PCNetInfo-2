@@ -56,7 +56,11 @@ type PC {
     ip: String
     comment: String
     label: String
+    user: String
+    location: String
+    updated: String
     form_factor: String
+    hardware_type: String!
     os: OS
     cpu: CPU
     ram: RAM

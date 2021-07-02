@@ -1,4 +1,4 @@
-import gql_api.api as gqt
+import gql_api.type_defs as gqt
 from hardware.models import PC
 
 

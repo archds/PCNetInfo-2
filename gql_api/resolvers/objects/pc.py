@@ -1,10 +1,5 @@
-import gql_api.api as gqt
+import gql_api.type_defs as gqt
 from hardware.models import PC
-
-
-@gqt.pc.field('id')
-def resolve_pc_id(pc_obj: PC, info):
-    return pc_obj.id
 
 
 @gqt.pc.field('name')

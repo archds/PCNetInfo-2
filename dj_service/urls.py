@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 import hardware.views
-from gql_api.api import schema
+from gql_api.schema import schema
 
 urlpatterns = [
     path('', hardware.views.pc_list, name='root'),

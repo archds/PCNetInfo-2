@@ -1,7 +1,10 @@
-import gql_api.api as gqt
+import gql_api.type_defs as gqt
 from hardware.models import PC
 
 
+@gqt.query.field('hello')
+def resolve_hello(*_):
+    return 'Hello PCNetInfo!'
 
 
 @gqt.query.field('AllPC')

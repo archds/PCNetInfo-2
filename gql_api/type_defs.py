@@ -25,12 +25,8 @@ resolvers = [
     filter := ObjectType('Filter'),
 ]
 
-schema = make_executable_schema(type_defs, resolvers)
 
 
-@query.field('hello')
-def resolve_hello(*_):
-    return 'Hello, PCNetInfo!'
 
 
 # filters = [
