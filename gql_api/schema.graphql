@@ -60,7 +60,6 @@ type PC {
     location: String
     updated: String
     form_factor: String
-    hardware_type: String!
     os: OS
     cpu: CPU
     ram: RAM
@@ -86,7 +85,12 @@ type CPU {
 
 type RAM {
     size: Int
-    banks: [String]
+    banks: [RAMBank]!
+}
+
+type RAMBank {
+    speed: Int
+    capacity: Int
 }
 
 type Motherboard {

@@ -1,14 +1,10 @@
 from ariadne import (
     QueryType,
-    make_executable_schema,
     load_schema_from_path,
     SubscriptionType,
     MutationType,
-    convert_kwargs_to_snake_case, ObjectType,
+    ObjectType,
 )
-from django.db.models import F, Case, When
-
-from hardware.models import PC
 
 # GraphQL definition
 type_defs = load_schema_from_path('gql_api/schema.graphql')

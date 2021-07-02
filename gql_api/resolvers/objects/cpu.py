@@ -20,7 +20,7 @@ def rename_cpu(name: str):
 
 @gqt.cpu.field('name')
 def resolve_cpu_name(pc_obj: PC, info):
-    return rename_cpu(pc_obj.cpu_name)
+    return rename_cpu(pc_obj.cpu_name).strip()
 
 
 @gqt.cpu.field('clock')

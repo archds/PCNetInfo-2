@@ -17,7 +17,7 @@ def resolve_pc_ip(pc_obj: PC, info):
     return pc_obj.ip
 
 
-@gqt.pc.field('hardware_type')
+@gqt.pc.field('type')
 def resolve_pc_hardware_type(pc_obj: PC, info):
     return pc_obj.hardware_type
 
@@ -80,3 +80,8 @@ def resolve_pc_ram(pc_obj: PC, info):
 @gqt.pc.field('videocard')
 def resolve_pc_videocard(pc_obj: PC, info):
     return pc_obj
+
+
+@gqt.pc.field('form_factor')
+def resolve_pc_form_factor(pc_obj: PC, info):
+    return pc_obj.form_factor

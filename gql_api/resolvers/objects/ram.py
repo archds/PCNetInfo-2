@@ -10,21 +10,29 @@ def ram_size_resolver(pc_obj: PC, info):
 @gqt.ram.field('banks')
 def ram_banks_resolver(pc_obj: PC, info):
     bytes_in_gb = 1073741824
-    return [
+    banks = [
         {
+            '__typename': 'RAMBank',
             'speed': pc_obj.ram0_Configuredclockspeed,
             'capacity': pc_obj.ram0_Capacity and pc_obj.ram0_Capacity / bytes_in_gb
         },
         {
+            '__typename': 'RAMBank',
             'speed': pc_obj.ram1_Configuredclockspeed,
             'capacity': pc_obj.ram1_Capacity and pc_obj.ram1_Capacity / bytes_in_gb
         },
         {
+            '__typename': 'RAMBank',
             'speed': pc_obj.ram2_Configuredclockspeed,
             'capacity': pc_obj.ram2_Capacity and pc_obj.ram2_Capacity / bytes_in_gb
         },
         {
+            '__typename': 'RAMBank',
             'speed': pc_obj.ram3_Configuredclockspeed,
             'capacity': pc_obj.ram3_Capacity and pc_obj.ram3_Capacity / bytes_in_gb
         },
+    ]
+    return [
+        bank for bank in banks
+        if bank['speed'] or bank['capacity']
     ]
