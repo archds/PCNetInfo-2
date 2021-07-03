@@ -84,9 +84,14 @@ function main() {
     }`
     const client = new GraphQLClient('/api/')
     if (window.location.pathname.startsWith('/pc/')) {
-        funcs.gqSelectHandler()
+        console.log(true)
+        // funcs.gqSelectHandler()
         // subOn(query, pcNotify)
         const pcController = new PcViewController(client)
+        pcController.inputsController()
+        pcController.deleteController()
+        pcController.ramController()
+        pcController.typeController()
     }
     if (window.location.href === window.location.origin + '/') {
         const view = new ViewController(

@@ -159,10 +159,6 @@ export class PcViewController {
         this.hwTypePopup = document.querySelector('#hw_type_popup')
         this.hwTypeButton = this.hwTypeImg.parentElement.querySelector('.dots')
         this.client = gqlClient
-        this.inputsController()
-        this.deleteController()
-        this.ramController()
-        this.typeController()
     }
 
     deleteController() {

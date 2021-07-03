@@ -13,7 +13,7 @@ export class AddElementDropdown extends React.Component {
 
     handleInputChange(event) {
         let value = event.target.type === 'checkbox' ? event.target.checked : event.target.value
-        value = event.target.type === 'number' ? parseInt(value) : value
+        value = event.target.type === 'number' ? parseInt(value) * 1024 * 1024 : value
         const name = event.target.name
 
         this.setState({

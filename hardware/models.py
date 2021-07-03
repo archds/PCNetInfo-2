@@ -1,6 +1,6 @@
 import re
 
-from django.db.models import CASCADE
+from django.db.models import CASCADE, TextChoices
 from django.db.models import (
     CharField,
     GenericIPAddressField,
@@ -20,7 +20,11 @@ class Monitor(Model):
 
 
 class PC(Model):
-    hardware_type = CharField(max_length=50)
+    class HwType(TextChoices):
+        DESKTOP = 'desktop'
+        LAPTOP = 'laptop'
+
+    hardware_type = CharField(choices=HwType.choices, default=HwType.DESKTOP, max_length=50)
     os_name = CharField(max_length=50)
     os_version = CharField(max_length=50)
     os_architecture = CharField(max_length=50)
