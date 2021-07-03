@@ -40,7 +40,7 @@
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="{{ filter.id }}">
                             {% for option in filter.options %}
-                                <li><a class="dropdown-item {% if loop.index == 1 %}active{% endif %}"
+                                <li><a class="dropdown-item {% if forloop.counter == 1 %}active{% endif %}"
                                        href="#" filter="{{ option.value }}">{{ option.name }}</a></li>
                             {% endfor %}
                         </ul>

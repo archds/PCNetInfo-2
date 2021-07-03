@@ -2,12 +2,13 @@
 import * as funcs from './func'
 import {subOn} from "./api";
 import {Toast} from "bootstrap";
-import {ViewController} from "./viewController";
+import {LabelController, ViewController} from "./viewController";
 
 
 // Style
 import '@fortawesome/fontawesome-free/js/all.min'
 import '../style/main.scss'
+import {GraphQLClient} from "graphql-request";
 
 function notification(options = {}) {
     const standart = {
@@ -87,8 +88,17 @@ function main() {
         subOn(query, pcNotify)
     }
     if (window.location.href === window.location.origin + '/') {
-        funcs.pcLabelHandlerMain()
-        const view = new ViewController('.sort-control', '#filter-content', '#searchInput')
+        const client = new GraphQLClient('/api/')
+        const view = new ViewController(
+            '.sort-control',
+            '#filter-content',
+            '#searchInput',
+            client
+        )
+        const labelController = new LabelController(
+            '.pc_label',
+            client
+        )
         // subOn(query, view.pcLiveUpdate)
     }
 

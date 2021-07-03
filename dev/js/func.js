@@ -1,29 +1,5 @@
 import {pcCard} from "./card";
 
-export function pcLabelHandlerMain() {
-    const labels = document.querySelectorAll('.pc_label')
-    labels.forEach((label) => {
-        label.addEventListener('change', (event) => {
-            let input = event.target
-            let loader = event.target.parentElement.parentElement.parentElement.querySelector('.loading')
-            let card = event.target.parentElement.parentElement.parentElement.querySelector('.card')
-            let query = `mutation {
-            updateLabel(value:"${input.value}", pcName:"${input.id}")
-            }`
-            loader.style.visibility = 'visible'
-            card.style.opacity = '0.6'
-            makeQuery(query).then(response => {
-                if (response.data.updateLabel) {
-                    setTimeout(() => {
-                        loader.style.visibility = 'hidden'
-                        card.style.opacity = '1'
-                    }, 1500)
-                }
-            })
-        })
-    })
-}
-
 export function inputsHandler() {
     const inputs = document.querySelector('.pc_view').querySelectorAll('input')
     const textareas = document.querySelector('.data').querySelectorAll('textarea')

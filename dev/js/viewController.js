@@ -6,13 +6,13 @@ import {pcCard} from "./card";
 // import GET_ITEMS from './graphql/queries/getView.graphql'
 
 export class ViewController {
-    client = new GraphQLClient('/api')
     pcListWrapper = document.querySelector('#pc_list')
 
     // TODO: make controller for notification in this class
     // TODO: make func.js in this module
 
-    constructor(sortSelector, filterSelector, searchSelector) {
+    constructor(sortSelector, filterSelector, searchSelector, gqlClient) {
+        this.client = gqlClient
         this.sorter = {
             element: document.querySelector(sortSelector).querySelector('ul'),
             triggers: document.querySelector(sortSelector).querySelector('ul').querySelectorAll('a')
@@ -106,5 +106,44 @@ export class ViewController {
             newPC.querySelector('.card').style.opacity = '1'
         }, 1500)
         this.pcListWrapper.insertBefore(newPC, this.pcListWrapper.firstChild)
+    }
+}
+
+export class LabelController {
+    constructor(selector, gqlClient) {
+        this.labels = document.querySelectorAll(selector)
+        this.client = gqlClient
+        this.labels.forEach(label => {
+            label.addEventListener('change', () => {
+                const query = gql`mutation updateField($field: String, $value: String, $pcName: String){
+                    updateField(
+                        field: $field
+                        value: $value
+                        pcName: $pcName
+                    )
+                }`
+                this.client.request(
+                    query,
+                    {
+                        field: 'label',
+                        value: label.value,
+                        pcName: label.id
+                    }
+                ).then(data => {
+                    const loader = label.parentElement.parentElement.parentElement.querySelector('.loading')
+                    const card = label.parentElement.parentElement.parentElement.querySelector('.card')
+                    loader.style.visibility = 'visible'
+                    card.style.opacity = '0.6'
+                    if (data.updateField) {
+                        setTimeout(() => {
+                            loader.style.visibility = 'hidden'
+                            card.style.opacity = '1'
+                        }, 1500)
+                    } else {
+                        console.log(data)
+                    }
+                })
+            })
+        })
     }
 }

@@ -135,3 +135,4 @@ def not_found(request, exception) -> HttpResponse:
         template_name='wip_cover.html',
         context=context,
     )
+
