@@ -1,4 +1,4 @@
-import {pcCard} from "./card";
+import {pcCard} from "./components/card";
 
 
 export function pcListRender(pcCards) {

@@ -100,7 +100,7 @@ class PC(Model):
             },
             'cpu': {
                 'name': self.formatted_cpu,
-                'clock': round(self.cpu_clock / 1000, 1),
+                'clock': self.cpu_clock and round(self.cpu_clock / 1000, 1),
                 'cores': self.cpu_cores,
                 'threads': self.cpu_threads,
                 'socket': self.cpu_socket,

@@ -1,4 +1,7 @@
+from pprint import pprint
+
 from ariadne import convert_kwargs_to_snake_case
+from django.db import IntegrityError
 from django.db.models import F, When, Case
 
 import gql_api.type_defs as gqt
@@ -63,3 +66,10 @@ def view_resolver(obj, info, view):
             query = query.filter(**{'label__contains': search['search_value']})
 
     return [pc for pc in query]
+
+
+@gqt.mutation.field('createPC')
+@convert_kwargs_to_snake_case
+def create_pc_resolver(obj, info, input_data) -> bool:
+    PC.objects.create(**input_data)
+    return True

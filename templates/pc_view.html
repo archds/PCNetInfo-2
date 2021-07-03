@@ -70,6 +70,7 @@
                     </div>
                 </div>
                 <div class="row gx-md-5">
+                    {% if pc.motherboard.name %}
                     <div class="col-md-6">
                         <div class="char">
                             <img src="{% static '/img/pcComponents/070-motherboard.png' %} " alt="">
@@ -77,6 +78,8 @@
                             <p>Serial: <span>{{ pc.motherboard.serial }}</span></p>
                         </div>
                     </div>
+                    {% endif %}
+                    {% if pc.videocard.name %}
                     <div class="col-md-6">
                         <div class="char">
                             <img src="{% static '/img/pcComponents/087-graphic-card.png' %} " alt="">
@@ -84,6 +87,7 @@
                             <p>Resolution: <span>{{ pc.videocard.resX }}x{{ pc.videocard.resY }}</span></p>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-md-7">

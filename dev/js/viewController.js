@@ -1,6 +1,6 @@
 import {pcListRender} from "./func";
 import {gql, GraphQLClient} from 'graphql-request'
-import {pcCard} from "./card";
+import {pcCard} from "./components/card";
 
 
 // import GET_ITEMS from './graphql/queries/getView.graphql'
@@ -9,7 +9,6 @@ export class ViewController {
     pcListWrapper = document.querySelector('#pc_list')
 
     // TODO: make controller for notification in this class
-    // TODO: make func.js in this module
 
     constructor(sortSelector, filterSelector, searchSelector, gqlClient) {
         this.client = gqlClient

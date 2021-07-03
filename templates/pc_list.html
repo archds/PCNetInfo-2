@@ -3,33 +3,42 @@
 {% block content %}
     <section class="pc_list">
         <div class="container">
-            <div class="view-controller d-flex gap-4">
-                <div class="buttons d-flex gap-4">
-                    <div class="dropdown sort-control">
-                        <button class="btn btn-outline-primary dropdown-toggle" type="button" id="sorter"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-sort-amount-down"></i> Sorting
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="sorter">
-                            <li><a sort="label" class="dropdown-item active" href="">Label</a></li>
-                            <li><a sort="cpu" class="dropdown-item" href="">CPU Performance</a></li>
-                            <li><a sort="form" class="dropdown-item" href="">Form-factor</a></li>
-                        </ul>
-                    </div>
-                    <div class="dropdown filter-control">
-                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#filter-content" aria-expanded="false" aria-controls="filter-content">
-                            <i class="fas fa-filter"></i> Filter
-                        </button>
-                    </div>
+            <div class="d-flex mb-3 justify-content-between">
+                <div class="view-controller d-flex gap-4">
+                    <div class="buttons d-flex gap-4">
+                        <div class="dropdown sort-control">
+                            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="sorter"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-sort-amount-down"></i> Sorting
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="sorter">
+                                <li><a sort="label" class="dropdown-item active" href="">Label</a></li>
+                                <li><a sort="cpu" class="dropdown-item" href="">CPU Performance</a></li>
+                                <li><a sort="form" class="dropdown-item" href="">Form-factor</a></li>
+                            </ul>
+                        </div>
+                        <div class="dropdown filter-control">
+                            <button class="btn btn-outline-primary dropdown-toggle" type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#filter-content" aria-expanded="false"
+                                    aria-controls="filter-content">
+                                <i class="fas fa-filter"></i> Filter
+                            </button>
+                        </div>
 
-                </div>
-                <div id="search">
-                    <div class="search-input">
-                        <i class="fas fa-search"></i>
-                        <input search="label" id="searchInput" type="text">
+                    </div>
+                    <div id="search">
+                        <div class="search-input">
+                            <i class="fas fa-search"></i>
+                            <input search="label" id="searchInput" type="text">
+                        </div>
                     </div>
                 </div>
+                <button id="addElement" class="btn btn-primary text-white dropdown-toggle" data-bs-toggle="dropdown"
+                        aria-expanded="false" data-bs-auto-close="outside">
+                    Add
+                </button>
+                <div id="addElementDropdown" class="dropdown-menu" aria-labelledby="addElement" ></div>
             </div>
             <div class="collapse" id="filter-content">
                 {% for filter in filters %}

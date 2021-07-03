@@ -21,6 +21,15 @@ input FilterInput {
     serialNumber: SerialNumberFilter!
 }
 
+input CreatePCInput {
+    pcName: String!
+    osName: String!
+    cpuName: String!
+    ram: Int!
+    motherboardName: String
+    videocardName: String
+}
+
 enum SerialNumberFilter {
     ANY
     SPECIFIED
@@ -45,6 +54,7 @@ type Mutation {
     updateField(field: String, value: String, pcName: String): Boolean!
     updateLabel(value: String, pcName: String): Boolean!
     deletePC(pcName: String): Boolean!
+    createPC(input_data: CreatePCInput): Boolean!
 }
 
 type PC {

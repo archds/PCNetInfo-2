@@ -212,7 +212,7 @@ section.pc_list {
   }
 
   .view-controller {
-    margin-bottom: 20px;
+    //margin-bottom: 20px;
 
     #search {
       .search-input {
@@ -704,5 +704,16 @@ hr {
         display: none;
       }
     }
+  }
+}
+
+
+// Add element
+#addElementDropdown {
+  padding: 15px;
+
+  form {
+    display: flex;
+    flex-flow: column;
   }
 }

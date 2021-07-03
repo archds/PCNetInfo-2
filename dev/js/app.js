@@ -2,7 +2,10 @@
 import * as funcs from './func'
 import {subOn} from "./api";
 import {Toast} from "bootstrap";
-import {LabelController, PcViewController, ViewController} from "./viewController";
+import {AddElementController, LabelController, PcViewController, ViewController} from "./viewController";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import {AddElementDropdown} from "./reactApp";
 
 
 // Style
@@ -96,6 +99,32 @@ function main() {
             '.pc_label',
             client
         )
+        const dropdownOptions = {
+            header: 'Add PC',
+            inputs: [
+                {
+                    id: 'pcName',
+                    label: 'PC Name',
+                    type: 'text'
+                },
+                {
+                    id: 'osName',
+                    label: 'OS Name',
+                    type: 'text'
+                },
+                {
+                    id: 'cpuName',
+                    label: 'CPU Name',
+                    type: 'text'
+                },
+                {
+                    id: 'ram',
+                    label: 'ram',
+                    type: 'number'
+                }
+            ]
+        }
+        ReactDOM.render(<AddElementDropdown {...dropdownOptions} />, document.getElementById('addElementDropdown'))
         // subOn(query, view.pcLiveUpdate)
     }
 

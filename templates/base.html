@@ -24,7 +24,7 @@
     {% block header %}
         <div class="container-fluid">
             <div class="container">
-                <div class="row justify-content-around">
+                <div class="row justify-content-center">
                     <div class="col-auto menu-items">
                         {% for item in nav %}
                             <a href="{% url item.path_name %}">{{ item.caption }}</a>
