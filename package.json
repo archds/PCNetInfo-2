@@ -37,6 +37,7 @@
     "webpack-cli": "^4.7.0"
   },
   "dependencies": {
+    "@babel/preset-react": "^7.14.5",
     "@fortawesome/fontawesome-free": "^5.15.3",
     "@popperjs/core": "^2.9.2",
     "@shopify/draggable": "^1.0.0-beta.8",
@@ -45,6 +46,8 @@
     "bootstrap": "^5.0.1",
     "graphql": "^15.5.1",
     "graphql-request": "^3.4.0",
-    "graphql-subscriptions-client": "^0.16.0"
+    "graphql-subscriptions-client": "^0.16.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }

@@ -1,3 +1,5 @@
+import re
+
 from django.db.models import CASCADE
 from django.db.models import (
     CharField,
@@ -55,4 +57,94 @@ class PC(Model):
     label = CharField(max_length=100)
     form_factor = CharField(max_length=20, default='ATX')
     monitor = ForeignKey(Monitor, on_delete=CASCADE, null=True)
+
+    @property
+    def formatted_cpu(self) -> str:
+        cpu_name = self.cpu_name
+        special_ignored = ['(R)', '(TM)', 'CPU ', '@', '(tm)']
+        for char in special_ignored:
+            cpu_name = cpu_name.replace(char, '')
+        match_clock = re.search(r'\d\.\d{1,2}\wHz', cpu_name)
+        match_apu = cpu_name.find('APU')
+        if match_apu:
+            cpu_name = cpu_name[:match_apu]
+        if match_clock:
+            idx = match_clock.span()[0]
+            cpu_name = cpu_name[:idx].strip()
+        return cpu_name
+
+    @property
+    def context(self) -> dict:
+        bytes_in_gb = 1073741824
+        kb_in_gb = 1048576
+
+        response = {
+            'id': self.pk,
+            'name': self.pc_name,
+            'domain': self.domain,
+            'ip': self.ip,
+            'type': self.hardware_type,
+            'username': self.username,
+            'timezone': self.timezone.rstrip(' , -'),
+            'user': self.user,
+            'serial_number': self.serial_number,
+            'location': self.location,
+            'updated': self.updated and self.updated.strftime('%d.%m.%Y'),
+            'comment': self.comment,
+            'label': self.label,
+            'form_factor': self.form_factor,
+            'os': {
+                'name': self.os_name,
+                'version': self.os_version,
+                'architecture': self.os_architecture.replace('?', '')
+            },
+            'cpu': {
+                'name': self.formatted_cpu,
+                'clock': round(self.cpu_clock / 1000, 1),
+                'cores': self.cpu_cores,
+                'threads': self.cpu_threads,
+                'socket': self.cpu_socket,
+            },
+            'motherboard': {
+                'manufacturer': self.motherboard_manufacturer,
+                'product': self.motherboard_product,
+                'serial': self.motherboard_serial,
+            },
+            'ram': {
+                'size': self.ram and int(self.ram / kb_in_gb),
+            },
+            'videocard': {
+                'name': self.videocard,
+                'resX': self.resX,
+                'resY': self.resY,
+            },
+        }
+
+        if 'bit' not in response['os']['architecture']:
+            response['os']['architecture'] = response['os']['architecture'] + 'bit'
+
+        ram_banks = [
+            {
+                'speed': self.ram0_Configuredclockspeed,
+                'capacity': self.ram0_Capacity and self.ram0_Capacity / bytes_in_gb
+            },
+            {
+                'speed': self.ram1_Configuredclockspeed,
+                'capacity': self.ram1_Capacity and self.ram1_Capacity / bytes_in_gb
+            },
+            {
+                'speed': self.ram2_Configuredclockspeed,
+                'capacity': self.ram2_Capacity and self.ram2_Capacity / bytes_in_gb
+            },
+            {
+                'speed': self.ram3_Configuredclockspeed,
+                'capacity': self.ram3_Capacity and self.ram3_Capacity / bytes_in_gb
+            },
+        ]
+        response['ram']['banks'] = [
+            bank for bank in ram_banks
+            if bank['speed'] or bank['capacity']
+        ]
+
+        return response
 

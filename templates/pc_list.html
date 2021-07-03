@@ -54,10 +54,10 @@
                         <div class="card">
                             <a class="wrap" href="{% url 'pc_view' pc_name=pc.name %}">
                                 <div class="caption">
-                                    {% if pc.hardware_type == 'desktop' %}
+                                    {% if pc.type == 'desktop' %}
                                         <img id="hw_type" src="{% static '/img/computer.png' %}" alt="">
                                     {% endif %}
-                                    {% if pc.hardware_type == 'laptop' %}
+                                    {% if pc.type == 'laptop' %}
                                         <img id="hw_type" src="{% static '/img/laptop.png' %}" alt="">
                                     {% endif %}
                                     <p>{{ pc.name }}</p>

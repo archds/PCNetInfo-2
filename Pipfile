@@ -10,6 +10,7 @@ ariadne = "*"
 websockets = "*"
 django = "*"
 uvicorn = "*"
+graphqlclient = "*"
 
 [dev-packages]
 

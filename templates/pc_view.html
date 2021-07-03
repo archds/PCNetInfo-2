@@ -9,10 +9,10 @@
                     <div class="col-md-6 chars">
                         <div class="char">
                             <div class="dots"></div>
-                            {% if pc.hardware_type == 'desktop' %}
+                            {% if pc.type == 'desktop' %}
                                 <img id="hw_type" src="{% static '/img/computer.png' %}" alt="">
                             {% endif %}
-                            {% if pc.hardware_type == 'laptop' %}
+                            {% if pc.type == 'laptop' %}
                                 <img id="hw_type" src="{% static '/img/laptop.png' %}" alt="">
                             {% endif %}
                             <div id="hw_type_popup" class="img_popup animate__animated animate__faster">

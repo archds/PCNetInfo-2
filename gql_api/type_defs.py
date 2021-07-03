@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from ariadne import (
     QueryType,
     load_schema_from_path,
@@ -6,8 +8,10 @@ from ariadne import (
     ObjectType,
 )
 
+SCHEMA_PATH = Path('gql_api/schema.graphql')
+
 # GraphQL definition
-type_defs = load_schema_from_path('gql_api/schema.graphql')
+type_defs = load_schema_from_path(str(SCHEMA_PATH))
 resolvers = [
     query := QueryType(),
     mutation := MutationType(),

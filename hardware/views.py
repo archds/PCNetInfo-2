@@ -1,5 +1,7 @@
+import asyncio
 import json
 from datetime import datetime
+from pprint import pprint
 
 from django.http.response import HttpResponse, FileResponse
 from django.shortcuts import render
@@ -81,7 +83,7 @@ def add_pc(request) -> HttpResponse:
 
 def pc_list(request) -> HttpResponse:
     context = {
-        'items': [pc.to_schema() for pc in PC.objects.order_by('label').all()],
+        'items': [pc.context for pc in PC.objects.order_by('label').all()],
         'filters': filters,
         'nav': get_nav()
     }
@@ -94,7 +96,7 @@ def pc_list(request) -> HttpResponse:
 
 def pc_view(request, pc_name: str) -> HttpResponse:
     context = {
-        'pc': PC.objects.get(pc_name=pc_name).to_schema(),
+        'pc': PC.objects.get(pc_name=pc_name).context,
         'nav': get_nav()
     }
     return render(

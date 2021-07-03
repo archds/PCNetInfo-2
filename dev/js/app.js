@@ -4,6 +4,7 @@ import {subOn} from "./api";
 import {Toast} from "bootstrap";
 import {ViewController} from "./viewController";
 
+
 // Style
 import '@fortawesome/fontawesome-free/js/all.min'
 import '../style/main.scss'
