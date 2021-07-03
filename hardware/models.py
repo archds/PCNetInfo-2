@@ -112,6 +112,24 @@ class PC(Model):
             },
             'ram': {
                 'size': self.ram and int(self.ram / kb_in_gb),
+                'banks': [
+                    {
+                        'speed': self.ram0_Configuredclockspeed,
+                        'capacity': self.ram0_Capacity and self.ram0_Capacity / bytes_in_gb
+                    },
+                    {
+                        'speed': self.ram1_Configuredclockspeed,
+                        'capacity': self.ram1_Capacity and self.ram1_Capacity / bytes_in_gb
+                    },
+                    {
+                        'speed': self.ram2_Configuredclockspeed,
+                        'capacity': self.ram2_Capacity and self.ram2_Capacity / bytes_in_gb
+                    },
+                    {
+                        'speed': self.ram3_Configuredclockspeed,
+                        'capacity': self.ram3_Capacity and self.ram3_Capacity / bytes_in_gb
+                    },
+                ]
             },
             'videocard': {
                 'name': self.videocard,
@@ -123,28 +141,4 @@ class PC(Model):
         if 'bit' not in response['os']['architecture']:
             response['os']['architecture'] = response['os']['architecture'] + 'bit'
 
-        ram_banks = [
-            {
-                'speed': self.ram0_Configuredclockspeed,
-                'capacity': self.ram0_Capacity and self.ram0_Capacity / bytes_in_gb
-            },
-            {
-                'speed': self.ram1_Configuredclockspeed,
-                'capacity': self.ram1_Capacity and self.ram1_Capacity / bytes_in_gb
-            },
-            {
-                'speed': self.ram2_Configuredclockspeed,
-                'capacity': self.ram2_Capacity and self.ram2_Capacity / bytes_in_gb
-            },
-            {
-                'speed': self.ram3_Configuredclockspeed,
-                'capacity': self.ram3_Capacity and self.ram3_Capacity / bytes_in_gb
-            },
-        ]
-        response['ram']['banks'] = [
-            bank for bank in ram_banks
-            if bank['speed'] or bank['capacity']
-        ]
-
         return response
-

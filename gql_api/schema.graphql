@@ -6,7 +6,6 @@ type Query {
     getView(view: ViewControllerInput!): [PC]!
 }
 
-
 input ViewControllerInput {
     sort: String!
     filter: FilterInput!
@@ -45,6 +44,7 @@ type Subscription {
 type Mutation {
     updateField(field: String, value: String, pcName: String): Boolean!
     updateLabel(value: String, pcName: String): Boolean!
+    deletePC(pcName: String): Boolean!
 }
 
 type PC {

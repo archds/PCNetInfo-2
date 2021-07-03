@@ -10,3 +10,10 @@ from hardware.models import PC
 def update_field_resolver(obj, info, field: str, value: str, pc_name: str) -> bool:
     PC.objects.filter(pc_name=pc_name).update(**{field: value})
     return True
+
+
+@gqt.mutation.field('deletePC')
+@convert_kwargs_to_snake_case
+def delete_pc_resolver(obj, info, pc_name: str) -> bool:
+    PC.objects.get(pc_name=pc_name).delete()
+    return True

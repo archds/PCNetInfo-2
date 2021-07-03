@@ -2,7 +2,7 @@
 import * as funcs from './func'
 import {subOn} from "./api";
 import {Toast} from "bootstrap";
-import {LabelController, ViewController} from "./viewController";
+import {LabelController, PcViewController, ViewController} from "./viewController";
 
 
 // Style
@@ -79,16 +79,13 @@ function main() {
             }
         }
     }`
+    const client = new GraphQLClient('/api/')
     if (window.location.pathname.startsWith('/pc/')) {
-        funcs.hwTypeHandler()
-        funcs.deleteHandler()
-        funcs.inputsHandler()
-        funcs.ramHandler()
         funcs.gqSelectHandler()
-        subOn(query, pcNotify)
+        // subOn(query, pcNotify)
+        const pcController = new PcViewController(client)
     }
     if (window.location.href === window.location.origin + '/') {
-        const client = new GraphQLClient('/api/')
         const view = new ViewController(
             '.sort-control',
             '#filter-content',

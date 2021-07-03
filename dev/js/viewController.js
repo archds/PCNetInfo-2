@@ -147,3 +147,161 @@ export class LabelController {
         })
     }
 }
+
+export class PcViewController {
+    constructor(gqlClient) {
+        this.inputs = document.querySelector('.pc_view').querySelectorAll('input')
+        this.textareas = document.querySelector('.data').querySelectorAll('textarea')
+        this.banks = document.querySelectorAll('input[id^=ram]')
+        this.addRamButton = document.querySelector('#addRam')
+        this.pcName = document.querySelector('#pc_name').value
+        this.delButton = document.querySelector('#delete')
+        this.hwTypeImg = document.querySelector('#hw_type')
+        this.hwTypePopup = document.querySelector('#hw_type_popup')
+        this.hwTypeButton = this.hwTypeImg.parentElement.querySelector('.dots')
+        this.client = gqlClient
+        this.inputsController()
+        this.deleteController()
+        this.ramController()
+        this.typeController()
+    }
+
+    deleteController() {
+        this.delButton.addEventListener('click', () => {
+            const query = gql`mutation deletePC($pcName: String) {
+                deletePC(pcName: $pcName)
+            }`
+            this.client.request(query, {pcName: this.pcName}).then(data => {
+                if (data.deletePC) {
+                    window.location.assign(window.location.origin)
+                }
+            })
+        })
+    }
+
+    inputsController() {
+        this.inputs.forEach((input) => {
+            input.addEventListener('change', () => {
+                const query = gql`mutation updateField($field: String, $value: String, $pcName: String){
+                    updateField(
+                        field: $field
+                        value: $value
+                        pcName: $pcName
+                    )
+                }`
+                this.client.request(
+                    query,
+                    {
+                        field: input.id,
+                        value: input.value,
+                        pcName: this.pcName
+                    }
+                ).then(data => {
+                    if (data.updateField) {
+                        input.parentElement.classList.toggle('saved')
+                        setTimeout(() => {
+                            input.parentElement.classList.toggle('saved')
+                        }, 1000)
+                    } else {
+                        console.log(data)
+                    }
+                })
+            })
+        })
+
+        this.textareas.forEach((input) => {
+            input.addEventListener('change', () => {
+                const query = gql`mutation updateField($field: String, $value: String, $pcName: String){
+                    updateField(
+                        field: $field
+                        value: $value
+                        pcName: $pcName
+                    )
+                }`
+                this.client.request(
+                    query,
+                    {
+                        field: input.id,
+                        value: input.value,
+                        pcName: this.pcName
+                    }
+                ).then(data => {
+                    if (data.updateField) {
+                        input.parentElement.classList.toggle('saved')
+                        setTimeout(() => {
+                            input.parentElement.classList.toggle('saved')
+                        }, 1000)
+                    } else {
+                        console.log(data)
+                    }
+                })
+            })
+        })
+    }
+
+    ramController() {
+        // TODO: Add gql query
+        if (!this.banks[0].parentElement.parentElement.querySelectorAll('p.hide').length) {
+            this.addRamButton.style.display = 'none'
+        }
+        this.addRamButton.addEventListener('click', () => {
+            for (let bank of this.banks) {
+                if (bank.parentElement.classList.contains('hide')) {
+                    bank.parentElement.classList.remove('hide')
+                    break
+                }
+            }
+            if (!this.banks[0].parentElement.parentElement.querySelectorAll('p.hide').length) {
+                this.addRamButton.style.display = 'none'
+            }
+        })
+
+        for (let bank of this.banks) {
+            bank.addEventListener('input', () => {
+                if (!bank.parentElement.querySelectorAll('span').length) {
+                    let valueHolder = document.createElement('span')
+                    valueHolder.textContent = 'GB'
+                    bank.parentElement.appendChild(valueHolder)
+                }
+                let ram_sum = 0
+                for (let item of this.banks) {
+                    if (item.value) ram_sum += parseInt(item.value)
+                }
+                bank.parentElement.parentElement.querySelector('p.head span').textContent = `${ram_sum} GB`
+            })
+            bank.addEventListener('change', () => {
+                if (!bank.value) bank.parentElement.classList.add('hide')
+            })
+        }
+    }
+
+    typeController() {
+        this.hwTypeButton.addEventListener('click', () => {
+            this.hwTypePopup.classList.remove('animate__slideOutRight')
+            this.hwTypePopup.classList.add('animate__slideInRight', 'active')
+        })
+        for (let node of this.hwTypePopup.children) {
+            node.addEventListener('click', () => {
+                let img = node.children[0]
+                this.hwTypeImg.src = img.src
+                this.hwTypePopup.classList.add('animate__slideOutRight')
+                this.hwTypePopup.classList.remove('animate__slideInRight', 'active')
+                let hw_type = node.id
+                const query = gql`mutation updateType($value: String, $pcName: String){
+                    updateField(
+                        field: "type"
+                        value: $value
+                        pcName: $pcName
+                    )
+                }`
+                this.client.request(
+                    query,
+                    {
+                        value: node.id,
+                        pcName: this.pcName
+                    }
+                )
+            })
+        }
+    }
+}
