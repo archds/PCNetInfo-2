@@ -491,6 +491,16 @@ section.not-found {
   }
 }
 
+section.add-element {
+  .add-pc {
+    background: url("../img/add_pc.svg") no-repeat center;
+    background-size: contain;
+    min-height: 500px;
+    margin-top: 50px;
+
+  }
+}
+
 // Footer
 footer {
   padding-top: 5px;
@@ -554,10 +564,12 @@ footer {
         background-image: url("../img/techs/ariadne.png");
         width: 100px;
       }
+
       .webpack-logo {
         background-image: url("../img/techs/webpack.png");
         width: 110px;
       }
+
       .graphql-logo {
         background-image: url("../img/techs/graphql.png");
         width: 100px;

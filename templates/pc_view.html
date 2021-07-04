@@ -58,11 +58,14 @@
                             </p>
                             {% for bank in pc.ram.banks %}
                                 {% if bank.capacity %}
-                                    <p>Bank {{ loop.index }} <input id="ram{{ loop.index0 }}_Capacity" type="text"
-                                                                    value="{{ bank.capacity|floatformat }}"><span>GB</span></p>
+                                    <p>Bank {{ forforloop.index }} <input id="ram{{ forloop.counter0 }}_Capacity"
+                                                                          type="text"
+                                                                          value="{{ bank.capacity|floatformat }}"><span>GB</span>
+                                    </p>
                                 {% else %}
-                                    <p class="hide">Bank {{ loop.index }} <input id="ram{{ loop.index0 }}_Capacity"
-                                                                                 type="text" placeholder="Capacity"></p>
+                                    <p class="hide">Bank {{ forloop.index }} <input
+                                            id="ram{{ forloop.counter0 }}_Capacity"
+                                            type="text" placeholder="Capacity"></p>
                                 {% endif %}
                             {% endfor %}
                             <div id="addRam" class="add">Add</div>
@@ -71,22 +74,22 @@
                 </div>
                 <div class="row gx-md-5">
                     {% if pc.motherboard.name %}
-                    <div class="col-md-6">
-                        <div class="char">
-                            <img src="{% static '/img/pcComponents/070-motherboard.png' %} " alt="">
-                            <p class="head">{{ pc.motherboard.manufacturer }} {{ pc.motherboard.product }}</p>
-                            <p>Serial: <span>{{ pc.motherboard.serial }}</span></p>
+                        <div class="col-md-6">
+                            <div class="char">
+                                <img src="{% static '/img/pcComponents/070-motherboard.png' %} " alt="">
+                                <p class="head">{{ pc.motherboard.manufacturer }} {{ pc.motherboard.product }}</p>
+                                <p>Serial: <span>{{ pc.motherboard.serial }}</span></p>
+                            </div>
                         </div>
-                    </div>
                     {% endif %}
                     {% if pc.videocard.name %}
-                    <div class="col-md-6">
-                        <div class="char">
-                            <img src="{% static '/img/pcComponents/087-graphic-card.png' %} " alt="">
-                            <p class="head">{{ pc.videocard.name }}</p>
-                            <p>Resolution: <span>{{ pc.videocard.resX }}x{{ pc.videocard.resY }}</span></p>
+                        <div class="col-md-6">
+                            <div class="char">
+                                <img src="{% static '/img/pcComponents/087-graphic-card.png' %} " alt="">
+                                <p class="head">{{ pc.videocard.name }}</p>
+                                <p>Resolution: <span>{{ pc.videocard.resX }}x{{ pc.videocard.resY }}</span></p>
+                            </div>
                         </div>
-                    </div>
                     {% endif %}
                 </div>
             </div>
@@ -99,8 +102,8 @@
                         <button id="delete"><i class="fas fa-trash-alt"></i></button>
                     </div>
                     <p>Computer name: <span>{{ pc.name }}</span></p>
-                    <p>Domain: <span>{{ pc.domain }}</span></p>
-                    <p>IP-address <span>{{ pc.ip }}</span></p>
+                    {% if pc.domain %}<p>Domain: <span>{{ pc.domain }}</span></p>{% endif %}
+                    {% if pc.ip %}<p>IP-address <span>{{ pc.ip }}</span></p>{% endif %}
                     <p>Updated: <span>{{ pc.updated }}</span></p>
                     <p>User: <input id="user" type="text" placeholder="Custom field"
                                     value="{% if pc.user %}{{ pc.user }}{% endif %}"></p>
@@ -108,7 +111,8 @@
                                         value="{% if pc.location %}{{ pc.location }}{% endif %}"></p>
                     <p>Serial number: <input id="serial_number" type="text" placeholder="Custom field"
                                              value="{% if pc.serial_number %}{{ pc.serial_number }}{% endif %}"></p>
-                    <p>Form-factor: <select class="form-select form-select-sm gq" id="form_factor">
+                    <p class="{% if pc.type == 'laptop' %}d-none{% endif %}">Form-factor: <select
+                            class="form-select form-select-sm gq" id="form_factor">
                         <option {% if pc.form_factor == 'ATX' %} selected{% endif %} value="ATX">ATX</option>
                         <option {% if pc.form_factor == 'MicroATX' %} selected{% endif %} value="MicroATX">MicroATX
                         </option>

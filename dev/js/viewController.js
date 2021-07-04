@@ -151,6 +151,7 @@ export class PcViewController {
     constructor(gqlClient) {
         this.inputs = document.querySelector('.pc_view').querySelectorAll('input')
         this.textareas = document.querySelector('.data').querySelectorAll('textarea')
+        this.formFactorSelect = document.querySelector('#form_factor')
         this.banks = document.querySelectorAll('input[id^=ram]')
         this.addRamButton = document.querySelector('#addRam')
         this.pcName = document.querySelector('#pc_name').value
@@ -235,7 +236,6 @@ export class PcViewController {
     }
 
     ramController() {
-        // TODO: Add gql query
         if (!this.banks[0].parentElement.parentElement.querySelectorAll('p.hide').length) {
             this.addRamButton.style.display = 'none'
         }
@@ -252,6 +252,7 @@ export class PcViewController {
         })
 
         for (let bank of this.banks) {
+            const ramSumElement = bank.parentElement.parentElement.querySelector('p.head span')
             bank.addEventListener('input', () => {
                 if (!bank.parentElement.querySelectorAll('span').length) {
                     let valueHolder = document.createElement('span')
@@ -262,10 +263,14 @@ export class PcViewController {
                 for (let item of this.banks) {
                     if (item.value) ram_sum += parseInt(item.value)
                 }
-                bank.parentElement.parentElement.querySelector('p.head span').textContent = `${ram_sum} GB`
+                ramSumElement.textContent = `${ram_sum} GB`
             })
             bank.addEventListener('change', () => {
                 if (!bank.value) bank.parentElement.classList.add('hide')
+                const query = gql`mutation updateRamSize($ramSize: String!, $pcName: String!) {
+                    updateField(field: "ram", value: $ramSize, pcName: $pcName)
+                }`
+                this.client.request(query, {ramSize: ramSumElement.textContent.replace(' GB', ''), pcName: this.pcName})
             })
         }
     }
@@ -298,5 +303,65 @@ export class PcViewController {
                 )
             })
         }
+    }
+
+    formFactorController() {
+        this.formFactorSelect.addEventListener('change', () => {
+            const query = gql`mutation updateFormFactor($value: String!, $pcName: String!) {
+                updateField(field: "form_factor", value: $value, pcName: $pcName)
+            }`
+            this.client.request(query, {value: this.formFactorSelect.value, pcName: this.pcName})
+        })
+    }
+}
+
+export class AddElementController {
+    constructor(gqlClient, elementName) {
+        this.inputs = document.querySelectorAll('input')
+        this.submit = document.querySelector('#add')
+        this.elementName = elementName
+        this.client = gqlClient
+        this.handleClick()
+    }
+
+    validate(input) {
+        if (input.required) {
+            if (input.value) {
+                input.classList.add('is-valid')
+            } else {
+                input.classList.add('is-invalid')
+                input.addEventListener('input', () => {
+                    input.classList.remove('is-invalid')
+                    input.classList.add('is-valid')
+                }, {once: true})
+            }
+        }
+    }
+
+    handleClick() {
+        this.submit.addEventListener('click', () => {
+            this.inputs.forEach(input => {
+                this.validate(input)
+            })
+            if (!document.querySelectorAll('input.is-invalid')) return
+            if (this.elementName === 'pc') {
+                this.addPC()
+            }
+        })
+    }
+
+    addPC() {
+        const query = gql`mutation CreatePC($input: CreatePCInput!) {
+            createPC(input_data: $input)
+        }`
+        let options = {}
+        this.inputs.forEach(input => {
+            options[input.name] = input.type === 'number' ? parseInt(input.value) : input.value
+        })
+        this.client.request(query, {input: options}).then(data => {
+            if (data.createPC) {
+                document.location.assign(`/pc/${options.pcName}`)
+            }
+        })
     }
 }

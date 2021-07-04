@@ -78,6 +78,10 @@ class PC(Model):
         return cpu_name
 
     @property
+    def formatted_videocard(self):
+        return self.videocard.replace('?', '').replace('(', '').replace(')', '').strip()
+
+    @property
     def context(self) -> dict:
         bytes_in_gb = 1073741824
         kb_in_gb = 1048576
@@ -104,9 +108,9 @@ class PC(Model):
             },
             'cpu': {
                 'name': self.formatted_cpu,
-                'clock': self.cpu_clock and round(self.cpu_clock / 1000, 1),
-                'cores': self.cpu_cores,
-                'threads': self.cpu_threads,
+                'clock': round(self.cpu_clock / 1000, 1) if self.cpu_clock else '',
+                'cores': self.cpu_cores or '',
+                'threads': self.cpu_threads or '',
                 'socket': self.cpu_socket,
             },
             'motherboard': {
@@ -136,13 +140,13 @@ class PC(Model):
                 ]
             },
             'videocard': {
-                'name': self.videocard,
+                'name': self.formatted_videocard,
                 'resX': self.resX,
                 'resY': self.resY,
             },
         }
 
-        if 'bit' not in response['os']['architecture']:
-            response['os']['architecture'] = response['os']['architecture'] + 'bit'
+        if 'bit' not in response['os']['architecture'] and response['os']['architecture']:
+            response['os']['architecture'] = response['os']['architecture'] + '-bit'
 
         return response

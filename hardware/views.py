@@ -81,6 +81,17 @@ def add_pc(request) -> HttpResponse:
     return HttpResponse(generate_add_pc_response(new_pc, created))
 
 
+def add_pc_interactive(request) -> HttpResponse:
+    context = {
+        'nav': get_nav()
+    }
+    return render(
+        request,
+        template_name='add_pc.html',
+        context=context
+    )
+
+
 def pc_list(request) -> HttpResponse:
     context = {
         'items': [pc.context for pc in PC.objects.order_by('label').all()],

@@ -34,11 +34,9 @@
                         </div>
                     </div>
                 </div>
-                <button id="addElement" class="btn btn-primary text-white dropdown-toggle" data-bs-toggle="dropdown"
-                        aria-expanded="false" data-bs-auto-close="outside">
+                <a href="{% url 'add_pc_interactive' %}" id="addElement" class="btn btn-primary text-white">
                     Add
-                </button>
-                <div id="addElementDropdown" class="dropdown-menu" aria-labelledby="addElement" ></div>
+                </a>
             </div>
             <div class="collapse" id="filter-content">
                 {% for filter in filters %}
@@ -77,10 +75,33 @@
                                        value="{% if pc.label %}{{ pc.label }}{% endif %}" type="text"
                                        placeholder="Any label here">
                                 <p>CPU:
-                                    <span>{{ pc.cpu.clock }} GHz; {{ pc.cpu.cores }}/{{ pc.cpu.threads }}</span>
+                                    <span>
+                                        {% if not pc.cpu.clock and not pc.cpu.cores %}
+                                            No data
+                                        {% else %}
+                                            {% if pc.cpu.clock %}
+                                                {{ pc.cpu.clock }} GHz;
+                                            {% endif %}
+                                            {% if pc.cpu.cores and pc.cpu.threads %}
+                                                {{ pc.cpu.cores }}/{{ pc.cpu.threads }}
+                                            {% endif %}
+                                        {% endif %}
+                                    </span>
                                 </p>
-                                <p>Video: <span>{{ pc.videocard.name|slice:':25' }}</span></p>
-                                <p>RAM: <span>{{ pc.ram.size }} GB</span></p>
+                                <p>Video: <span>
+                                    {% if pc.videocard.name %}
+                                        {{ pc.videocard.name|slice:':25' }}
+                                    {% else %}
+                                        No data
+                                    {% endif %}
+                                </span></p>
+                                <p>RAM: <span>
+                                    {% if pc.ram.size %}
+                                        {{ pc.ram.size }} GB
+                                    {% else %}
+                                        No data
+                                    {% endif %}
+                                </span></p>
                             </div>
                         </div>
                     </div>

@@ -2,10 +2,9 @@
 import * as funcs from './func'
 import {subOn} from "./api";
 import {Toast} from "bootstrap";
-import {LabelController, PcViewController, ViewController} from "./viewController";
+import {AddElementController, LabelController, PcViewController, ViewController} from "./viewController";
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {pcPageReact, reactApp, viewPageReact} from "./reactApp";
 
 
 // Style
@@ -64,11 +63,6 @@ function pcNotify(data) {
 }
 
 
-if (window.location.href === window.location.origin + '/') {
-    viewPageReact()
-}
-
-
 function main() {
     const query = `subscription {
         PC {
@@ -88,7 +82,7 @@ function main() {
         }
     }`
     const client = new GraphQLClient('/api/')
-    if (window.location.pathname.startsWith('/pc/')) {
+    if (window.location.pathname.startsWith('/pc/') && !window.location.pathname.includes('/add')) {
         console.log(true)
         // funcs.gqSelectHandler()
         // subOn(query, pcNotify)
@@ -97,6 +91,7 @@ function main() {
         pcController.deleteController()
         pcController.ramController()
         pcController.typeController()
+        pcController.formFactorController()
     }
     if (window.location.href === window.location.origin + '/') {
         const view = new ViewController(
@@ -111,6 +106,9 @@ function main() {
         )
 
         // subOn(query, view.pcLiveUpdate)
+    }
+    if (window.location.pathname === '/pc/add/') {
+        const addPCController = new AddElementController(client, 'pc')
     }
 
 
