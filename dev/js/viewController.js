@@ -1,5 +1,5 @@
 import {pcListRender} from "./func";
-import {gql, GraphQLClient} from 'graphql-request'
+import {gql} from 'graphql-request'
 import {pcCard} from "./components/card";
 
 

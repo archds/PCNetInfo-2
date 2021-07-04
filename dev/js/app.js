@@ -1,10 +1,7 @@
 // JS
-import * as funcs from './func'
-import {subOn} from "./api";
 import {Toast} from "bootstrap";
 import {AddElementController, LabelController, PcViewController, ViewController} from "./viewController";
 import React from 'react'
-import ReactDOM from 'react-dom'
 
 
 // Style

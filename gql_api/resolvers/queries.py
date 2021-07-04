@@ -1,7 +1,4 @@
-from pprint import pprint
-
 from ariadne import convert_kwargs_to_snake_case
-from django.db import IntegrityError
 from django.db.models import F, When, Case
 
 import gql_api.type_defs as gqt
