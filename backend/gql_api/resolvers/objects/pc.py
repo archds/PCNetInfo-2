@@ -24,7 +24,7 @@ def resolve_pc_hardware_type(pc_obj: PC, info):
 
 @gqt.pc.field('username')
 def resolve_pc_username(pc_obj: PC, info):
-    return pc_obj.username
+    return pc_obj.username.replace('?', '').replace('\\', '').replace(pc_obj.pc_name, '')
 
 
 @gqt.pc.field('timezone')
@@ -85,3 +85,8 @@ def resolve_pc_videocard(pc_obj: PC, info):
 @gqt.pc.field('form_factor')
 def resolve_pc_form_factor(pc_obj: PC, info):
     return pc_obj.form_factor
+
+
+@gqt.pc.field('serial')
+def resolve_pc_serial(pc_obj: PC, info):
+    return pc_obj.serial_number

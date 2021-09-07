@@ -84,6 +84,7 @@ type PC {
     domain: String
     username: String
     timezone: String
+    serial: String
     ip: String
     comment: String
     label: String

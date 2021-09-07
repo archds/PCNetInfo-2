@@ -1,0 +1,5 @@
+@import "main";
+
+.checkedItem {
+  background: transparentize($primary, 0.5);
+}
