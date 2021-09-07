@@ -1,0 +1,143 @@
+type Query {
+    hello: String!
+    getPC(name: String!): PC
+    AllPC(input: AllPCInput): [PC!]!
+}
+
+type Mutation {
+    updatePC(
+        name: String!
+        gqlInput: UpdatePCInput!
+    ): PC!
+    deletePC(name: String): Boolean!
+    createPC(gqlInput: CreatePCInput!): PC!
+}
+
+input UpdatePCInput {
+    name: String
+    os: OSInput
+    cpu: CPUInput
+    ram: RAMInput
+}
+
+
+input AllPCInput {
+    filter: FilterInput
+    search: SearchInput
+    sort: SortInput
+}
+
+input SortInput {
+    field: SortField
+}
+
+enum SortField {
+    NAME
+    SERIAL
+    PERFORMANCE
+}
+
+input SearchInput {
+    label: String
+    serialNumber: String
+}
+
+input FilterInput {
+    serialNumber: SerialNumberFilter!
+}
+
+input CreatePCInput {
+    name: String!
+    os: OSInput!
+    cpu: CPUInput!
+    ram: RAMInput!
+}
+
+input OSInput {
+    name: String
+}
+
+
+input CPUInput {
+    name: String
+}
+
+input RAMInput {
+    size: Int
+}
+
+
+enum SerialNumberFilter {
+    ANY
+    SPECIFIED
+    NOT_SPECIFIED
+}
+
+type Subscription {
+    PC: PC!
+}
+
+
+type PC {
+    type: String
+    name: String!
+    domain: String
+    username: String
+    timezone: String
+    ip: String
+    comment: String
+    label: String
+    user: String
+    location: String
+    updated: String
+    form_factor: String
+    os: OS
+    cpu: CPU
+    ram: RAM
+    motherboard: Motherboard
+    videocard: Videocard
+}
+
+# Software types definition
+type OS {
+    name: String
+    version: String
+    architecture: String
+}
+
+# Hardware types definition
+type CPU {
+    name: String
+    clock: String
+    cores: String
+    threads: String
+    socket: String
+}
+
+type RAM {
+    size: Int
+    banks: [RAMBank]!
+}
+
+type RAMBank {
+    speed: Int
+    capacity: Int
+}
+
+type Motherboard {
+    manufacturer: String
+    product: String
+    serial: String
+}
+
+type Videocard {
+    name: String
+    resX: String
+    resY: String
+}
+
+type Filter {
+    name: String,
+    id: String,
+    options: [String!]!,
+}
