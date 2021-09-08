@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
-import {FormCheck, Table} from 'react-bootstrap'
+import {Button, FormCheck, Table} from 'react-bootstrap'
 import React from 'react'
-import ComputerElement from "./ComputerElement";
+import ComputerElement from './ComputerElement'
+import style from '../../../styles/ComputerList.module.scss'
 
 function ComputerList(props) {
     return (
@@ -9,11 +10,11 @@ function ComputerList(props) {
             <Table hover>
                 <thead>
                 <tr>
-                    <td key='checkbox'>
-                        <FormCheck
-                            type='checkbox'
-                        />
-                    </td>
+                    <th key='checkbox'>
+                        {/*<FormCheck*/}
+                        {/*    type='checkbox'*/}
+                        {/*/>*/}
+                    </th>
                     <th>Type</th>
                     <th>Label</th>
                     <th>Inventory number</th>

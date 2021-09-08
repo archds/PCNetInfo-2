@@ -9,6 +9,10 @@ function Index(props) {
     const [activeComputer, setActiveComputer] = useState(undefined)
     const [computers, setComputers] = useState(props.AllPC)
 
+    const resetActiveComputer = () => {
+        setActiveComputer(undefined)
+    }
+
     const onComputerClick = (pcName, e) => {
         e.preventDefault()
         client.query({
@@ -40,7 +44,7 @@ function Index(props) {
                 onComputerClick={onComputerClick}
                 computers={computers}
             />
-            <ActiveComputer computer={activeComputer}/>
+            <ActiveComputer computer={activeComputer} resetActiveComputer={resetActiveComputer}/>
         </div>
     )
 }

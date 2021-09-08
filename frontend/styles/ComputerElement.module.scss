@@ -1,0 +1,19 @@
+.selected {
+  position: relative;
+  background: transparentize(#41b883, 0.9);
+  border-left: #41b883 solid 5px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+
+//.selected::before {
+//  content: '';
+//  display: block;
+//  position: absolute;
+//  left: -20px;
+//  top: 0;
+//  height: 100%;
+//  width: 3px;
+//  background: #41b883;
+//}

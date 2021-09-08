@@ -38,8 +38,19 @@ a {
 }
 
 .dashboard {
-  padding: 1px 20px 20px 20px;
+  //padding: 1px 20px 20px 20px;
   border-radius: 20px;
   background: white;
   margin-top: 20px;
+}
+
+tr {
+  vertical-align: middle;
+}
+
+td:first-child,
+td:last-child,
+th:first-child,
+th:last-child {
+  padding-left: 20px;
 }

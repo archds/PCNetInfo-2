@@ -1,7 +1,7 @@
 .indexContainer {
-  margin: 0 20px;
+  margin: auto;
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-gap: 20px;
-  width: 100%;
+  max-width: 97%;
 }
