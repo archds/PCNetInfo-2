@@ -34,4 +34,12 @@ header {
 
 a {
   cursor: pointer;
+  color: $primary;
+}
+
+.dashboard {
+  padding: 1px 20px 20px 20px;
+  border-radius: 20px;
+  background: white;
+  margin-top: 20px;
 }

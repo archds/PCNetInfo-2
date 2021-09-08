@@ -1,9 +1,11 @@
+import PropTypes from 'prop-types'
 import {FormCheck, Table} from 'react-bootstrap'
 import React from 'react'
+import ComputerElement from "./ComputerElement";
 
 function ComputerList(props) {
     return (
-        <>
+        <div className='dashboard'>
             <Table hover>
                 <thead>
                 <tr>
@@ -19,19 +21,13 @@ function ComputerList(props) {
                 </tr>
                 </thead>
                 <tbody>
-                {props.computers.map(item => {
+                {props.computers.map(computer => {
                     return (
-                        <tr key={item.name}>
-                            <td key='checkbox'>
-                                <FormCheck
-                                    type='checkbox'
-                                />
-                            </td>
-                            <td>{item.type}</td>
-                            <td><a onClick={e => props.handler(item.name, e)}>{item.label}</a></td>
-                            <td>{item.serial}</td>
-                            <td>{item.location}</td>
-                        </tr>
+                        <ComputerElement
+                            key={computer.name}
+                            pc={computer}
+                            onComputerClick={props.onComputerClick}
+                        />
                     )
                 })}
                 </tbody>
@@ -42,8 +38,13 @@ function ComputerList(props) {
                 justify-content: space-around;
               }
             `}</style>
-        </>
+        </div>
     )
 }
 
 export default ComputerList
+
+ComputerList.propTypes = {
+  computers: PropTypes.arrayOf(Object).isRequired,
+  onComputerClick: PropTypes.func.isRequired
+}

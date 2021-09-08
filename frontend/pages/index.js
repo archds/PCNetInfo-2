@@ -1,71 +1,47 @@
 import {gql} from '@apollo/client'
-import {Container, Row} from 'react-bootstrap'
-import ComputerList from '../components/computer/ComputerList'
+import ComputerList from '../components/computers/computerTable/ComputerList'
 import client from '../apollo-client'
 import React, {useState} from 'react'
-import PCDetail from '../components/PCDetail'
-
+import style from '../styles/index.module.scss'
+import ActiveComputer from '../components/computers/ActiveComputer'
 
 function Index(props) {
     const [activeComputer, setActiveComputer] = useState(undefined)
+    const [computers, setComputers] = useState(props.AllPC)
 
-    function pcHandler(pcName) {
+    const onComputerClick = (pcName, e) => {
+        e.preventDefault()
         client.query({
             query: gql`
                 query ($name: String!) {
                     getPC(name: $name) {
                         name
                         form_factor
-                        ip
-                        domain
+                        os {
+                            name
+                            version
+                            architecture
+                        }
                     }
                 }
             `,
             variables: {
                 name: pcName
             }
-        }).then(data => {
-            setActivePC(data.getPC)
+        }).then(response => {
+            let computerData = response.data.getPC
+            setActiveComputer(computerData)
         })
     }
 
     return (
-        <>
-            <Container fluid={true}>
-                <Row>
-                    <div className="dashboard pcDashboard">
-                        <ComputerList
-                            handler={pcHandler}
-                            computers={props.AllPC}
-                        />
-                    </div>
-                    <div className="dashboard pcDetail">
-                        {/*<PCDetail pc={activePC}/>*/}
-                    </div>
-                </Row>
-            </Container>
-
-            <style jsx>{`
-              .dashboard {
-                margin-left: 20px;
-                padding: 1px 20px 20px 20px;
-                border-radius: 20px;
-                background: white;
-                margin-top: 20px;
-              }
-
-              .pcDashboard {
-                max-width: 65%;
-              }
-
-              .pcDetail {
-                max-width: 30%;
-                display: flex;
-                flex-flow: column wrap;
-                justify-content: space-around;
-              }
-            `}</style>
-        </>
+        <div className={style.indexContainer}>
+            <ComputerList
+                onComputerClick={onComputerClick}
+                computers={computers}
+            />
+            <ActiveComputer computer={activeComputer}/>
+        </div>
     )
 }
 
@@ -87,6 +63,6 @@ export async function getStaticProps() {
     })
 
     return {
-        props: data
+        props: data,
     }
 }
