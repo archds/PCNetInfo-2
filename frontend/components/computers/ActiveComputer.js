@@ -6,7 +6,7 @@ import {GrClose} from 'react-icons/gr'
 function ActiveComputer(props) {
     if (props.computer === undefined) {
         return (
-            <div className='dashboard'>
+            <div className='dashboard' style={{gridArea: 'active'}}>
                 <ActiveComputerStub/>
             </div>
         )

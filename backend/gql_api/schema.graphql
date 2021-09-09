@@ -28,11 +28,11 @@ input AllPCInput {
 }
 
 input SortInput {
-    field: SortField
+    field: SortField!
 }
 
 enum SortField {
-    NAME
+    LABEL
     SERIAL
     PERFORMANCE
 }

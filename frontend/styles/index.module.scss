@@ -2,6 +2,10 @@
   margin: auto;
   display: grid;
   grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "dashboard-control active"
+    "dashboard active";
   grid-gap: 20px;
   max-width: 97%;
 }

@@ -4,6 +4,21 @@ import client from '../apollo-client'
 import React, {useState} from 'react'
 import style from '../styles/index.module.scss'
 import ActiveComputer from '../components/computers/ActiveComputer'
+import ComputersController from '../components/computers/computerTable/ComputersController'
+
+const getPCQuery = gql`
+    query ($name: String!) {
+        getPC(name: $name) {
+            name
+            form_factor
+            os {
+                name
+                version
+                architecture
+            }
+        }
+    }
+`
 
 function Index(props) {
     const [activeComputer, setActiveComputer] = useState(undefined)
@@ -16,22 +31,10 @@ function Index(props) {
     const onComputerClick = (pcName, e) => {
         e.preventDefault()
         client.query({
-            query: gql`
-                query ($name: String!) {
-                    getPC(name: $name) {
-                        name
-                        form_factor
-                        os {
-                            name
-                            version
-                            architecture
-                        }
-                    }
-                }
-            `,
+            query: getPCQuery,
             variables: {
-                name: pcName
-            }
+                name: pcName,
+            },
         }).then(response => {
             let computerData = response.data.getPC
             setActiveComputer(computerData)
@@ -40,6 +43,7 @@ function Index(props) {
 
     return (
         <div className={style.indexContainer}>
+            <ComputersController/>
             <ComputerList
                 onComputerClick={onComputerClick}
                 computers={computers}

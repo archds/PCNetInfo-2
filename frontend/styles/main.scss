@@ -2,6 +2,7 @@ $primary: #41b883;
 $secondary: #35495e;
 
 @import '~bootstrap/scss/bootstrap';
+@import "~animate.css";
 
 html,
 body {
@@ -30,6 +31,7 @@ header {
   display: flex;
   justify-content: center;
   background: white;
+  margin-bottom: 20px;
 }
 
 a {
@@ -41,7 +43,6 @@ a {
   //padding: 1px 20px 20px 20px;
   border-radius: 20px;
   background: white;
-  margin-top: 20px;
 }
 
 tr {
@@ -53,4 +54,8 @@ td:last-child,
 th:first-child,
 th:last-child {
   padding-left: 20px;
+}
+
+.ReactCollapse--collapse {
+  transition: height 500ms;
 }

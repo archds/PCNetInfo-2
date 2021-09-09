@@ -24,7 +24,6 @@ function ComputerElement(props) {
     }
 
     const switchSelection = () => {
-        console.log(selected)
         return setSelected(!selected)
     }
 
