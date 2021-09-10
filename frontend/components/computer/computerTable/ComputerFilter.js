@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import style from '/styles/ComputerFilter.module.scss'
 import {Dropdown} from 'react-bootstrap'
 
@@ -13,6 +13,7 @@ function ComputerFilter(props) {
     const [serialNumberFilter, setSerialNumberFilter] = useState(null)
     const [locationFilter, setLocationFilter] = useState(null)
     const [formFactorFilter, setFormFactorFilter] = useState('ATX')
+    const mounted = useRef(false)
 
     const displayState = (state) => {
         if (state === filterValue.any) {
@@ -27,8 +28,12 @@ function ComputerFilter(props) {
     }
 
     useEffect(() => {
-        props.filterComputers(serialNumberFilter, locationFilter, formFactorFilter)
-    })
+        if (!mounted.current) {
+            mounted.current = true
+        } else {
+            props.filterComputers(serialNumberFilter, locationFilter, formFactorFilter)
+        }
+    }, [serialNumberFilter, locationFilter, formFactorFilter])
 
 
     return (

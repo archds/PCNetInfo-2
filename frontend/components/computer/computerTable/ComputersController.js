@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {Button, Dropdown, Form} from 'react-bootstrap'
 import style from '/styles/ComputersController.module.scss'
 import {Collapse} from 'react-collapse'
@@ -10,6 +10,7 @@ function ComputersController(props) {
     const [filter, setFilter] = useState({})
     const [sorting, setSorting] = useState('LABEL')
     const [search, setSearch] = useState(null)
+    const mounted = useRef(false)
 
 
     const sortComputers = (sortParam) => {
@@ -20,7 +21,7 @@ function ComputersController(props) {
         setFilter({
             serialNumber: serialNumber,
             location: location,
-            formFactor: formFactor
+            formFactor: formFactor,
         })
     }
 
@@ -34,8 +35,13 @@ function ComputersController(props) {
     }
 
     useEffect(() => {
-        props.updateTable(sorting, filter, search)
-    })
+        if (!mounted.current) {
+            mounted.current = true
+        } else {
+            props.updateTable(sorting, filter, search)
+        }
+
+    }, [sorting, filter, search])
 
 
     return (
@@ -78,5 +84,5 @@ function ComputersController(props) {
 export default ComputersController
 
 ComputersController.propTypes = {
-  updateTable: PropTypes.func.isRequired
+    updateTable: PropTypes.func.isRequired,
 }

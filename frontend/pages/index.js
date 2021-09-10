@@ -6,11 +6,18 @@ import ActiveComputer from '/components/computer/ActiveComputer'
 import ComputersController from '/components/computer/computerTable/ComputersController'
 import {getPCQuery} from '/gql_api/queries/getPC'
 import {allPCQuery} from '/gql_api/queries/allPC'
+import {useQuery} from '@apollo/client'
 
 
 function Index(props) {
     const [activeComputer, setActiveComputer] = useState(undefined)
-    const [computers, setComputers] = useState(props.AllPC)
+    const {data, error, loading, refetch} = useQuery(allPCQuery)
+
+    if (loading) {
+        return <div className={style.loadingContainer}>
+            <div className={style.ldsDualRing}></div>
+        </div>
+    }
 
     const resetActiveComputer = () => {
         setActiveComputer(undefined)
@@ -30,14 +37,11 @@ function Index(props) {
     }
 
     const updateTable = (sorting, filter, search) => {
-        client.query({
-            query: allPCQuery,
-            variables: {
-                sorting: sorting,
-                filter: filter,
-                search: search,
-            },
-        }).then(response => setComputers(response.data.AllPC))
+        refetch({
+            sorting: sorting,
+            filter: filter,
+            search: search,
+        })
     }
 
 
@@ -49,7 +53,7 @@ function Index(props) {
                 />
                 <ComputerList
                     onComputerClick={onComputerClick}
-                    computers={computers}
+                    computers={data.AllPC}
                 />
             </div>
             <ActiveComputer
@@ -61,13 +65,3 @@ function Index(props) {
 }
 
 export default Index
-
-export async function getStaticProps() {
-    const {data} = await client.query({
-        query: allPCQuery,
-    })
-
-    return {
-        props: data,
-    }
-}
