@@ -24,12 +24,9 @@ input UpdatePCInput {
 input AllPCInput {
     filter: FilterInput
     search: String
-    sort: SortInput
+    sort: SortField
 }
 
-input SortInput {
-    field: SortField!
-}
 
 enum SortField {
     LABEL

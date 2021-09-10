@@ -2,7 +2,7 @@ import React from 'react'
 import ReactFitText from 'react-fittext'
 import Clock from 'react-live-clock'
 import {Image} from 'react-bootstrap'
-import style from '../styles/ActiveComputerStub.module.scss'
+import style from '/styles/ActiveComputerStub.module.scss'
 
 function ActiveComputerStub(props) {
     return (

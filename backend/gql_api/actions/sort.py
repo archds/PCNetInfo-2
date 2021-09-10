@@ -14,7 +14,7 @@ class SortField(Enum):
 
 
 def sort(sort_input: Dict, query: QuerySet) -> QuerySet:
-    sort_field = SortField(sort_input['field'])
+    sort_field = SortField(sort_input)
 
     if sort_field == SortField.LABEL:
         return query.order_by('-label')

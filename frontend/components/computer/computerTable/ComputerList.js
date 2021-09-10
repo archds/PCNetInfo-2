@@ -6,7 +6,7 @@ import style from '../../../styles/ComputerList.module.scss'
 
 function ComputerList(props) {
     return (
-        <div className='dashboard' style={{gridArea: 'dashboard'}}>
+        <div className='dashboard'>
             <Table hover>
                 <thead>
                 <tr>

@@ -1,3 +1,4 @@
+from pprint import pprint
 from typing import Dict, Optional
 
 from django.db.models import Q
@@ -15,6 +16,7 @@ def resolve_hello(*_):
 
 @gqt.query.field('AllPC')
 def resolve_all_pc(obj, info, input: Optional[Dict] = None):
+    pprint(input)
     query = PC.objects.all()
 
     if input is None:

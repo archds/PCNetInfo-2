@@ -1,24 +1,12 @@
-import {gql} from '@apollo/client'
-import ComputerList from '../components/computers/computerTable/ComputerList'
-import client from '../apollo-client'
+import ComputerList from '/components/computer/computerTable/ComputerList'
+import client from '/apollo-client'
 import React, {useState} from 'react'
-import style from '../styles/index.module.scss'
-import ActiveComputer from '../components/computers/ActiveComputer'
-import ComputersController from '../components/computers/computerTable/ComputersController'
+import style from '/styles/index.module.scss'
+import ActiveComputer from '/components/computer/ActiveComputer'
+import ComputersController from '/components/computer/computerTable/ComputersController'
+import {getPCQuery} from '/gql_api/queries/getPC'
+import {allPCQuery} from '/gql_api/queries/allPC'
 
-const getPCQuery = gql`
-    query ($name: String!) {
-        getPC(name: $name) {
-            name
-            form_factor
-            os {
-                name
-                version
-                architecture
-            }
-        }
-    }
-`
 
 function Index(props) {
     const [activeComputer, setActiveComputer] = useState(undefined)
@@ -41,14 +29,33 @@ function Index(props) {
         })
     }
 
+    const updateTable = (sorting, filter, search) => {
+        client.query({
+            query: allPCQuery,
+            variables: {
+                sorting: sorting,
+                filter: filter,
+                search: search,
+            },
+        }).then(response => setComputers(response.data.AllPC))
+    }
+
+
     return (
         <div className={style.indexContainer}>
-            <ComputersController/>
-            <ComputerList
-                onComputerClick={onComputerClick}
-                computers={computers}
+            <div className={style.computersContainer}>
+                <ComputersController
+                    updateTable={updateTable}
+                />
+                <ComputerList
+                    onComputerClick={onComputerClick}
+                    computers={computers}
+                />
+            </div>
+            <ActiveComputer
+                computer={activeComputer}
+                resetActiveComputer={resetActiveComputer}
             />
-            <ActiveComputer computer={activeComputer} resetActiveComputer={resetActiveComputer}/>
         </div>
     )
 }
@@ -57,17 +64,7 @@ export default Index
 
 export async function getStaticProps() {
     const {data} = await client.query({
-        query: gql`
-            query {
-                AllPC {
-                    name
-                    type
-                    label
-                    serial
-                    location
-                }
-            }
-        `,
+        query: allPCQuery,
     })
 
     return {

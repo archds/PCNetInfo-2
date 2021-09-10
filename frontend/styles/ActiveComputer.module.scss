@@ -1,0 +1,17 @@
+.activeComputerContainer {
+  padding: 20px;
+  height: 700px;
+}
+
+.closeButton {
+  border-radius: 5px;
+  padding: 5px;
+  box-sizing: content-box;
+  transition: ease 0.2s;
+  float: right;
+}
+
+.closeButton:hover {
+  color: #41b883;
+  background: transparentize(black, 0.95);
+}

@@ -1,9 +1,0 @@
-query {
-    AllPC {
-        name
-        type
-        label
-        serial
-        location
-    }
-}
