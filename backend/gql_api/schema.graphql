@@ -23,7 +23,7 @@ input UpdatePCInput {
 
 input AllPCInput {
     filter: FilterInput
-    search: SearchInput
+    search: String
     sort: SortInput
 }
 
@@ -36,11 +36,6 @@ enum SortField {
     SERIAL
     CPU
     MEMORY
-}
-
-input SearchInput {
-    label: String
-    serialNumber: String
 }
 
 input FilterInput {
