@@ -1,6 +1,8 @@
 from typing import Dict, Optional
 
 import gql_api.type_defs as gqt
+from gql_api.actions.filter import filter_query
+from gql_api.actions.sort import sort
 from hardware.models import PC
 
 
@@ -17,13 +19,13 @@ def resolve_all_pc(obj, info, input: Optional[Dict] = None):
         return query
 
     if filter_input := input.get('filter'):
-        pass
+        query = filter_query(filter_input, query)
 
     if search_input := input.get('search'):
-        query = query.filter(label__startswith='PC')
+        query = query.filter(label__contains=search_input['field'])
 
     if sort_input := input.get('sort'):
-        print(sort_input)
+        query = sort(sort_input, query)
 
     return query
 

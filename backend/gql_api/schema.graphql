@@ -34,7 +34,8 @@ input SortInput {
 enum SortField {
     LABEL
     SERIAL
-    PERFORMANCE
+    CPU
+    MEMORY
 }
 
 input SearchInput {
@@ -43,7 +44,9 @@ input SearchInput {
 }
 
 input FilterInput {
-    serialNumber: SerialNumberFilter!
+    serialNumber: FilterValue
+    location: FilterValue
+    formFactor: FormFactor
 }
 
 input CreatePCInput {
@@ -67,8 +70,7 @@ input RAMInput {
 }
 
 
-enum SerialNumberFilter {
-    ANY
+enum FilterValue {
     SPECIFIED
     NOT_SPECIFIED
 }
@@ -79,7 +81,7 @@ type Subscription {
 
 
 type PC {
-    type: String
+    type: HWType!
     name: String!
     domain: String
     username: String
@@ -91,12 +93,22 @@ type PC {
     user: String
     location: String
     updated: String
-    form_factor: String
+    form_factor: FormFactor
     os: OS
     cpu: CPU
     ram: RAM
     motherboard: Motherboard
     videocard: Videocard
+}
+
+enum FormFactor {
+    ATX
+    mATX
+}
+
+enum HWType {
+    DESKTOP
+    LAPTOP
 }
 
 # Software types definition
