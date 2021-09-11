@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useRef, useState} from 'react'
 import {FormCheck} from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import ComputerType from './ComputerType'
@@ -13,6 +13,7 @@ const computerTypes = {
 function ComputerElement(props) {
     const [pcType, setPcType] = useState(computerTypes.desktop)
     const [selected, setSelected] = useState(false)
+    const mounted = useRef(false)
 
     const switchType = () => {
         if (pcType === computerTypes.desktop) {
@@ -23,14 +24,16 @@ function ComputerElement(props) {
         }
     }
 
-    const switchSelection = () => {
-        return setSelected(!selected)
+    const switchSelection = (e) => {
+        setSelected(e.target.checked)
+        props.switchSelection(props.pc.name)
     }
+
 
     return (
         <tr key={props.pc.name} className={selected ? style.selected : null}>
             <td key="checkbox">
-                <FormCheck type="checkbox" onClick={switchSelection}/>
+                <FormCheck type="checkbox" onChange={e => switchSelection(e)}/>
             </td>
             <td><ComputerType switchType={switchType} type={pcType}/></td>
             <td><a href="" onClick={e => props.onComputerClick(props.pc.name, e)}>{props.pc.label}</a></td>
@@ -45,4 +48,5 @@ export default ComputerElement
 ComputerElement.propTypes = {
     onComputerClick: PropTypes.func,
     pc: PropTypes.object,
+    switchSelection: PropTypes.func.isRequired,
 }

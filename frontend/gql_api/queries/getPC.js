@@ -32,7 +32,7 @@ export const getPCQuery = gql`
             architecture
         }
     }
-    
+
     fragment RAM on PC {
         ram {
             size
@@ -42,7 +42,7 @@ export const getPCQuery = gql`
             }
         }
     }
-    
+
     fragment CPU on PC {
         cpu {
             name
@@ -52,7 +52,7 @@ export const getPCQuery = gql`
             socket
         }
     }
-    
+
     fragment Motherboard on PC {
         motherboard {
             manufacturer
@@ -60,7 +60,7 @@ export const getPCQuery = gql`
             serial
         }
     }
-    
+
     fragment Videocard on PC {
         videocard {
             name

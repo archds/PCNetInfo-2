@@ -13,7 +13,7 @@ function ActiveComputerStub(props) {
                 </h1>
             </ReactFitText>
             <Image
-                src='/img/love.svg'
+                src="/img/love.svg"
                 width={'100%'}
             />
         </div>

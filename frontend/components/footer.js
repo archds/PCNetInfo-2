@@ -1,4 +1,4 @@
-import {Image} from "react-bootstrap";
+import {Image} from 'react-bootstrap'
 
 export default function Footer() {
     return (
