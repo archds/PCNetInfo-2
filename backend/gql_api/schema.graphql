@@ -9,12 +9,17 @@ type Mutation {
         name: String!
         gqlInput: UpdatePCInput!
     ): PC!
-    deletePC(name: String): Boolean!
+    deletePC(names: [String!]!): Unit!
     createPC(gqlInput: CreatePCInput!): PC!
+}
+
+enum Unit {
+    UNIT
 }
 
 input UpdatePCInput {
     name: String
+    type: HWType
     os: OSInput
     cpu: CPUInput
     ram: RAMInput

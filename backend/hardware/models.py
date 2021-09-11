@@ -21,8 +21,8 @@ class Monitor(Model):
 
 class PC(Model):
     class HwType(TextChoices):
-        DESKTOP = 'desktop'
-        LAPTOP = 'laptop'
+        DESKTOP = 'DESKTOP'
+        LAPTOP = 'LAPTOP'
 
     hardware_type = CharField(choices=HwType.choices, default=HwType.DESKTOP, max_length=50)
     os_name = CharField(max_length=50)

@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, List
 
 from ariadne import convert_kwargs_to_snake_case
 
@@ -7,10 +7,9 @@ from hardware.models import PC
 
 
 @gqt.mutation.field('deletePC')
-@convert_kwargs_to_snake_case
-def delete_pc(obj, info, pc_name: str) -> bool:
-    PC.objects.get(pc_name=pc_name).delete()
-    return True
+def delete_pc(obj, info, names: List[str]) -> str:
+    PC.objects.filter(pc_name__in=names).delete()
+    return 'UNIT'
 
 
 @gqt.mutation.field('createPC')
@@ -25,10 +24,10 @@ def create_pc(obj, info, gql_input: Dict) -> PC:
 
 
 @gqt.mutation.field('updatePC')
-@convert_kwargs_to_snake_case
 def update_pc(obj, info, name: str, gql_input: Dict) -> PC:
     options = {
         'pc_name': gql_input.get('name'),
+        'hardware_type': gql_input.get('type'),
         'os_name': gql_input.get('os', {}).get('name'),
         'cpu_name': gql_input.get('cpu', {}).get('name'),
         'ram': gql_input.get('ram', {}).get('size')
