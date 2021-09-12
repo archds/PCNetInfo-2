@@ -5,6 +5,16 @@
 .controllerContainer {
   padding: 15px 40px;
   display: flex;
+  justify-content: space-between;
+}
+
+.controller {
+  display: flex;
+  gap: 20px;
+}
+
+.computerActions {
+  display: flex;
   gap: 20px;
 }
 

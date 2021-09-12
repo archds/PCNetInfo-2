@@ -8,7 +8,7 @@ import ComputerFilter from './computerTable/ComputerFilter'
 import ComputerList from './computerTable/ComputerList'
 import {deletePC} from '/gql_api/mutations/deletePC'
 import {useMutation, useQuery} from '@apollo/client'
-import {allPCQuery} from '../../gql_api/queries/allPC'
+import {allPCQuery} from '/gql_api/queries/allPC'
 import ModalConfirm from '../ModalConfirm'
 
 function ComputersDashboard(props) {
@@ -54,7 +54,7 @@ function ComputersDashboard(props) {
         onCompleted: () => {
             setSelectedComputers([])
             setShowDeleteModal(false)
-        }
+        },
     })
 
 
@@ -68,49 +68,53 @@ function ComputersDashboard(props) {
         <div className={style.computersContainer}>
             <div className="dashboard">
                 <div className={style.controllerContainer}>
-                    <Dropdown>
-                        <Dropdown.Toggle variant="outline-primary" id="sorting-dropdown">
-                            Sorting
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => setSorting('LABEL')} active={'LABEL' === sorting}>
-                                Label
-                            </Dropdown.Item>
-                            <Dropdown.Item onClick={() => setSorting('SERIAL')} active={'SERIAL' === sorting}>
-                                Serial
-                            </Dropdown.Item>
-                            <Dropdown.Item onClick={() => setSorting('CPU')} active={'CPU' === sorting}>
-                                CPU Performance
-                            </Dropdown.Item>
-                            <Dropdown.Item onClick={() => setSorting('MEMORY')} active={'MEMORY' === sorting}>
-                                Memory size
-                            </Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <Button variant="outline-primary" onClick={() => setShowFilter(!showFilter)}>Filter</Button>
-                    <Form.Control
-                        type="text"
-                        placeholder="Search..."
-                        style={{maxWidth: 200}}
-                        onInput={(event => {
-                            if (event.target.value.length > 2) {
-                                setSearch(event.target.value)
-                            }
-                            if (!event.target.value) {
-                                setSearch(null)
-                            }
-                        })}
-                    />
-                    {
-                        computerActions ?
-                            <Button
-                                variant="outline-danger"
-                                className="iconButton"
-                                onClick={() => setShowDeleteModal(true)}
-                            >
-                                <RiDeleteBin6Line/>
-                            </Button> : null
-                    }
+                    <div className={style.controller}>
+                        <Dropdown>
+                            <Dropdown.Toggle variant="outline-primary" id="sorting-dropdown">
+                                Sorting
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                <Dropdown.Item onClick={() => setSorting('LABEL')} active={'LABEL' === sorting}>
+                                    Label
+                                </Dropdown.Item>
+                                <Dropdown.Item onClick={() => setSorting('SERIAL')} active={'SERIAL' === sorting}>
+                                    Serial
+                                </Dropdown.Item>
+                                <Dropdown.Item onClick={() => setSorting('CPU')} active={'CPU' === sorting}>
+                                    CPU Performance
+                                </Dropdown.Item>
+                                <Dropdown.Item onClick={() => setSorting('MEMORY')} active={'MEMORY' === sorting}>
+                                    Memory size
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        <Button variant="outline-primary" onClick={() => setShowFilter(!showFilter)}>Filter</Button>
+                        <Form.Control
+                            type="text"
+                            placeholder="Search..."
+                            style={{maxWidth: 200}}
+                            onInput={(event => {
+                                if (event.target.value.length > 2) {
+                                    setSearch(event.target.value)
+                                }
+                                if (!event.target.value) {
+                                    setSearch(null)
+                                }
+                            })}
+                        />
+                    </div>
+                    <div className={style.computerActions}>
+                        {
+                            computerActions ?
+                                <Button
+                                    variant="outline-danger"
+                                    className="iconButton"
+                                    onClick={() => setShowDeleteModal(true)}
+                                >
+                                    <RiDeleteBin6Line/>
+                                </Button> : null
+                        }
+                    </div>
                 </div>
                 <Collapse isOpened={showFilter}>
                     <ComputerFilter

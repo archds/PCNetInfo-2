@@ -11,7 +11,7 @@ function ModalConfirm(props) {
             <Modal.Body>{props.modalBody}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={props.handleClose}>
-                    Close
+                    Cancel
                 </Button>
                 <Button variant="primary" className='text-light' onClick={props.handleConfirm}>
                     Confirm
