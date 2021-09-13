@@ -68,8 +68,8 @@ function ActiveComputer(props) {
                 <div className={style.computerMainInfo}>
                     <div className={style.computerHardwareInfo}>
                         <div className={style.computerName}>
-                            <Image src="/img/computer.png" width="100%"/>
-                            <p className="text-center">{props.computer.name}</p>
+                            <Image src='/img/computer.png' width='100%'/>
+                            <p className='text-center'>{props.computer.name}</p>
                         </div>
                         <div>
                             {computerOSInfo}

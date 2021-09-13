@@ -7,28 +7,28 @@ export default function Footer() {
                 <div className={'footer-container'}>
                     <div className={'footer-content'}>
                         <h1>PC Net <span>Info</span></h1>
-                        <div className="databases">
-                            <a target="_blank" href="https://www.techpowerup.com/cpu-specs/" rel="noreferrer">CPU
+                        <div className='databases'>
+                            <a target='_blank' href='https://www.techpowerup.com/cpu-specs/' rel='noreferrer'>CPU
                                 Database</a>
-                            <a target="_blank" href="https://www.techpowerup.com/gpu-specs/" rel="noreferrer">GPU
+                            <a target='_blank' href='https://www.techpowerup.com/gpu-specs/' rel='noreferrer'>GPU
                                 Database</a>
                         </div>
-                        <div className="tech-logos">
-                            <a target="_blank" className="tech-logo" href="https://www.djangoproject.com/">
+                        <div className='tech-logos'>
+                            <a target='_blank' className='tech-logo' href='https://www.djangoproject.com/' rel='noreferrer'>
                                 <Image
                                     src={'/img/techs/django.png'}
                                     width={120}
                                     height={41}
                                 />
                             </a>
-                            <a target="_blank" className="tech-logo" href="https://ariadnegraphql.org/">
+                            <a target='_blank' className='tech-logo' href='https://ariadnegraphql.org/' rel='noreferrer'>
                                 <Image
                                     src={'/img/techs/ariadne.png'}
                                     width={150}
                                     height={38}
                                 />
                             </a>
-                            <a target="_blank" className="tech-logo" href="https://graphql.org/">
+                            <a target='_blank' className='tech-logo' href='https://graphql.org/' rel='noreferrer'>
                                 <Image
                                     src={'/img/techs/graphql.png'}
                                     width={140}

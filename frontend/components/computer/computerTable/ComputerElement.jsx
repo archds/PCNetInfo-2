@@ -32,11 +32,11 @@ function ComputerElement(props) {
 
     return (
         <tr key={props.pc.name} className={selected ? style.selected : null}>
-            <td key="checkbox">
-                <FormCheck type="checkbox" onChange={e => switchSelection(e)}/>
+            <td key='checkbox'>
+                <FormCheck type='checkbox' onChange={e => switchSelection(e)}/>
             </td>
             <td><ComputerType switchType={switchType} type={pcType}/></td>
-            <td><a href="" onClick={e => props.onComputerClick(props.pc.name, e)}>{props.pc.label}</a></td>
+            <td><a href='' onClick={e => props.onComputerClick(props.pc.name, e)}>{props.pc.label}</a></td>
             <td>{props.pc.serial}</td>
             <td>{props.pc.location}</td>
         </tr>

@@ -39,7 +39,7 @@ function ComputerFilter(props) {
     return (
         <div className={style.filterContainer}>
             <Dropdown>
-                <Dropdown.Toggle variant="outline-secondary">
+                <Dropdown.Toggle variant='outline-secondary'>
                     Serial number: {displayState(serialNumberFilter)}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
@@ -67,7 +67,7 @@ function ComputerFilter(props) {
                 </Dropdown.Menu>
             </Dropdown>
             <Dropdown>
-                <Dropdown.Toggle variant="outline-secondary">
+                <Dropdown.Toggle variant='outline-secondary'>
                     Location: {displayState(locationFilter)}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
@@ -96,7 +96,7 @@ function ComputerFilter(props) {
             </Dropdown>
 
             <Dropdown>
-                <Dropdown.Toggle variant="outline-secondary">
+                <Dropdown.Toggle variant='outline-secondary'>
                     Form factor
                 </Dropdown.Toggle>
                 <Dropdown.Menu>

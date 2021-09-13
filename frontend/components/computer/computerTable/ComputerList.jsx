@@ -11,7 +11,7 @@ function ComputerList(props) {
         <Table hover>
             <thead>
             <tr>
-                <th key="checkbox">
+                <th key='checkbox'>
                     {/*<FormCheck*/}
                     {/*    type='checkbox'*/}
                     {/*/>*/}

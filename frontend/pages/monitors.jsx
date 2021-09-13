@@ -12,7 +12,7 @@ export default function monitors() {
             </div>
             <div className={'wipContainer'}>
                 <Image
-                    src="/img/wip_cover.svg"
+                    src='/img/wip_cover.svg'
                 />
             </div>
             <style jsx>{`
