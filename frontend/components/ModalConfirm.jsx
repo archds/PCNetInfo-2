@@ -13,7 +13,7 @@ function ModalConfirm(props) {
                 <Button variant="secondary" onClick={props.handleClose}>
                     Cancel
                 </Button>
-                <Button variant="primary" className='text-light' onClick={props.handleConfirm}>
+                <Button variant="primary" className="text-light" onClick={props.handleConfirm}>
                     Confirm
                 </Button>
             </Modal.Footer>

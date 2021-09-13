@@ -1,13 +1,13 @@
-import client from '/apollo-client'
 import React, {useState} from 'react'
-import style from '/styles/index.module.scss'
 import ActiveComputer from '/components/computer/ActiveComputer'
+import ComputersDashboard from '/components/computer/ComputersDashboard'
+import client from '/apollo-client'
 import {getPCQuery} from '/gql_api/queries/getPC'
-import ComputersDashboard from '../components/computer/ComputersDashboard'
+import style from '/styles/index.module.scss'
 import Head from 'next/head'
 
 
-function Index(props) {
+function Index() {
     const [activeComputer, setActiveComputer] = useState(undefined)
 
     const resetActiveComputer = () => {

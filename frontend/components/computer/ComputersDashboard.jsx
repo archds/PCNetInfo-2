@@ -8,7 +8,7 @@ import ComputerFilter from './computerTable/ComputerFilter'
 import ComputerList from './computerTable/ComputerList'
 import {deletePC} from '/gql_api/mutations/deletePC'
 import {useMutation, useQuery} from '@apollo/client'
-import {allPCQuery} from '/gql_api/queries/allPC'
+import {allPCQuery} from 'gql_api/queries/allPC'
 import ModalConfirm from '../ModalConfirm'
 
 function ComputersDashboard(props) {
@@ -66,11 +66,11 @@ function ComputersDashboard(props) {
 
     return (
         <div className={style.computersContainer}>
-            <div className="dashboard">
+            <div className='dashboard'>
                 <div className={style.controllerContainer}>
                     <div className={style.controller}>
                         <Dropdown>
-                            <Dropdown.Toggle variant="outline-primary" id="sorting-dropdown">
+                            <Dropdown.Toggle variant='outline-primary' id='sorting-dropdown'>
                                 Sorting
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
@@ -88,10 +88,10 @@ function ComputersDashboard(props) {
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
-                        <Button variant="outline-primary" onClick={() => setShowFilter(!showFilter)}>Filter</Button>
+                        <Button variant='outline-primary' onClick={() => setShowFilter(!showFilter)}>Filter</Button>
                         <Form.Control
-                            type="text"
-                            placeholder="Search..."
+                            type='text'
+                            placeholder='Search...'
                             style={{maxWidth: 200}}
                             onInput={(event => {
                                 if (event.target.value.length > 2) {
@@ -107,8 +107,8 @@ function ComputersDashboard(props) {
                         {
                             computerActions ?
                                 <Button
-                                    variant="outline-danger"
-                                    className="iconButton"
+                                    variant='outline-danger'
+                                    className='iconButton'
                                     onClick={() => setShowDeleteModal(true)}
                                 >
                                     <RiDeleteBin6Line/>
@@ -128,7 +128,7 @@ function ComputersDashboard(props) {
                     />
                 </Collapse>
             </div>
-            <div className="dashboard">
+            <div className='dashboard'>
                 <ComputerList
                     onComputerClick={props.onComputerClick}
                     switchSelection={switchSelection}

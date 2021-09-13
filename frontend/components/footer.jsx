@@ -60,6 +60,7 @@ export default function Footer() {
                 display: flex;
                 flex-flow: column wrap;
               }
+
               .tech-logos {
                 display: flex;
                 gap: 20px;
