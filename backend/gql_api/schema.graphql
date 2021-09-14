@@ -7,10 +7,10 @@ type Query {
 type Mutation {
     updatePC(
         name: String!
-        gqlInput: UpdatePCInput!
+        input: UpdatePCInput!
     ): PC!
     deletePC(names: [String!]!): Unit!
-    createPC(gqlInput: CreatePCInput!): PC!
+    createPC(input: CreatePCInput!): PC!
 }
 
 enum Unit {

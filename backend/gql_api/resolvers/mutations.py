@@ -24,13 +24,13 @@ def create_pc(obj, info, gql_input: Dict) -> PC:
 
 
 @gqt.mutation.field('updatePC')
-def update_pc(obj, info, name: str, gql_input: Dict) -> PC:
+def update_pc(obj, info, name: str, input: Dict) -> PC:
     options = {
-        'pc_name': gql_input.get('name'),
-        'hardware_type': gql_input.get('type'),
-        'os_name': gql_input.get('os', {}).get('name'),
-        'cpu_name': gql_input.get('cpu', {}).get('name'),
-        'ram': gql_input.get('ram', {}).get('size')
+        'pc_name': input.get('name'),
+        'hardware_type': input.get('type'),
+        'os_name': input.get('os', {}).get('name'),
+        'cpu_name': input.get('cpu', {}).get('name'),
+        'ram': input.get('ram', {}).get('size')
     }
 
     PC.objects.filter(pc_name=name).update(
@@ -41,4 +41,6 @@ def update_pc(obj, info, name: str, gql_input: Dict) -> PC:
         }
     )
 
-    return PC.objects.get(pc_name=gql_input['name'])
+    print(PC.objects.get(pc_name=name).hardware_type)
+
+    return PC.objects.get(pc_name=name)

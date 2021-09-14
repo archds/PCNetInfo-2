@@ -1,25 +1,43 @@
-import React, {useRef, useState} from 'react'
-import {FormCheck} from 'react-bootstrap'
+import {useMutation} from '@apollo/client'
 import PropTypes from 'prop-types'
-import ComputerType from './ComputerType'
+import React, {useState} from 'react'
+import {FormCheck} from 'react-bootstrap'
+import {updatePC} from '../../../gql_api/mutations/updatePC'
 import style from '../../../styles/ComputerElement.module.scss'
+import ComputerType from './ComputerType'
 
 
 const computerTypes = {
-    desktop: 'desktop',
-    laptop: 'laptop',
+    desktop: 'DESKTOP',
+    laptop: 'LAPTOP',
 }
 
 function ComputerElement(props) {
-    const [pcType, setPcType] = useState(computerTypes.desktop)
+    const [pcType, setPcType] = useState(props.pc.type)
     const [selected, setSelected] = useState(false)
-    const mounted = useRef(false)
+    const [updateComputer, {data, loading, error}] = useMutation(updatePC)
 
     const switchType = () => {
         if (pcType === computerTypes.desktop) {
+            updateComputer({
+                variables: {
+                    name: props.pc.name,
+                    input: {
+                        type: computerTypes.laptop,
+                    },
+                },
+            })
             setPcType(computerTypes.laptop)
         }
         if (pcType === computerTypes.laptop) {
+            updateComputer({
+                variables: {
+                    name: props.pc.name,
+                    input: {
+                        type: computerTypes.desktop,
+                    },
+                },
+            })
             setPcType(computerTypes.desktop)
         }
     }
@@ -32,11 +50,11 @@ function ComputerElement(props) {
 
     return (
         <tr key={props.pc.name} className={selected ? style.selected : null}>
-            <td key='checkbox'>
-                <FormCheck type='checkbox' onChange={e => switchSelection(e)}/>
+            <td key="checkbox">
+                <FormCheck type="checkbox" onChange={e => switchSelection(e)}/>
             </td>
             <td><ComputerType switchType={switchType} type={pcType}/></td>
-            <td><a href='' onClick={e => props.onComputerClick(props.pc.name, e)}>{props.pc.label}</a></td>
+            <td><a href="" onClick={e => props.onComputerClick(props.pc.name, e)}>{props.pc.label}</a></td>
             <td>{props.pc.serial}</td>
             <td>{props.pc.location}</td>
         </tr>

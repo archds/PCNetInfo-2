@@ -4,7 +4,7 @@ import {AiOutlineDesktop, AiOutlineLaptop} from 'react-icons/ai'
 import style from '../../../styles/ComputerType.module.scss'
 
 function ComputerType(props) {
-    if (props.type === 'desktop') {
+    if (props.type === 'DESKTOP') {
         return <AiOutlineDesktop
             onClick={props.switchType}
             size={22}
@@ -12,7 +12,7 @@ function ComputerType(props) {
         />
     }
 
-    if (props.type === 'laptop') {
+    if (props.type === 'LAPTOP') {
         return <AiOutlineLaptop
             onClick={props.switchType}
             size={22}
