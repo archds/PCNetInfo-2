@@ -9,7 +9,7 @@ const filterValue = {
     notSpecified: 'NOT_SPECIFIED',
 }
 
-function ComputerFilter(props) {
+function Filter(props) {
     const [serialNumberFilter, setSerialNumberFilter] = useState(null)
     const [locationFilter, setLocationFilter] = useState(null)
     const [formFactorFilter, setFormFactorFilter] = useState('ATX')
@@ -120,8 +120,8 @@ function ComputerFilter(props) {
     )
 }
 
-export default ComputerFilter
+export default Filter
 
-ComputerFilter.propTypes = {
+Filter.propTypes = {
     filterComputers: PropTypes.func,
 }

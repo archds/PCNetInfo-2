@@ -4,9 +4,6 @@ import {Table} from 'react-bootstrap'
 import ComputerElement from './ComputerElement'
 
 function ComputerList(props) {
-    const mounted = useRef(false)
-
-
     return (
         <Table hover>
             <thead>

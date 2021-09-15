@@ -1,31 +1,52 @@
-import React, {useState} from 'react'
-import ActiveComputer from '/components/computer/ActiveComputer'
-import ComputersDashboard from '/components/computer/ComputersDashboard'
-import client from '/apollo-client'
-import {getPCQuery} from '/gql_api/queries/getPC'
+import ComputersDashboard from '/components/computer/computers_dashboard/ComputersDashboard'
 import style from '/styles/index.module.scss'
+import { useQuery } from '@apollo/client'
 import Head from 'next/head'
+import React, { useState } from 'react'
+import ActionsDashboard from '../components/computer/actions_dashboard/ActionsDashboard'
+import { allPCQuery } from '../gql_api/queries/allPC'
 
 
 function Index() {
     const [activeComputer, setActiveComputer] = useState(undefined)
+    const {
+        data: computers,
+        error: computersError,
+        loading: computersLoading,
+        refetch: refetchComputers,
+    } = useQuery(allPCQuery)
+    const [inputMode, setInputMode] = useState(false)
 
-    const resetActiveComputer = () => {
+    const resetActionsDashboard = () => {
         setActiveComputer(undefined)
+        setInputMode(false)
     }
 
     const onComputerClick = (pcName, e) => {
         e.preventDefault()
-        client.query({
-            query: getPCQuery,
-            variables: {
-                name: pcName,
-            },
-        }).then(response => {
-            let computerData = response.data.getPC
-            setActiveComputer(computerData)
+        setActiveComputer(pcName)
+        setInputMode(false)
+    }
+
+    const onControllerChange = (sorting, filter, search) => {
+        refetchComputers({
+            sorting: sorting,
+            filter: filter,
+            search: search,
         })
     }
+
+
+    if (computersLoading) {
+        return <div className={style.computersContainer}>
+            <div className={style.ldsDualRing}></div>
+        </div>
+    }
+
+    if (computersError) {
+        console.error(computersError)
+    }
+
 
     return (
         <>
@@ -44,10 +65,14 @@ function Index() {
             <div className={style.indexContainer}>
                 <ComputersDashboard
                     onComputerClick={onComputerClick}
+                    onDelete={refetchComputers}
+                    onControllerChange={onControllerChange}
+                    computers={computers.AllPC}
                 />
-                <ActiveComputer
-                    computer={activeComputer}
-                    resetActiveComputer={resetActiveComputer}
+                <ActionsDashboard
+                    resetActiveComputer={resetActionsDashboard}
+                    computerName={activeComputer}
+                    input={inputMode}
                 />
             </div>
         </>

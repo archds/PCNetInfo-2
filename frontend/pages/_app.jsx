@@ -1,11 +1,11 @@
-import '../styles/main.scss'
-import Navigation from '../components/navigation'
-import Footer from '../components/footer'
-import {ApolloProvider} from '@apollo/client'
+import { ApolloProvider } from '@apollo/client'
 import client from '../apollo-client'
+import Footer from '../components/footer'
+import Navigation from '../components/navigation'
+import '../styles/main.scss'
 
 
-function MyApp({Component, pageProps}) {
+function MyApp({ Component, pageProps }) {
     return (
         <>
             <ApolloProvider client={client}>

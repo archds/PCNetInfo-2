@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import {AiOutlineDesktop, AiOutlineLaptop} from 'react-icons/ai'
-import style from '../../../styles/ComputerType.module.scss'
+import style from '../../../../styles/ComputerType.module.scss'
 
 function ComputerType(props) {
     if (props.type === 'DESKTOP') {

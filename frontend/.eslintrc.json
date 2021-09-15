@@ -19,6 +19,10 @@
       "warn",
       "prefer-single"
     ],
-    "import/no-unresolved": "off"
+    "import/no-unresolved": "off",
+    "object-curly-spacing": [
+      "warn",
+      "always"
+    ]
   }
 }

@@ -3,6 +3,7 @@ from typing import Dict, List
 from ariadne import convert_kwargs_to_snake_case
 
 import gql_api.type_defs as gqt
+from gql_api.actions.domain import convert_gql_pc
 from hardware.models import PC
 
 
@@ -13,34 +14,21 @@ def delete_pc(obj, info, names: List[str]) -> str:
 
 
 @gqt.mutation.field('createPC')
-@convert_kwargs_to_snake_case
-def create_pc(obj, info, gql_input: Dict) -> PC:
-    return PC.objects.create(
-        pc_name=gql_input['name'],
-        os_name=gql_input['os']['name'],
-        cpu_name=gql_input['cpu']['name'],
-        ram=gql_input['ram']['size'],
-    )
+def create_pc(obj, info, input: Dict) -> PC:
+    kwargs = convert_gql_pc(gql_input=input)
+    return PC.objects.create(**kwargs)
 
 
 @gqt.mutation.field('updatePC')
 def update_pc(obj, info, name: str, input: Dict) -> PC:
-    options = {
-        'pc_name': input.get('name'),
-        'hardware_type': input.get('type'),
-        'os_name': input.get('os', {}).get('name'),
-        'cpu_name': input.get('cpu', {}).get('name'),
-        'ram': input.get('ram', {}).get('size')
-    }
+    kwargs = convert_gql_pc(gql_input=input)
 
     PC.objects.filter(pc_name=name).update(
         **{
             field: value
-            for field, value in options.items()
+            for field, value in kwargs.items()
             if value is not None
         }
     )
-
-    print(PC.objects.get(pc_name=name).hardware_type)
 
     return PC.objects.get(pc_name=name)
