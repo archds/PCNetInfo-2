@@ -13,7 +13,7 @@ function ControllerDashboard(props) {
         <div className='dashboard'>
             <div className={style.controllerContainer}>
                 <TableController onControllerChange={onControllerChange}/>
-                <ComputerActions onDelete={props.onDelete} show={props.showActions}/>
+                <ComputerActions onDelete={props.onDelete} show={props.showActions} onAddComputer={props.onAddComputer}/>
             </div>
         </div>
     )
@@ -22,6 +22,7 @@ function ControllerDashboard(props) {
 export default ControllerDashboard
 
 ControllerDashboard.propTypes = {
+  onAddComputer: PropTypes.func.isRequired,
   onControllerChange: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   showActions: PropTypes.bool.isRequired

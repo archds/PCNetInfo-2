@@ -69,7 +69,7 @@ function ActiveComputer(props) {
 
     return (
         <>
-            <GrClose className={style.closeButton} onClick={props.resetActiveComputer}/>
+            <GrClose className='closeButton' onClick={props.resetActiveComputer}/>
             <div className={style.activeComputer}>
                 <div className={style.computerMainInfo}>
                     <div className={style.computerHardwareInfo}>

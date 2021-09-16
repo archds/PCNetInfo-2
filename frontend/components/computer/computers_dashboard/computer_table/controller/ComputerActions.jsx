@@ -1,22 +1,38 @@
-import PropTypes from 'prop-types'
-import React from 'react'
-import { Button } from 'react-bootstrap'
-import { RiDeleteBin6Line } from 'react-icons/ri'
 import style from '/styles/ComputersDashboard.module.scss'
+import Button from '@material-ui/core/Button'
+import DeleteIcon from '@material-ui/icons/Delete'
+import PropTypes from 'prop-types'
+import React, { useEffect, useRef } from 'react'
 
 function ComputerActions(props) {
+    const buttonEl = useRef(null)
+
+    useEffect(() => {
+        buttonEl.current.style.visibility = props.show ? 'visible' : 'hidden'
+        buttonEl.current.style.opacity = props.show ? 100 : 0
+    }, [props])
+
+
     return (
         <div className={style.computerActions}>
-            {
-                props.show ?
-                    <Button
-                        variant='outline-danger'
-                        className='iconButton'
-                        onClick={props.onDelete}
-                    >
-                        <RiDeleteBin6Line/>
-                    </Button> : null
-            }
+            <Button
+                disableElevation
+                ref={buttonEl}
+                variant='contained'
+                onClick={props.onDelete}
+                startIcon={<DeleteIcon/>}
+                style={{ backgroundColor: '#d32f2f', color: 'white' }}
+            >
+                Delete
+            </Button>
+            <Button
+                disableElevation
+                onClick={props.onAddComputer}
+                variant='contained'
+                color='primary'
+            >
+                Add
+            </Button>
         </div>
     )
 }
@@ -24,6 +40,7 @@ function ComputerActions(props) {
 export default ComputerActions
 
 ComputerActions.propTypes = {
+    onAddComputer: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     show: PropTypes.bool.isRequired,
 }

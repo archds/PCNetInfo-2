@@ -1,6 +1,14 @@
+import { ButtonGroup } from '@material-ui/core'
+import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
 import React, { useEffect, useRef, useState } from 'react'
-import { Dropdown } from 'react-bootstrap'
+
+const sortingType = {
+    label: 'LABEL',
+    serial: 'SERIAL',
+    cpu: 'CPU',
+    ram: 'MEMORY',
+}
 
 function Sorting(props) {
     const [sorting, setSorting] = useState('LABEL')
@@ -15,30 +23,39 @@ function Sorting(props) {
     }, [sorting])
 
     return (
-        <Dropdown>
-            <Dropdown.Toggle variant='outline-primary' id='sorting-dropdown'>
-                Sorting
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-                <Dropdown.Item onClick={() => setSorting('LABEL')} active={'LABEL' === sorting}>
+        <div style={{ paddingTop: 20 }}>
+            <ButtonGroup disableElevation color='secondary'>
+                <Button
+                    variant={sorting === sortingType.label ? 'contained' : 'outlined'}
+                    onClick={() => setSorting(sortingType.label)}
+                >
                     Label
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => setSorting('SERIAL')} active={'SERIAL' === sorting}>
+                </Button>
+                <Button
+                    variant={sorting === sortingType.serial ? 'contained' : 'outlined'}
+                    onClick={() => setSorting(sortingType.serial)}
+                >
                     Serial
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => setSorting('CPU')} active={'CPU' === sorting}>
+                </Button>
+                <Button
+                    variant={sorting === sortingType.cpu ? 'contained' : 'outlined'}
+                    onClick={() => setSorting(sortingType.cpu)}
+                >
                     CPU Performance
-                </Dropdown.Item>
-                <Dropdown.Item onClick={() => setSorting('MEMORY')} active={'MEMORY' === sorting}>
+                </Button>
+                <Button
+                    variant={sorting === sortingType.ram ? 'contained' : 'outlined'}
+                    onClick={() => setSorting(sortingType.ram)}
+                >
                     Memory size
-                </Dropdown.Item>
-            </Dropdown.Menu>
-        </Dropdown>
+                </Button>
+            </ButtonGroup>
+        </div>
     )
 }
 
 export default Sorting
 
 Sorting.propTypes = {
-  onSortingChange: PropTypes.func.isRequired
+    onSortingChange: PropTypes.func.isRequired,
 }

@@ -1,20 +1,12 @@
 import ComputersDashboard from '/components/computer/computers_dashboard/ComputersDashboard'
 import style from '/styles/index.module.scss'
-import { useQuery } from '@apollo/client'
 import Head from 'next/head'
 import React, { useState } from 'react'
 import ActionsDashboard from '../components/computer/actions_dashboard/ActionsDashboard'
-import { allPCQuery } from '../gql_api/queries/allPC'
 
 
 function Index() {
     const [activeComputer, setActiveComputer] = useState(undefined)
-    const {
-        data: computers,
-        error: computersError,
-        loading: computersLoading,
-        refetch: refetchComputers,
-    } = useQuery(allPCQuery)
     const [inputMode, setInputMode] = useState(false)
 
     const resetActionsDashboard = () => {
@@ -26,25 +18,6 @@ function Index() {
         e.preventDefault()
         setActiveComputer(pcName)
         setInputMode(false)
-    }
-
-    const onControllerChange = (sorting, filter, search) => {
-        refetchComputers({
-            sorting: sorting,
-            filter: filter,
-            search: search,
-        })
-    }
-
-
-    if (computersLoading) {
-        return <div className={style.computersContainer}>
-            <div className={style.ldsDualRing}></div>
-        </div>
-    }
-
-    if (computersError) {
-        console.error(computersError)
     }
 
 
@@ -65,12 +38,10 @@ function Index() {
             <div className={style.indexContainer}>
                 <ComputersDashboard
                     onComputerClick={onComputerClick}
-                    onDelete={refetchComputers}
-                    onControllerChange={onControllerChange}
-                    computers={computers.AllPC}
+                    onAddComputer={() => setInputMode(true)}
                 />
                 <ActionsDashboard
-                    resetActiveComputer={resetActionsDashboard}
+                    resetActionsDashboard={resetActionsDashboard}
                     computerName={activeComputer}
                     input={inputMode}
                 />

@@ -1,30 +1,23 @@
-import Link from 'next/link'
+import { Paper, Tab, Tabs } from '@material-ui/core'
+import { useRouter } from 'next/router'
+import { useState } from 'react'
 
 export default function Navigation() {
+    const router = useRouter()
+    const [value, setValue] = useState('/')
+    const handleClick = (path) => {
+        setValue(path)
+        router.push(path)
+    }
+
     return (
         <header>
-            <div className={'nav'}>
-                <Link href={'/'}>
-                    <a>Computers</a>
-                </Link>
-                <Link href={'/monitors'}>
-                    <a>Monitors</a>
-                </Link>
-            </div>
-            <style jsx>{`
-              .nav {
-                display: flex;
-                justify-content: center;
-                gap: 20px;
-                margin-top: 20px;
-                width: 70%;
-                padding-bottom: 20px;
-              }
-
-              a {
-                font-weight: bold;
-              }
-            `}</style>
+            <Paper>
+                <Tabs centered value={value} textColor='primary' indicatorColor='primary'>
+                    <Tab value='/' label='Computers' onClick={() => handleClick('/')}/>
+                    <Tab value='/monitors' label='Monitors' onClick={() => handleClick('/monitors')}/>
+                </Tabs>
+            </Paper>
         </header>
     )
 }

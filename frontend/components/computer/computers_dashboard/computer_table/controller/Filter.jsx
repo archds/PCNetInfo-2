@@ -1,17 +1,17 @@
+import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core'
 import PropTypes from 'prop-types'
-import React, {useEffect, useRef, useState} from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import style from '/styles/ComputerFilter.module.scss'
-import {Dropdown} from 'react-bootstrap'
 
 const filterValue = {
-    any: null,
+    any: 'ANY',
     specified: 'SPECIFIED',
     notSpecified: 'NOT_SPECIFIED',
 }
 
 function Filter(props) {
-    const [serialNumberFilter, setSerialNumberFilter] = useState(null)
-    const [locationFilter, setLocationFilter] = useState(null)
+    const [serialNumberFilter, setSerialNumberFilter] = useState(filterValue.any)
+    const [locationFilter, setLocationFilter] = useState(filterValue.any)
     const [formFactorFilter, setFormFactorFilter] = useState('ATX')
     const mounted = useRef(false)
 
@@ -31,91 +31,77 @@ function Filter(props) {
         if (!mounted.current) {
             mounted.current = true
         } else {
-            props.filterComputers(serialNumberFilter, locationFilter, formFactorFilter)
+            props.filterComputers(
+                serialNumberFilter === filterValue.any ? null : serialNumberFilter,
+                locationFilter === filterValue.any ? null : locationFilter,
+                formFactorFilter,
+            )
         }
     }, [serialNumberFilter, locationFilter, formFactorFilter])
 
 
     return (
         <div className={style.filterContainer}>
-            <Dropdown>
-                <Dropdown.Toggle variant='outline-secondary'>
-                    Serial number: {displayState(serialNumberFilter)}
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                    <Dropdown.Item
-                        active={serialNumberFilter === filterValue.any}
+            <FormControl>
+                <InputLabel shrink id='serial-label'>
+                    Serial number
+                </InputLabel>
+                <Select
+                    labelId='serial-label'
+                    id='serial'
+                    value={serialNumberFilter}
+                    style={{ width: 150 }}
+                >
+                    <MenuItem
+                        value={filterValue.any}
                         onClick={() => setSerialNumberFilter(filterValue.any)}
-                        className={style.filterDropdownItem}
                     >
                         Any
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                        active={serialNumberFilter === filterValue.specified}
+                    </MenuItem>
+                    <MenuItem
+                        value={filterValue.specified}
                         onClick={() => setSerialNumberFilter(filterValue.specified)}
-                        className={style.filterDropdownItem}
                     >
                         Specified
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                        active={serialNumberFilter === filterValue.notSpecified}
+                    </MenuItem>
+                    <MenuItem
+                        value={filterValue.notSpecified}
                         onClick={() => setSerialNumberFilter(filterValue.notSpecified)}
-                        className={style.filterDropdownItem}
                     >
                         Not specified
-                    </Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
-            <Dropdown>
-                <Dropdown.Toggle variant='outline-secondary'>
-                    Location: {displayState(locationFilter)}
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                    <Dropdown.Item
-                        active={locationFilter === filterValue.any}
+                    </MenuItem>
+                </Select>
+            </FormControl>
+            <FormControl>
+                <InputLabel shrink id='serial-label'>
+                    Location
+                </InputLabel>
+                <Select
+                    labelId='serial-label'
+                    id='serial'
+                    value={locationFilter}
+                    style={{ width: 150 }}
+                >
+                    <MenuItem
+                        value={filterValue.any}
                         onClick={() => setLocationFilter(filterValue.any)}
-                        className={style.filterDropdownItem}
                     >
                         Any
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                        active={locationFilter === filterValue.specified}
+                    </MenuItem>
+                    <MenuItem
+                        value={filterValue.specified}
                         onClick={() => setLocationFilter(filterValue.specified)}
-                        className={style.filterDropdownItem}
                     >
                         Specified
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                        active={locationFilter === filterValue.notSpecified}
+                    </MenuItem>
+                    <MenuItem
+                        value={filterValue.notSpecified}
                         onClick={() => setLocationFilter(filterValue.notSpecified)}
-                        className={style.filterDropdownItem}
                     >
                         Not specified
-                    </Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
-
-            <Dropdown>
-                <Dropdown.Toggle variant='outline-secondary'>
-                    Form factor
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                    <Dropdown.Item
-                        active={formFactorFilter === 'ATX'}
-                        onClick={() => setFormFactorFilter('ATX')}
-                        className={style.filterDropdownItem}
-                    >
-                        ATX
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                        active={formFactorFilter === 'mATX'}
-                        onClick={() => setFormFactorFilter('mATX')}
-                        className={style.filterDropdownItem}
-                    >
-                        mATX
-                    </Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
+                    </MenuItem>
+                </Select>
+            </FormControl>
         </div>
     )
 }

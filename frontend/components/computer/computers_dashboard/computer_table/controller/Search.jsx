@@ -1,13 +1,12 @@
+import { Input } from '@material-ui/core'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { Form } from 'react-bootstrap'
 
 function Search(props) {
     return (
-        <Form.Control
-            type='text'
+        <Input
             placeholder='Search...'
-            style={{ maxWidth: 200 }}
+            id='search'
             onInput={(event => {
                 if (event.target.value.length > 2) {
                     props.onSearchChange(event.target.value)

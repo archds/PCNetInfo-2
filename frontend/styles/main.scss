@@ -27,9 +27,9 @@ footer {
 }
 
 header {
-  display: flex;
-  justify-content: center;
-  background: white;
+  //display: flex;
+  //justify-content: center;
+  //background: white;
   margin-bottom: 20px;
 }
 
@@ -42,6 +42,7 @@ a {
   //padding: 1px 20px 20px 20px;
   border-radius: 20px;
   background: white;
+  box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
 }
 
 tr {
@@ -66,3 +67,18 @@ th:last-child {
   align-items: center;
   padding: 0 10px;
 }
+
+
+.closeButton {
+  border-radius: 5px;
+  padding: 5px;
+  box-sizing: content-box;
+  transition: ease 0.2s;
+  float: right;
+
+  &:hover {
+    color: #41b883;
+    background: transparentize(black, 0.95);
+  }
+}
+

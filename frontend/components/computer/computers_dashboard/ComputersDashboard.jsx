@@ -1,13 +1,20 @@
-import PropTypes from 'prop-types'
 import { deletePC } from '/gql_api/mutations/deletePC'
 import style from '/styles/ComputersDashboard.module.scss'
-import { useMutation } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
+import Loading from 'components/shared/Loading'
+import { allPCQuery } from 'gql_api/queries/allPC'
+import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import ModalConfirm from '../../shared/ModalConfirm'
 import ComputerList from './computer_table/ComputerList'
 import ControllerDashboard from './computer_table/controller/ControllerDashboard'
 
 function ComputersDashboard(props) {
+    const {
+        data: computersData,
+        loading: computersLoading,
+        refetch: refetchComputers,
+    } = useQuery(allPCQuery)
     // Management control
     const [selectedComputers, setSelectedComputers] = useState([])
     // Display control
@@ -21,31 +28,46 @@ function ComputersDashboard(props) {
         }
     }
 
-    const [deleteComputers] = useMutation(deletePC, {
+    const [deleteComputers, { loading: deleteLoading }] = useMutation(deletePC, {
         variables: {
             names: selectedComputers,
         },
         onCompleted: () => {
             setSelectedComputers([])
             setShowDeleteModal(false)
-            props.onDelete()
         },
+        refetchQueries: [allPCQuery],
     })
+
+    const onControllerChange = (sorting, filter, search) => {
+        refetchComputers({
+            sorting: sorting,
+            filter: filter,
+            search: search,
+        })
+    }
+
+    if (computersLoading || deleteLoading) {
+        return (
+            <div className={style.computersContainer}>
+                <Loading/>
+            </div>
+        )
+    }
 
     return (
         <div className={style.computersContainer}>
             <ControllerDashboard
-                onControllerChange={(sorting, filter, search) => props.onControllerChange(sorting, filter, search)}
-                onDelete={deleteComputers}
-                showActions={() => !!selectedComputers.length}
+                onControllerChange={(sorting, filter, search) => onControllerChange(sorting, filter, search)}
+                onDelete={() => setShowDeleteModal(true)}
+                showActions={!!selectedComputers.length}
+                onAddComputer={props.onAddComputer}
             />
-            <div className='dashboard'>
-                <ComputerList
-                    onComputerClick={props.onComputerClick}
-                    switchSelection={switchSelection}
-                    computers={props.computers}
-                />
-            </div>
+            <ComputerList
+                onComputerClick={props.onComputerClick}
+                switchSelection={switchSelection}
+                computers={computersData.AllPC}
+            />
             <ModalConfirm
                 handleClose={() => setShowDeleteModal(false)}
                 handleConfirm={deleteComputers}
@@ -60,8 +82,6 @@ function ComputersDashboard(props) {
 export default ComputersDashboard
 
 ComputersDashboard.propTypes = {
-  computers: PropTypes.array,
-  onComputerClick: PropTypes.func.isRequired,
-  onControllerChange: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired
+  onAddComputer: PropTypes.func.isRequired,
+  onComputerClick: PropTypes.func.isRequired
 }

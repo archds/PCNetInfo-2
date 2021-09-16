@@ -1,8 +1,13 @@
+import style from '/styles/Loading.module.scss'
 import React from 'react'
-import style from '../../styles/ActiveComputer.module.scss'
+import { Spinner } from 'react-bootstrap'
 
-function Loading(props) {
-    return <div className={style.ldsDualRing}></div>
+function Loading() {
+    return (
+        <div className={style.loadingContainer}>
+            <Spinner animation='grow' size='lg'/>
+        </div>
+    )
 }
 
 export default Loading

@@ -11,12 +11,16 @@ function ActionsDashboard(props) {
     const dashboardClass = classNames('dashboard', style.actionsDashboard)
 
     if (props.input) {
-        return <div className={dashboardClass}><ComputerInput/></div>
+        return <div className={dashboardClass}>
+            <ComputerInput
+                resetComputerInput={props.resetActionsDashboard}
+            />
+        </div>
     }
     if (props.computerName) {
         return (
             <div className={dashboardClass}>
-                <ActiveComputer computerName={props.computerName} resetActiveComputer={props.resetActiveComputer}/>
+                <ActiveComputer computerName={props.computerName} resetActiveComputer={props.resetActionsDashboard}/>
             </div>
         )
     }
@@ -28,5 +32,5 @@ export default ActionsDashboard
 ActionsDashboard.propTypes = {
     input: PropTypes.bool,
     computerName: PropTypes.string,
-    resetActiveComputer: PropTypes.func.isRequired,
+    resetActionsDashboard: PropTypes.func.isRequired,
 }
