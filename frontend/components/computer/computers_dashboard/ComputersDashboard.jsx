@@ -20,13 +20,6 @@ function ComputersDashboard(props) {
     // Display control
     const [showDeleteModal, setShowDeleteModal] = useState(false)
 
-    const switchSelection = (computerName) => {
-        if (selectedComputers.includes(computerName)) {
-            setSelectedComputers(prevState => prevState.filter(computer => computer !== computerName))
-        } else {
-            setSelectedComputers(prevState => [computerName, ...prevState])
-        }
-    }
 
     const [deleteComputers, { loading: deleteLoading }] = useMutation(deletePC, {
         variables: {
@@ -56,32 +49,32 @@ function ComputersDashboard(props) {
     }
 
     return (
-        <div className={style.computersContainer}>
-            <ControllerDashboard
-                onControllerChange={(sorting, filter, search) => onControllerChange(sorting, filter, search)}
-                onDelete={() => setShowDeleteModal(true)}
-                showActions={!!selectedComputers.length}
-                onAddComputer={props.onAddComputer}
-            />
-            <ComputerList
-                onComputerClick={props.onComputerClick}
-                switchSelection={switchSelection}
-                computers={computersData.AllPC}
-            />
-            <ModalConfirm
-                handleClose={() => setShowDeleteModal(false)}
-                handleConfirm={deleteComputers}
-                modalHeading={'Delete this PC?'}
-                modalBody={`To delete: ${selectedComputers.join(', ')}`}
-                show={showDeleteModal}
-            />
-        </div>
+            <div className={style.computersContainer}>
+                <ControllerDashboard
+                    onControllerChange={(sorting, filter, search) => onControllerChange(sorting, filter, search)}
+                    onDelete={() => setShowDeleteModal(true)}
+                    showActions={!!selectedComputers.length}
+                    onAddComputer={props.onAddComputer}
+                />
+                <ComputerList
+                    onComputerClick={props.onComputerClick}
+                    switchSelection={(newSelected) => setSelectedComputers(newSelected)}
+                    computers={computersData.AllPC}
+                />
+                <ModalConfirm
+                    handleClose={() => setShowDeleteModal(false)}
+                    handleConfirm={deleteComputers}
+                    modalHeading={'Delete this PC?'}
+                    modalBody={`To delete: ${selectedComputers.join(', ')}`}
+                    show={showDeleteModal}
+                />
+            </div>
     )
 }
 
 export default ComputersDashboard
 
 ComputersDashboard.propTypes = {
-  onAddComputer: PropTypes.func.isRequired,
-  onComputerClick: PropTypes.func.isRequired
+    onAddComputer: PropTypes.func.isRequired,
+    onComputerClick: PropTypes.func.isRequired,
 }

@@ -1,11 +1,11 @@
 import style from '/styles/Loading.module.scss'
+import { CircularProgress } from '@material-ui/core'
 import React from 'react'
-import { Spinner } from 'react-bootstrap'
 
 function Loading() {
     return (
         <div className={style.loadingContainer}>
-            <Spinner animation='grow' size='lg'/>
+            <CircularProgress />
         </div>
     )
 }

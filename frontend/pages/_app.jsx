@@ -1,6 +1,6 @@
 import { ApolloProvider } from '@apollo/client'
 import '@fontsource/roboto'
-import { createTheme, ThemeProvider } from '@material-ui/core/styles'
+import { createTheme, ThemeProvider } from '@material-ui/core'
 import client from '../apollo-client'
 import Footer from '../components/footer'
 import Navigation from '../components/navigation'

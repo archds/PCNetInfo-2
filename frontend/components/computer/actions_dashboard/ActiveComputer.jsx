@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import PropTypes from 'prop-types'
 import React from 'react'
-import { Image } from 'react-bootstrap'
+import Image from 'next/image'
 import { BsDisplayFill } from 'react-icons/bs'
 import { FaMemory } from 'react-icons/fa'
 import { GoCircuitBoard } from 'react-icons/go'
@@ -74,7 +74,7 @@ function ActiveComputer(props) {
                 <div className={style.computerMainInfo}>
                     <div className={style.computerHardwareInfo}>
                         <div className={style.computerName}>
-                            <Image src='/img/computer.png' width='100%'/>
+                            <Image src='/img/computer.png' width='100%' height='100%'/>
                             <p className='text-center'>{computer.name}</p>
                         </div>
                         <div>

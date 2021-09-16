@@ -1,23 +1,19 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import {Button, Modal} from 'react-bootstrap'
 
 function ModalConfirm(props) {
     return (
-        <Modal show={props.show} onHide={props.handleClose}>
-            <Modal.Header closeButton>
-                <Modal.Title>{props.modalHeading}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>{props.modalBody}</Modal.Body>
-            <Modal.Footer>
-                <Button variant='secondary' onClick={props.handleClose}>
-                    Cancel
-                </Button>
-                <Button variant='primary' className='text-light' onClick={props.handleConfirm}>
-                    Confirm
-                </Button>
-            </Modal.Footer>
-        </Modal>
+        <div></div>
+        // <Modal open={props.show}>
+        //     <h1>{props.modalHeading}</h1>
+        //     <p>{props.modalBody}</p>
+        //     <Button variant='secondary' onClick={props.handleClose}>
+        //         Cancel
+        //     </Button>
+        //     <Button variant='primary' className='text-light' onClick={props.handleConfirm}>
+        //         Confirm
+        //     </Button>
+        // </Modal>
     )
 }
 

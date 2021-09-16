@@ -1,5 +1,5 @@
 import style from '../styles/mainPage.module.scss'
-import {Image} from 'react-bootstrap'
+import Image from 'next/image'
 
 export default function monitors() {
     return (
@@ -13,6 +13,8 @@ export default function monitors() {
             <div className={'wipContainer'}>
                 <Image
                     src='/img/wip_cover.svg'
+                    width='100%'
+                    height='100%'
                 />
             </div>
             <style jsx>{`

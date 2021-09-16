@@ -4,6 +4,14 @@ import Head from 'next/head'
 import React, { useState } from 'react'
 import ActionsDashboard from '../components/computer/actions_dashboard/ActionsDashboard'
 
+const enums = {
+    computerType: {
+        desktop: 'DESKTOP',
+        laptop: 'LAPTOP',
+    },
+}
+
+export const ComputersContext = React.createContext()
 
 function Index() {
     const [activeComputer, setActiveComputer] = useState(undefined)
@@ -14,8 +22,7 @@ function Index() {
         setInputMode(false)
     }
 
-    const onComputerClick = (pcName, e) => {
-        e.preventDefault()
+    const onComputerClick = (pcName) => {
         setActiveComputer(pcName)
         setInputMode(false)
     }
@@ -35,17 +42,19 @@ function Index() {
                 <meta name='msapplication-config' content='/img/favicon/browserconfig.xml'/>
                 <meta name='theme-color' content='#ffffff'/>
             </Head>
-            <div className={style.indexContainer}>
-                <ComputersDashboard
-                    onComputerClick={onComputerClick}
-                    onAddComputer={() => setInputMode(true)}
-                />
-                <ActionsDashboard
-                    resetActionsDashboard={resetActionsDashboard}
-                    computerName={activeComputer}
-                    input={inputMode}
-                />
-            </div>
+            <ComputersContext.Provider value={{ enums: enums }}>
+                <div className={style.indexContainer}>
+                    <ComputersDashboard
+                        onComputerClick={onComputerClick}
+                        onAddComputer={() => setInputMode(true)}
+                    />
+                    <ActionsDashboard
+                        resetActionsDashboard={resetActionsDashboard}
+                        computerName={activeComputer}
+                        input={inputMode}
+                    />
+                </div>
+            </ComputersContext.Provider>
         </>
     )
 }

@@ -82,3 +82,9 @@ th:last-child {
   }
 }
 
+.defaultCell {
+  &:focus {
+    outline: none !important;
+  }
+}
+

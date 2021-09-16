@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactFitText from 'react-fittext'
 import Clock from 'react-live-clock'
-import {Image} from 'react-bootstrap'
+import Image from 'next/image'
 import style from '/styles/ActiveComputerStub.module.scss'
 
-function ActiveComputerStub(props) {
+function ActiveComputerStub() {
     return (
         <div className={style.ActiveComputerStubContainer}>
             <ReactFitText compressor={0.5}>
@@ -14,7 +14,8 @@ function ActiveComputerStub(props) {
             </ReactFitText>
             <Image
                 src='/img/love.svg'
-                width={'100%'}
+                width={500}
+                height={500}
             />
         </div>
     )

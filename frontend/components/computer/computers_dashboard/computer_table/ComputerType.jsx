@@ -1,21 +1,42 @@
+import style from '/styles/ComputerType.module.scss'
+import { useMutation } from '@apollo/client'
+import { updatePC } from 'gql_api/mutations/updatePC'
+import { ComputersContext } from 'pages'
 import PropTypes from 'prop-types'
-import React from 'react'
-import {AiOutlineDesktop, AiOutlineLaptop} from 'react-icons/ai'
-import style from '../../../../styles/ComputerType.module.scss'
+import React, { useContext, useState } from 'react'
+import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows'
+import LaptopIcon from '@material-ui/icons/Laptop'
 
 function ComputerType(props) {
-    if (props.type === 'DESKTOP') {
-        return <AiOutlineDesktop
-            onClick={props.switchType}
-            size={22}
+    const context = useContext(ComputersContext)
+    const computerTypes = context.enums.computerType
+    const [type, setType] = useState(props.type)
+    const [updateComputer] = useMutation(updatePC)
+    const switchType = () => {
+        const newType = type === computerTypes.desktop ? computerTypes.laptop : computerTypes.desktop
+        updateComputer({
+            variables: {
+                name: props.name,
+                input: {
+                    type: newType,
+                },
+            },
+            onCompleted: setType(newType),
+        })
+    }
+
+    if (type === computerTypes.desktop) {
+        return <DesktopWindowsIcon
+            onClick={switchType}
+            fontSize='medium'
             className={style.computerType}
         />
     }
 
-    if (props.type === 'LAPTOP') {
-        return <AiOutlineLaptop
-            onClick={props.switchType}
-            size={22}
+    if (type === computerTypes.laptop) {
+        return <LaptopIcon
+            onClick={switchType}
+            fontSize='medium'
             className={style.computerType}
         />
     }
@@ -24,6 +45,6 @@ function ComputerType(props) {
 export default ComputerType
 
 ComputerType.propTypes = {
-    switchType: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
 }

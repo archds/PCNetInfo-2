@@ -1,5 +1,5 @@
 import style from '/styles/ComputersDashboard.module.scss'
-import Button from '@material-ui/core/Button'
+import { Button } from '@material-ui/core'
 import Sorting from 'components/computer/computers_dashboard/computer_table/controller/Sorting'
 import PropTypes from 'prop-types'
 import React, { useEffect, useRef, useState } from 'react'
