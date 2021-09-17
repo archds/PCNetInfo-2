@@ -18,11 +18,3 @@ function ModalConfirm(props) {
 }
 
 export default ModalConfirm
-
-ModalConfirm.propTypes = {
-    handleClose: PropTypes.func.isRequired,
-    handleConfirm: PropTypes.func.isRequired,
-    modalBody: PropTypes.string,
-    modalHeading: PropTypes.string.isRequired,
-    show: PropTypes.bool.isRequired,
-}

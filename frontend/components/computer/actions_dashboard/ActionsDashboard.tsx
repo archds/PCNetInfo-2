@@ -1,6 +1,5 @@
 import style from '/styles/ActionsDashboard.module.scss'
 import classNames from 'classnames'
-import PropTypes from 'prop-types'
 import React from 'react'
 import ActiveComputer from './ActiveComputer'
 import ActiveComputerStub from './ActiveComputerStub'
@@ -9,11 +8,10 @@ import ComputerInput from './ComputerInput'
 export interface Props {
     input: boolean,
     computerName: string,
-
-    resetActionsDashboard(): null
+    resetActionsDashboard(): void
 }
 
-function ActionsDashboard(props) {
+function ActionsDashboard(props: Props) {
     const dashboardClass = classNames('dashboard', style.actionsDashboard)
 
     if (props.input) {

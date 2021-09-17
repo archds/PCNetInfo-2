@@ -3,7 +3,7 @@ import React from 'react'
 import { GrClose } from 'react-icons/gr'
 
 export interface Props {
-    resetComputerInput(): null
+    resetComputerInput(): void
 }
 
 function ComputerInput(props:Props) {

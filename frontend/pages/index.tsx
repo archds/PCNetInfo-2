@@ -4,27 +4,16 @@ import React, { useState } from 'react'
 import ActionsDashboard from '../components/computer/actions_dashboard/ActionsDashboard'
 import ComputersDashboard from "../components/computer/computers_dashboard/ComputersDashboard";
 
-const enums = {
-    computerType: {
-        desktop: 'DESKTOP',
-        laptop: 'LAPTOP',
-    },
-}
-
-export const ComputersContext = React.createContext({
-    enums: enums
-})
-
 function Index() {
-    const [activeComputer, setActiveComputer] = useState(undefined)
-    const [inputMode, setInputMode] = useState(false)
+    const [activeComputer, setActiveComputer] = useState<string | undefined>(undefined)
+    const [inputMode, setInputMode] = useState<boolean>(false)
 
-    const resetActionsDashboard = () => {
+    const resetActionsDashboard = (): void => {
         setActiveComputer(undefined)
         setInputMode(false)
     }
 
-    const onComputerClick = (pcName) => {
+    const onComputerClick = (pcName): void => {
         setActiveComputer(pcName)
         setInputMode(false)
     }
@@ -44,7 +33,6 @@ function Index() {
                 <meta name='msapplication-config' content='/img/favicon/browserconfig.xml'/>
                 <meta name='theme-color' content='#ffffff'/>
             </Head>
-            <ComputersContext.Provider value={{ enums: enums }}>
                 <div className={style.indexContainer}>
                     <ComputersDashboard
                         onComputerClick={onComputerClick}
@@ -56,7 +44,6 @@ function Index() {
                         input={inputMode}
                     />
                 </div>
-            </ComputersContext.Provider>
         </>
     )
 }

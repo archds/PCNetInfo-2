@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client'
-import PropTypes from 'prop-types'
+import { Computer, getComputerVariables } from 'domain/computers'
 import React from 'react'
 import Image from 'next/image'
 import { BsDisplayFill } from 'react-icons/bs'
@@ -9,20 +9,20 @@ import { GrClose } from 'react-icons/gr'
 import { MdEdit } from 'react-icons/md'
 import { RiCpuLine, RiWindowsFill } from 'react-icons/ri'
 import style from '/styles/ActiveComputer.module.scss'
-import Loading from "../../shared/Loading";
-import {getPCQuery} from "../../../gql_api/queries/getPC";
+import Loading from 'components/shared/Loading'
+import { getPCQuery } from 'gql_api/queries/getPC'
 
 export interface Props {
-    computerName: string,
-    resetActiveComputer(): null
+    computerName: string
+
+    resetActiveComputer(): void
 }
 
 function ActiveComputer(props: Props) {
     const {
         loading: computerLoading,
-        error: computerError,
-        data: computerData,
-    } = useQuery(
+        data: computer,
+    } = useQuery<Computer, getComputerVariables>(
         getPCQuery,
         {
             variables: {
@@ -35,13 +35,10 @@ function ActiveComputer(props: Props) {
         return <Loading/>
     }
 
-    const computer = computerData.getPC
-
     const editBtn = <MdEdit className={style.edit}/>
     const iconPdg = <span className={style.iconPadding}></span>
 
     const computerCommonInfo = Object.entries({
-        // 'Label:': props.computer.label,
         'User:': computer.user,
         'Location:': computer.location,
         'Form factor:': computer.form_factor,
@@ -73,13 +70,13 @@ function ActiveComputer(props: Props) {
 
     return (
         <>
-            <GrClose className='closeButton' onClick={props.resetActiveComputer}/>
+            <GrClose className="closeButton" onClick={props.resetActiveComputer}/>
             <div className={style.activeComputer}>
                 <div className={style.computerMainInfo}>
                     <div className={style.computerHardwareInfo}>
                         <div className={style.computerName}>
-                            <Image src='/img/computer.png' width='100%' height='100%'/>
-                            <p className='text-center'>{computer.name}</p>
+                            <Image src="/img/computer.png" width="100%" height="100%"/>
+                            <p className="text-center">{computer.name}</p>
                         </div>
                         <div>
                             {computerOSInfo}
