@@ -20,3 +20,5 @@ export enum SortingType {
     CPU = 'CPU',
     MEMORY = 'MEMORY'
 }
+
+export type Unit = 'UNIT'

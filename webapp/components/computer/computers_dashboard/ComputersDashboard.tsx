@@ -1,15 +1,15 @@
 import style from '/styles/ComputersDashboard.module.scss'
 import { useMutation, useQuery } from '@apollo/client'
 import { GridRowId, GridSelectionModel } from '@mui/x-data-grid'
+import { SortingType, Unit } from 'components/shared/enums'
 import { ComputersQueryVariables, StateContext } from 'components/shared/interfaces'
 import Loading from 'components/shared/Loading'
-import { Computer, ComputerBaseInfo } from 'components/shared/types/computers'
-import { SortingType } from 'components/shared/enums'
+import ModalConfirm from 'components/shared/ModalConfirm'
 import { FilterState } from 'components/shared/state'
+import { ComputerBaseInfo } from 'components/shared/types/computers'
 import { deletePC } from 'gql_api/mutations/deletePC'
 import { allPCQuery } from 'gql_api/queries/allPC'
 import React, { createContext, useState } from 'react'
-import ModalConfirm from 'components/shared/ModalConfirm'
 import ComputerList from './computer_table/ComputerList'
 import ControllerDashboard from './computer_table/controller/ControllerDashboard'
 
@@ -25,7 +25,7 @@ function ComputersDashboard(props: Props) {
         data: computers,
         loading: computersLoading,
         refetch: refetchComputers,
-    } = useQuery<{AllPC: ComputerBaseInfo[]}, ComputersQueryVariables>(allPCQuery)
+    } = useQuery<{ AllPC: ComputerBaseInfo[] }, ComputersQueryVariables>(allPCQuery)
     // Management control
     const [selectedComputers, setSelectedComputers] = useState<GridSelectionModel>([])
     // Display control
@@ -33,11 +33,10 @@ function ComputersDashboard(props: Props) {
     // Context
     const selectedComputerContextValue: StateContext = {
         state: selectedComputers,
-        setState: setSelectedComputers
+        setState: setSelectedComputers,
     }
 
-
-    const [deleteComputers, { loading: deleteLoading }] = useMutation(deletePC, {
+    const [deleteComputers, { loading: deleteLoading }] = useMutation<Unit, {names: GridSelectionModel}>(deletePC, {
         variables: {
             names: selectedComputers,
         },
