@@ -1,6 +1,6 @@
 import style from '/styles/ActiveComputer.module.scss'
 import { useQuery } from '@apollo/client'
-import Loading from 'components/shared/Loading'
+import Loading from 'components/shared/components/Loading'
 import { Computer, ComputerVariables } from 'components/shared/types/computers'
 import { getPCQuery } from 'gql_api/queries/getPC'
 import Image from 'next/image'
