@@ -1,4 +1,4 @@
-import {gql} from '@apollo/client'
+import { gql } from '@apollo/client'
 
 export const allPCQuery = gql`
     query ($filter: FilterInput, $sorting: SortField, $search: String){

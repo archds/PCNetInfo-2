@@ -1,14 +1,13 @@
 import style from '/styles/ComputersDashboard.module.scss'
 import { Button } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
-import PropTypes from 'prop-types'
-import React, { useEffect, useRef } from 'react'
 import * as CSS from 'csstype'
+import React from 'react'
 
 export interface Props {
+    show: boolean
     onAddComputer(): void
     onDelete(): void
-    show: boolean
 }
 
 function ComputerActions(props: Props) {
@@ -17,7 +16,7 @@ function ComputerActions(props: Props) {
         opacity: props.show ? 100 : 0,
         backgroundColor: '#d32f2f',
         color: 'white',
-        transition: '0.3s'
+        transition: '0.3s',
     }
 
     return (

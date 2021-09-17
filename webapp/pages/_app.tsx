@@ -1,11 +1,11 @@
 import { ApolloProvider } from '@apollo/client'
 import '@fontsource/roboto'
 import { createTheme, ThemeProvider } from '@material-ui/core'
+import { AppProps } from 'next/app'
 import client from '../apollo-client'
 import Footer from '../components/footer'
 import Navigation from '../components/navigation'
 import '../styles/main.scss'
-import {AppProps} from "next/app";
 
 const theme = createTheme({
     palette: {
@@ -14,7 +14,7 @@ const theme = createTheme({
             main: '#41b883',
             // dark: will be calculated from palette.primary.main,
             // contrastText: will be calculated to contrast with palette.primary.main
-            contrastText: '#fff'
+            contrastText: '#fff',
         },
         secondary: {
             light: '#537293',

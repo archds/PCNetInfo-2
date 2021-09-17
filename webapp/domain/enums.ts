@@ -1,10 +1,10 @@
 export enum ComputerType {
-    LAPTOP= 'LAPTOP',
+    LAPTOP = 'LAPTOP',
     DESKTOP = 'DESKTOP'
 }
 
 export enum FormFactor {
-    ATX= 'ATX',
+    ATX = 'ATX',
     mATX = 'mATX'
 }
 

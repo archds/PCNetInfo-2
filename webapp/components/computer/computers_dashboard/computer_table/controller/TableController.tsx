@@ -1,12 +1,12 @@
 import style from '/styles/ComputersDashboard.module.scss'
 import { Button } from '@material-ui/core'
 import Sorting from 'components/computer/computers_dashboard/computer_table/controller/Sorting'
-import { FilterType, FormFactor, SortingType } from 'domain/enums'
+import { FilterType, SortingType } from 'domain/enums'
 import { FilterState } from 'domain/state'
 import React, { useEffect, useRef, useState } from 'react'
 import { Collapse } from 'react-collapse'
-import Search from './Search'
 import Filter from './Filter'
+import Search from './Search'
 
 enum ActiveAction {
     FILTER,
@@ -22,7 +22,7 @@ function TableController(props: Props) {
     const [filter, setFilter] = useState<FilterState>({
         serialNumber: null,
         location: null,
-        formFactor: null
+        formFactor: null,
     })
     const [sorting, setSorting] = useState<SortingType>(SortingType.LABEL)
     const [showFilter, setShowFilter] = useState(false)
@@ -64,15 +64,15 @@ function TableController(props: Props) {
         <div>
             <div className={style.controller}>
                 <Button
-                    variant="outlined"
-                    color="primary"
+                    variant='outlined'
+                    color='primary'
                     onClick={() => switchCollapse(ActiveAction.SORTING)}
                 >
                     Sorting
                 </Button>
                 <Button
-                    variant="outlined"
-                    color="primary"
+                    variant='outlined'
+                    color='primary'
                     onClick={() => switchCollapse(ActiveAction.FILTER)}
                 >
                     Filter

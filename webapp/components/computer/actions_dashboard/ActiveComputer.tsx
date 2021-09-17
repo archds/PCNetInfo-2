@@ -1,16 +1,16 @@
+import style from '/styles/ActiveComputer.module.scss'
 import { useQuery } from '@apollo/client'
+import Loading from 'components/shared/Loading'
 import { Computer, getComputerVariables } from 'domain/computers'
-import React from 'react'
+import { getPCQuery } from 'gql_api/queries/getPC'
 import Image from 'next/image'
+import React from 'react'
 import { BsDisplayFill } from 'react-icons/bs'
 import { FaMemory } from 'react-icons/fa'
 import { GoCircuitBoard } from 'react-icons/go'
 import { GrClose } from 'react-icons/gr'
 import { MdEdit } from 'react-icons/md'
 import { RiCpuLine, RiWindowsFill } from 'react-icons/ri'
-import style from '/styles/ActiveComputer.module.scss'
-import Loading from 'components/shared/Loading'
-import { getPCQuery } from 'gql_api/queries/getPC'
 
 export interface Props {
     computerName: string
@@ -70,13 +70,13 @@ function ActiveComputer(props: Props) {
 
     return (
         <>
-            <GrClose className="closeButton" onClick={props.resetActiveComputer}/>
+            <GrClose className='closeButton' onClick={props.resetActiveComputer}/>
             <div className={style.activeComputer}>
                 <div className={style.computerMainInfo}>
                     <div className={style.computerHardwareInfo}>
                         <div className={style.computerName}>
-                            <Image src="/img/computer.png" width="100%" height="100%"/>
-                            <p className="text-center">{computer.name}</p>
+                            <Image src='/img/computer.png' width='100%' height='100%'/>
+                            <p className='text-center'>{computer.name}</p>
                         </div>
                         <div>
                             {computerOSInfo}

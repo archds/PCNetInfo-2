@@ -1,7 +1,6 @@
-import {DataGrid, GridRowId, GridSelectionModel} from '@mui/x-data-grid'
+import { DataGrid, GridRowId, GridSelectionModel } from '@mui/x-data-grid'
 import ComputerTypeIdentifier from 'components/computer/computers_dashboard/computer_table/ComputerTypeIdentifier'
 import { ComputerType } from 'domain/enums'
-import PropTypes from 'prop-types'
 import React from 'react'
 
 interface Computer {
@@ -36,10 +35,10 @@ function ComputerList(props: Props) {
             width: 130,
             renderCell: (params) => <ComputerTypeIdentifier type={params.value} name={params.id}/>,
         },
-        {...columnDefaults, field: 'name', headerName: 'Name'},
-        {...columnDefaults, field: 'label', headerName: 'Label'},
-        {...columnDefaults, field: 'inventory', headerName: 'Inventory number'},
-        {...columnDefaults, field: 'location', headerName: 'Location'},
+        { ...columnDefaults, field: 'name', headerName: 'Name' },
+        { ...columnDefaults, field: 'label', headerName: 'Label' },
+        { ...columnDefaults, field: 'inventory', headerName: 'Inventory number' },
+        { ...columnDefaults, field: 'location', headerName: 'Location' },
     ]
 
     const rows = props.computers.map((computer) => {
@@ -54,7 +53,7 @@ function ComputerList(props: Props) {
     })
 
     return (
-        <div className='dashboard' style={{display: 'flex', height: '100%'}}>
+        <div className='dashboard' style={{ display: 'flex', height: '100%' }}>
             <DataGrid
                 columns={columns}
                 rows={rows}

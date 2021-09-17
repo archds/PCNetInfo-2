@@ -32,13 +32,13 @@ function ComputerTypeIdentifier(props: Props) {
         case ComputerType.DESKTOP:
             return <DesktopWindowsIcon
                 onClick={switchType}
-                fontSize="medium"
+                fontSize='medium'
                 className={style.computerType}
             />
         case ComputerType.LAPTOP:
             return <LaptopIcon
                 onClick={switchType}
-                fontSize="medium"
+                fontSize='medium'
                 className={style.computerType}
             />
     }

@@ -1,15 +1,15 @@
 import style from '/styles/ComputersDashboard.module.scss'
 import { useMutation, useQuery } from '@apollo/client'
+import { GridRowId } from '@mui/x-data-grid'
 import Loading from 'components/shared/Loading'
 import { SortingType } from 'domain/enums'
 import { FilterState } from 'domain/state'
+import { deletePC } from 'gql_api/mutations/deletePC'
 import { allPCQuery } from 'gql_api/queries/allPC'
 import React, { useState } from 'react'
 import ModalConfirm from '../../shared/ModalConfirm'
 import ComputerList from './computer_table/ComputerList'
 import ControllerDashboard from './computer_table/controller/ControllerDashboard'
-import {GridRowId} from "@mui/x-data-grid";
-import {deletePC} from "gql_api/mutations/deletePC";
 
 export interface Props {
     onAddComputer(): void,
@@ -57,26 +57,26 @@ function ComputersDashboard(props: Props) {
     }
 
     return (
-            <div className={style.computersContainer}>
-                <ControllerDashboard
-                    onControllerChange={onControllerChange}
-                    onDelete={() => setShowDeleteModal(true)}
-                    showActions={!!selectedComputers.length}
-                    onAddComputer={props.onAddComputer}
-                />
-                <ComputerList
-                    onComputerClick={props.onComputerClick}
-                    switchSelection={(newSelected) => setSelectedComputers(newSelected)}
-                    computers={computersData.AllPC}
-                />
-                <ModalConfirm
-                    handleClose={() => setShowDeleteModal(false)}
-                    handleConfirm={deleteComputers}
-                    modalHeading={'Delete this PC?'}
-                    modalBody={`To delete: ${selectedComputers.join(', ')}`}
-                    show={showDeleteModal}
-                />
-            </div>
+        <div className={style.computersContainer}>
+            <ControllerDashboard
+                onControllerChange={onControllerChange}
+                onDelete={() => setShowDeleteModal(true)}
+                showActions={!!selectedComputers.length}
+                onAddComputer={props.onAddComputer}
+            />
+            <ComputerList
+                onComputerClick={props.onComputerClick}
+                switchSelection={(newSelected) => setSelectedComputers(newSelected)}
+                computers={computersData.AllPC}
+            />
+            <ModalConfirm
+                handleClose={() => setShowDeleteModal(false)}
+                handleConfirm={deleteComputers}
+                modalHeading={'Delete this PC?'}
+                modalBody={`To delete: ${selectedComputers.join(', ')}`}
+                show={showDeleteModal}
+            />
+        </div>
     )
 }
 

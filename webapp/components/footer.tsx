@@ -9,19 +9,25 @@ export default function Footer() {
                         <h1>PC Net <span>Info</span></h1>
                         <div className='databases'>
                             <a target='_blank' href='https://www.techpowerup.com/cpu-specs/' rel='noreferrer'>CPU
-                                Database</a>
+                                                                                                              Database</a>
                             <a target='_blank' href='https://www.techpowerup.com/gpu-specs/' rel='noreferrer'>GPU
-                                Database</a>
+                                                                                                              Database</a>
                         </div>
                         <div className='tech-logos'>
-                            <a target='_blank' className='tech-logo' href='https://www.djangoproject.com/' rel='noreferrer'>
+                            <a
+                                target='_blank' className='tech-logo' href='https://www.djangoproject.com/'
+                                rel='noreferrer'
+                            >
                                 <Image
                                     src={'/img/techs/django.png'}
                                     width={120}
                                     height={41}
                                 />
                             </a>
-                            <a target='_blank' className='tech-logo' href='https://ariadnegraphql.org/' rel='noreferrer'>
+                            <a
+                                target='_blank' className='tech-logo' href='https://ariadnegraphql.org/'
+                                rel='noreferrer'
+                            >
                                 <Image
                                     src={'/img/techs/ariadne.png'}
                                     width={150}

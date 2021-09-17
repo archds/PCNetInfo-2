@@ -1,7 +1,7 @@
-import {FormControl, InputLabel, MenuItem, Select} from '@material-ui/core'
-import { FilterType } from 'domain/enums'
-import React, {useEffect, useRef, useState} from 'react'
 import style from '/styles/ComputerFilter.module.scss'
+import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core'
+import { FilterType } from 'domain/enums'
+import React, { useEffect, useRef, useState } from 'react'
 
 
 export interface Props {
@@ -36,7 +36,7 @@ function Filter(props: Props) {
                     labelId='serial-label'
                     id='serial'
                     value={serialNumberFilter}
-                    style={{width: 150}}
+                    style={{ width: 150 }}
                 >
                     <MenuItem
                         value={FilterType.ANY}
@@ -66,7 +66,7 @@ function Filter(props: Props) {
                     labelId='serial-label'
                     id='serial'
                     value={locationFilter}
-                    style={{width: 150}}
+                    style={{ width: 150 }}
                 >
                     <MenuItem
                         value={FilterType.ANY}

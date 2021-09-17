@@ -1,5 +1,4 @@
-import {Input} from '@material-ui/core'
-import PropTypes from 'prop-types'
+import { Input } from '@material-ui/core'
 import React from 'react'
 
 export interface Props {
