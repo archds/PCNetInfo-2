@@ -1,9 +1,22 @@
 export enum ComputerType {
-    LAPTOP,
-    DESKTOP
+    LAPTOP= 'LAPTOP',
+    DESKTOP = 'DESKTOP'
 }
 
 export enum FormFactor {
-    ATX,
-    mATX
+    ATX= 'ATX',
+    mATX = 'mATX'
+}
+
+export enum FilterType {
+    ANY = 'ANY',
+    SPECIFIED = 'SPECIFIED',
+    NOT_SPECIFIED = 'NOT_SPECIFIED'
+}
+
+export enum SortingType {
+    LABEL = 'LABEL',
+    SERIAL = 'SERIAL',
+    CPU = 'CPU',
+    MEMORY = 'MEMORY'
 }

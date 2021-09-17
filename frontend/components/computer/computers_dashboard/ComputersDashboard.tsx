@@ -1,8 +1,9 @@
 import style from '/styles/ComputersDashboard.module.scss'
 import { useMutation, useQuery } from '@apollo/client'
 import Loading from 'components/shared/Loading'
+import { SortingType } from 'domain/enums'
+import { FilterState } from 'domain/state'
 import { allPCQuery } from 'gql_api/queries/allPC'
-import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import ModalConfirm from '../../shared/ModalConfirm'
 import ComputerList from './computer_table/ComputerList'
@@ -38,7 +39,8 @@ function ComputersDashboard(props: Props) {
         refetchQueries: [allPCQuery],
     })
 
-    const onControllerChange = (sorting: string, filter: object, search: string): void => {
+    const onControllerChange = (sorting: SortingType, filter: FilterState, search: string): void => {
+        console.log(123)
         refetchComputers({
             sorting: sorting,
             filter: filter,
@@ -57,7 +59,7 @@ function ComputersDashboard(props: Props) {
     return (
             <div className={style.computersContainer}>
                 <ControllerDashboard
-                    onControllerChange={(sorting, filter, search) => onControllerChange(sorting, filter, search)}
+                    onControllerChange={onControllerChange}
                     onDelete={() => setShowDeleteModal(true)}
                     showActions={!!selectedComputers.length}
                     onAddComputer={props.onAddComputer}

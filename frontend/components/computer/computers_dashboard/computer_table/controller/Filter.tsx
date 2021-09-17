@@ -1,48 +1,29 @@
 import {FormControl, InputLabel, MenuItem, Select} from '@material-ui/core'
-import PropTypes from 'prop-types'
+import { FilterType } from 'domain/enums'
 import React, {useEffect, useRef, useState} from 'react'
 import style from '/styles/ComputerFilter.module.scss'
 
-const filterValue = {
-    any: 'ANY',
-    specified: 'SPECIFIED',
-    notSpecified: 'NOT_SPECIFIED',
-}
-
 
 export interface Props {
-    filterComputers(serialFilter: string, locationFilter: string, formFactorFilter: string): void
+    filterComputers(serialFilter?: FilterType, locationFilter?: FilterType, formFactorFilter?: string): void
 }
 
 function Filter(props: Props) {
-    const [serialNumberFilter, setSerialNumberFilter] = useState(filterValue.any)
-    const [locationFilter, setLocationFilter] = useState(filterValue.any)
-    const [formFactorFilter, setFormFactorFilter] = useState('ATX')
+    const [serialNumberFilter, setSerialNumberFilter] = useState<FilterType>(FilterType.ANY)
+    const [locationFilter, setLocationFilter] = useState(FilterType.ANY)
     const mounted = useRef(false)
-
-    const displayState = (state) => {
-        if (state === filterValue.any) {
-            return 'Any'
-        } else if (state === filterValue.specified) {
-            return 'Specified'
-        } else if (state === filterValue.notSpecified) {
-            return 'Not specified'
-        } else {
-            return state
-        }
-    }
 
     useEffect(() => {
         if (!mounted.current) {
             mounted.current = true
         } else {
             props.filterComputers(
-                serialNumberFilter === filterValue.any ? null : serialNumberFilter,
-                locationFilter === filterValue.any ? null : locationFilter,
-                formFactorFilter,
+                serialNumberFilter === FilterType.ANY ? null : serialNumberFilter,
+                locationFilter === FilterType.ANY ? null : locationFilter,
+                null,
             )
         }
-    }, [serialNumberFilter, locationFilter, formFactorFilter])
+    }, [serialNumberFilter, locationFilter])
 
 
     return (
@@ -58,20 +39,20 @@ function Filter(props: Props) {
                     style={{width: 150}}
                 >
                     <MenuItem
-                        value={filterValue.any}
-                        onClick={() => setSerialNumberFilter(filterValue.any)}
+                        value={FilterType.ANY}
+                        onClick={() => setSerialNumberFilter(FilterType.ANY)}
                     >
                         Any
                     </MenuItem>
                     <MenuItem
-                        value={filterValue.specified}
-                        onClick={() => setSerialNumberFilter(filterValue.specified)}
+                        value={FilterType.SPECIFIED}
+                        onClick={() => setSerialNumberFilter(FilterType.SPECIFIED)}
                     >
                         Specified
                     </MenuItem>
                     <MenuItem
-                        value={filterValue.notSpecified}
-                        onClick={() => setSerialNumberFilter(filterValue.notSpecified)}
+                        value={FilterType.NOT_SPECIFIED}
+                        onClick={() => setSerialNumberFilter(FilterType.NOT_SPECIFIED)}
                     >
                         Not specified
                     </MenuItem>
@@ -88,20 +69,20 @@ function Filter(props: Props) {
                     style={{width: 150}}
                 >
                     <MenuItem
-                        value={filterValue.any}
-                        onClick={() => setLocationFilter(filterValue.any)}
+                        value={FilterType.ANY}
+                        onClick={() => setLocationFilter(FilterType.ANY)}
                     >
                         Any
                     </MenuItem>
                     <MenuItem
-                        value={filterValue.specified}
-                        onClick={() => setLocationFilter(filterValue.specified)}
+                        value={FilterType.SPECIFIED}
+                        onClick={() => setLocationFilter(FilterType.SPECIFIED)}
                     >
                         Specified
                     </MenuItem>
                     <MenuItem
-                        value={filterValue.notSpecified}
-                        onClick={() => setLocationFilter(filterValue.notSpecified)}
+                        value={FilterType.NOT_SPECIFIED}
+                        onClick={() => setLocationFilter(FilterType.NOT_SPECIFIED)}
                     >
                         Not specified
                     </MenuItem>
