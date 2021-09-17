@@ -1,10 +1,9 @@
 import style from '/styles/ComputersDashboard.module.scss'
-import { Button } from '@material-ui/core'
+import { Button, Collapse } from '@material-ui/core'
 import Sorting from 'components/computer/computers_dashboard/computer_table/controller/Sorting'
 import { FilterType, SortingType } from 'domain/enums'
 import { FilterState } from 'domain/state'
 import React, { useEffect, useRef, useState } from 'react'
-import { Collapse } from 'react-collapse'
 import Filter from './Filter'
 import Search from './Search'
 
@@ -80,10 +79,10 @@ function TableController(props: Props) {
                 <Search onSearchChange={onSearchChange}/>
             </div>
             <div>
-                <Collapse isOpened={showFilter}>
+                <Collapse in={showSorting}>
                     <Filter filterComputers={onFilterChange}/>
                 </Collapse>
-                <Collapse isOpened={showSorting}>
+                <Collapse in={showFilter}>
                     <Sorting onSortingChange={onSortingChange}/>
                 </Collapse>
             </div>
