@@ -1,5 +1,0 @@
-**/node_modules
-.gitignore
-.eslintrc.json
-.stylelintrc.json
-README.md
