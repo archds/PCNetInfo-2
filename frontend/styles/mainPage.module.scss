@@ -1,0 +1,16 @@
+.nav {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  margin-top: 20px;
+
+  a {
+    font-weight: bold;
+  }
+}
+
+
+.navLine {
+  display: flex;
+  justify-content: center;
+}

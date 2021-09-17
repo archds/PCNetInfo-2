@@ -1,0 +1,28 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:import/recommended",
+    "next/core-web-vitals"
+  ],
+  "rules": {
+    "semi": [
+      "warn",
+      "never"
+    ],
+    "quotes": [
+      "warn",
+      "single"
+    ],
+    "no-unused-vars": "warn",
+    "jsx-quotes": [
+      "warn",
+      "prefer-single"
+    ],
+    "import/no-unresolved": "off",
+    "object-curly-spacing": [
+      "warn",
+      "always"
+    ]
+  }
+}

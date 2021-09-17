@@ -1,0 +1,153 @@
+type Query {
+    hello: String!
+    getPC(name: String!): PC
+    AllPC(input: AllPCInput): [PC!]!
+}
+
+type Mutation {
+    updatePC(
+        name: String!
+        input: UpdatePCInput!
+    ): PC!
+    deletePC(names: [String!]!): Unit!
+    createPC(input: CreatePCInput!): PC!
+}
+
+enum Unit {
+    UNIT
+}
+
+input UpdatePCInput {
+    name: String
+    type: HWType
+    os: OSInput
+    cpu: CPUInput
+    ram: RAMInput
+}
+
+
+input AllPCInput {
+    filter: FilterInput
+    search: String
+    sort: SortField
+}
+
+
+enum SortField {
+    LABEL
+    SERIAL
+    CPU
+    MEMORY
+}
+
+input FilterInput {
+    serialNumber: FilterValue
+    location: FilterValue
+    formFactor: FormFactor
+}
+
+input CreatePCInput {
+    name: String!
+    os: OSInput!
+    cpu: CPUInput!
+    ram: RAMInput!
+}
+
+input OSInput {
+    name: String
+}
+
+
+input CPUInput {
+    name: String
+}
+
+input RAMInput {
+    size: Int
+}
+
+
+enum FilterValue {
+    SPECIFIED
+    NOT_SPECIFIED
+}
+
+type Subscription {
+    PC: PC!
+}
+
+
+type PC {
+    type: HWType!
+    name: String!
+    domain: String
+    username: String
+    timezone: String
+    serial: String
+    ip: String
+    comment: String
+    label: String
+    user: String
+    location: String
+    updated: String
+    form_factor: FormFactor
+    os: OS
+    cpu: CPU
+    ram: RAM
+    motherboard: Motherboard
+    videocard: Videocard
+}
+
+enum FormFactor {
+    ATX
+    mATX
+}
+
+enum HWType {
+    DESKTOP
+    LAPTOP
+}
+
+# Software types definition
+type OS {
+    name: String
+    version: String
+    architecture: String
+}
+
+# Hardware types definition
+type CPU {
+    name: String
+    clock: String
+    cores: String
+    threads: String
+    socket: String
+}
+
+type RAM {
+    size: Int
+    banks: [RAMBank]!
+}
+
+type RAMBank {
+    speed: Int
+    capacity: Int
+}
+
+type Motherboard {
+    manufacturer: String
+    product: String
+    serial: String
+}
+
+type Videocard {
+    name: String
+    resX: String
+    resY: String
+}
+
+type Filter {
+    name: String,
+    id: String,
+    options: [String!]!,
+}

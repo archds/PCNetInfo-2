@@ -1,0 +1,10 @@
+.filterContainer {
+  padding-top: 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.filterDropdownItem[aria-selected=true],
+.filterDropdownItem:active {
+  background-color: #35495e;
+}

@@ -11,6 +11,7 @@ websockets = "*"
 django = "*"
 uvicorn = "*"
 graphqlclient = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
