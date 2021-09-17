@@ -1,18 +1,29 @@
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core'
 import React from 'react'
 
-function ModalConfirm(props) {
+export interface Props {
+    isOpen: boolean
+    onClose(): void
+    onConfirm(): void
+    title: string
+    text: string
+}
+
+function ModalConfirm(props: Props) {
     return (
-        <div></div>
-        // <Modal open={props.show}>
-        //     <h1>{props.modalHeading}</h1>
-        //     <p>{props.modalBody}</p>
-        //     <Button variant='secondary' onClick={props.handleClose}>
-        //         Cancel
-        //     </Button>
-        //     <Button variant='primary' className='text-light' onClick={props.handleConfirm}>
-        //         Confirm
-        //     </Button>
-        // </Modal>
+        <Dialog open={props.isOpen} onClose={props.onClose}>
+            <DialogTitle>{props.title}</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    {props.text}
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={props.onClose}>Cancel</Button>
+                <Button onClick={props.onConfirm}>Confirm</Button>
+            </DialogActions>
+        </Dialog>
+
     )
 }
 

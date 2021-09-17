@@ -1,7 +1,8 @@
 import { DataGrid, GridRowId, GridSelectionModel } from '@mui/x-data-grid'
 import ComputerTypeIdentifier from 'components/computer/computers_dashboard/computer_table/ComputerTypeIdentifier'
+import { SelectedComputersContext } from 'components/computer/computers_dashboard/ComputersDashboard'
 import { ComputerType } from 'domain/enums'
-import React from 'react'
+import React, { useContext } from 'react'
 
 interface Computer {
     name: string,
@@ -13,13 +14,12 @@ interface Computer {
 
 export interface Props {
     computers: Computer[],
-
     onComputerClick(name: GridRowId): void,
-
-    switchSelection(selected: GridSelectionModel): void
 }
 
 function ComputerList(props: Props) {
+    const {state: selectedContext, setState: setSelectedContext} = useContext(SelectedComputersContext)
+
     const columnDefaults = {
         width: 200,
         sortable: false,
@@ -60,7 +60,7 @@ function ComputerList(props: Props) {
                 // autoPageSize
                 checkboxSelection
                 disableSelectionOnClick
-                onSelectionModelChange={(newSelected) => props.switchSelection(newSelected)}
+                onSelectionModelChange={(newSelected: GridSelectionModel) => setSelectedContext(newSelected)}
                 onRowClick={(params) => props.onComputerClick(params.id)}
                 // sortingMode='server'
                 // sortModel={sorting}

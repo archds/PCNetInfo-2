@@ -1,13 +1,14 @@
 import style from '/styles/ComputersDashboard.module.scss'
 import { useMutation, useQuery } from '@apollo/client'
-import { GridRowId } from '@mui/x-data-grid'
+import { GridRowId, GridSelectionModel } from '@mui/x-data-grid'
+import { StateContext } from 'components/shared/interfaces'
 import Loading from 'components/shared/Loading'
 import { SortingType } from 'domain/enums'
 import { FilterState } from 'domain/state'
 import { deletePC } from 'gql_api/mutations/deletePC'
 import { allPCQuery } from 'gql_api/queries/allPC'
-import React, { useState } from 'react'
-import ModalConfirm from '../../shared/ModalConfirm'
+import React, { createContext, useState } from 'react'
+import ModalConfirm from 'components/shared/ModalConfirm'
 import ComputerList from './computer_table/ComputerList'
 import ControllerDashboard from './computer_table/controller/ControllerDashboard'
 
@@ -16,6 +17,8 @@ export interface Props {
     onComputerClick(name: GridRowId): void,
 }
 
+export const SelectedComputersContext = createContext<StateContext>(null)
+
 function ComputersDashboard(props: Props) {
     const {
         data: computersData,
@@ -23,9 +26,14 @@ function ComputersDashboard(props: Props) {
         refetch: refetchComputers,
     } = useQuery(allPCQuery)
     // Management control
-    const [selectedComputers, setSelectedComputers] = useState([])
+    const [selectedComputers, setSelectedComputers] = useState<GridSelectionModel>([])
     // Display control
     const [showDeleteModal, setShowDeleteModal] = useState(false)
+    // Context
+    const selectedComputerContextValue: StateContext = {
+        state: selectedComputers,
+        setState: setSelectedComputers
+    }
 
 
     const [deleteComputers, { loading: deleteLoading }] = useMutation(deletePC, {
@@ -40,7 +48,6 @@ function ComputersDashboard(props: Props) {
     })
 
     const onControllerChange = (sorting: SortingType, filter: FilterState, search: string): void => {
-        console.log(123)
         refetchComputers({
             sorting: sorting,
             filter: filter,
@@ -58,24 +65,25 @@ function ComputersDashboard(props: Props) {
 
     return (
         <div className={style.computersContainer}>
-            <ControllerDashboard
-                onControllerChange={onControllerChange}
-                onDelete={() => setShowDeleteModal(true)}
-                showActions={!!selectedComputers.length}
-                onAddComputer={props.onAddComputer}
-            />
-            <ComputerList
-                onComputerClick={props.onComputerClick}
-                switchSelection={(newSelected) => setSelectedComputers(newSelected)}
-                computers={computersData.AllPC}
-            />
-            <ModalConfirm
-                handleClose={() => setShowDeleteModal(false)}
-                handleConfirm={deleteComputers}
-                modalHeading={'Delete this PC?'}
-                modalBody={`To delete: ${selectedComputers.join(', ')}`}
-                show={showDeleteModal}
-            />
+            <SelectedComputersContext.Provider value={selectedComputerContextValue}>
+                <ControllerDashboard
+                    onControllerChange={onControllerChange}
+                    onDelete={() => setShowDeleteModal(true)}
+                    showActions={!!selectedComputers.length}
+                    onAddComputer={props.onAddComputer}
+                />
+                <ComputerList
+                    onComputerClick={props.onComputerClick}
+                    computers={computersData.AllPC}
+                />
+                <ModalConfirm
+                    onClose={() => setShowDeleteModal(false)}
+                    onConfirm={deleteComputers}
+                    title={'Delete this PC?'}
+                    text={`To delete: ${selectedComputers.join(', ')}`}
+                    isOpen={showDeleteModal}
+                />
+            </SelectedComputersContext.Provider>
         </div>
     )
 }
