@@ -1,7 +1,7 @@
 import { DataGrid, GridRowId, GridSelectionModel } from '@mui/x-data-grid'
 import ComputerTypeIdentifier from 'components/computer/computers_dashboard/computer_table/ComputerTypeIdentifier'
 import { SelectedComputersContext } from 'components/computer/computers_dashboard/ComputersDashboard'
-import { ComputerType } from 'domain/enums'
+import { ComputerType } from 'components/shared/enums'
 import React, { useContext } from 'react'
 
 interface Computer {

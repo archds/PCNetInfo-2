@@ -1,5 +1,5 @@
 import { Button, ButtonGroup } from '@material-ui/core'
-import { SortingType } from 'domain/enums'
+import { SortingType } from 'components/shared/enums'
 import React, { useEffect, useRef, useState } from 'react'
 
 const sortingType = {

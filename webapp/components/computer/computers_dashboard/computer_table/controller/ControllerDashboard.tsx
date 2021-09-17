@@ -1,6 +1,6 @@
 import style from '/styles/ComputersDashboard.module.scss'
-import { SortingType } from 'domain/enums'
-import { FilterState } from 'domain/state'
+import { SortingType } from 'components/shared/enums'
+import { FilterState } from 'components/shared/state'
 import React from 'react'
 import ComputerActions from './ComputerActions'
 import TableController from './TableController'

@@ -1,4 +1,4 @@
-import { ComputerType, FormFactor } from 'domain/enums'
+import { ComputerType, FormFactor } from 'components/shared/enums'
 
 type OS = {
     name: string,
@@ -53,6 +53,14 @@ export type Computer = {
     videocard: Videocard
 }
 
-export interface getComputerVariables {
+export interface ComputerVariables {
     name: string
+}
+
+export type ComputerBaseInfo = {
+    name: string
+    type: ComputerType
+    label?: string
+    serial?: string
+    location?: string
 }

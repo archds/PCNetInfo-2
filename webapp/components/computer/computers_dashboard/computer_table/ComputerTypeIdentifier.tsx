@@ -2,7 +2,7 @@ import style from '/styles/ComputerType.module.scss'
 import { useMutation } from '@apollo/client'
 import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows'
 import LaptopIcon from '@material-ui/icons/Laptop'
-import { ComputerType } from 'domain/enums'
+import { ComputerType } from 'components/shared/enums'
 import { updatePC } from 'gql_api/mutations/updatePC'
 import React, { useState } from 'react'
 

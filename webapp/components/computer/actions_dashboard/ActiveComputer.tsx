@@ -1,7 +1,7 @@
 import style from '/styles/ActiveComputer.module.scss'
 import { useQuery } from '@apollo/client'
 import Loading from 'components/shared/Loading'
-import { Computer, getComputerVariables } from 'domain/computers'
+import { Computer, ComputerVariables } from 'components/shared/types/computers'
 import { getPCQuery } from 'gql_api/queries/getPC'
 import Image from 'next/image'
 import React from 'react'
@@ -22,7 +22,7 @@ function ActiveComputer(props: Props) {
     const {
         loading: computerLoading,
         data: computer,
-    } = useQuery<Computer, getComputerVariables>(
+    } = useQuery<Computer, ComputerVariables>(
         getPCQuery,
         {
             variables: {

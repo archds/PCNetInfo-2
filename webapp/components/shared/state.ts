@@ -1,4 +1,4 @@
-import { FilterType } from 'domain/enums'
+import { FilterType, SortingType } from 'components/shared/enums'
 
 export interface FilterState {
     serialNumber?: FilterType

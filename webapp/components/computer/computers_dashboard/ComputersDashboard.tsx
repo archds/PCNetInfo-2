@@ -1,10 +1,11 @@
 import style from '/styles/ComputersDashboard.module.scss'
 import { useMutation, useQuery } from '@apollo/client'
 import { GridRowId, GridSelectionModel } from '@mui/x-data-grid'
-import { StateContext } from 'components/shared/interfaces'
+import { ComputersQueryVariables, StateContext } from 'components/shared/interfaces'
 import Loading from 'components/shared/Loading'
-import { SortingType } from 'domain/enums'
-import { FilterState } from 'domain/state'
+import { Computer, ComputerBaseInfo } from 'components/shared/types/computers'
+import { SortingType } from 'components/shared/enums'
+import { FilterState } from 'components/shared/state'
 import { deletePC } from 'gql_api/mutations/deletePC'
 import { allPCQuery } from 'gql_api/queries/allPC'
 import React, { createContext, useState } from 'react'
@@ -21,10 +22,10 @@ export const SelectedComputersContext = createContext<StateContext>(null)
 
 function ComputersDashboard(props: Props) {
     const {
-        data: computersData,
+        data: computers,
         loading: computersLoading,
         refetch: refetchComputers,
-    } = useQuery(allPCQuery)
+    } = useQuery<{AllPC: ComputerBaseInfo[]}, ComputersQueryVariables>(allPCQuery)
     // Management control
     const [selectedComputers, setSelectedComputers] = useState<GridSelectionModel>([])
     // Display control
@@ -74,7 +75,7 @@ function ComputersDashboard(props: Props) {
                 />
                 <ComputerList
                     onComputerClick={props.onComputerClick}
-                    computers={computersData.AllPC}
+                    computers={computers.AllPC}
                 />
                 <ModalConfirm
                     onClose={() => setShowDeleteModal(false)}
