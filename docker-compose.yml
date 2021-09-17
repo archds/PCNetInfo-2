@@ -1,10 +1,10 @@
 version: "3.5"
 services:
   backend:
-    build: backend
+    build: server
     ports:
       - "8001:8000"
   frontend:
-    build: frontend
+    build: webapp
     ports:
       - "3000:3000"
