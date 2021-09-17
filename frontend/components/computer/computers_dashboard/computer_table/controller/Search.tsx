@@ -1,13 +1,17 @@
-import { Input } from '@material-ui/core'
+import {Input} from '@material-ui/core'
 import PropTypes from 'prop-types'
 import React from 'react'
 
-function Search(props) {
+export interface Props {
+    onSearchChange(value?: string): void
+}
+
+function Search(props: Props) {
     return (
         <Input
             placeholder='Search...'
             id='search'
-            onInput={(event => {
+            onInput={((event: React.ChangeEvent<HTMLInputElement>) => {
                 if (event.target.value.length > 2) {
                     props.onSearchChange(event.target.value)
                 }
@@ -20,7 +24,3 @@ function Search(props) {
 }
 
 export default Search
-
-Search.propTypes = {
-    onSearchChange: PropTypes.func.isRequired,
-}

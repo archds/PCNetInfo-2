@@ -6,6 +6,12 @@ import ActiveComputer from './ActiveComputer'
 import ActiveComputerStub from './ActiveComputerStub'
 import ComputerInput from './ComputerInput'
 
+export interface Props {
+    input: boolean,
+    computerName: string,
+
+    resetActionsDashboard(): null
+}
 
 function ActionsDashboard(props) {
     const dashboardClass = classNames('dashboard', style.actionsDashboard)
@@ -28,9 +34,3 @@ function ActionsDashboard(props) {
 }
 
 export default ActionsDashboard
-
-ActionsDashboard.propTypes = {
-    input: PropTypes.bool,
-    computerName: PropTypes.string,
-    resetActionsDashboard: PropTypes.func.isRequired,
-}

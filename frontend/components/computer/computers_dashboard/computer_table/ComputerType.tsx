@@ -7,7 +7,13 @@ import React, { useContext, useState } from 'react'
 import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows'
 import LaptopIcon from '@material-ui/icons/Laptop'
 
-function ComputerType(props) {
+
+export interface Props {
+    name: string,
+    type: string
+}
+
+function ComputerType(props: Props) {
     const context = useContext(ComputersContext)
     const computerTypes = context.enums.computerType
     const [type, setType] = useState(props.type)
@@ -21,7 +27,7 @@ function ComputerType(props) {
                     type: newType,
                 },
             },
-            onCompleted: setType(newType),
+            onCompleted: () => setType(newType),
         })
     }
 
@@ -43,8 +49,3 @@ function ComputerType(props) {
 }
 
 export default ComputerType
-
-ComputerType.propTypes = {
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-}

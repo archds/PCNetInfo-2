@@ -1,9 +1,25 @@
-import { DataGrid } from '@mui/x-data-grid'
+import {DataGrid, GridRowId, GridSelectionModel} from '@mui/x-data-grid'
 import ComputerType from 'components/computer/computers_dashboard/computer_table/ComputerType'
 import PropTypes from 'prop-types'
 import React from 'react'
 
-function ComputerList(props) {
+interface Computer {
+    name: string,
+    type: string,
+    label?: string,
+    serial?: string,
+    location?: string,
+}
+
+export interface Props {
+    computers: Computer[],
+
+    onComputerClick(name: GridRowId): void,
+
+    switchSelection(selected: GridSelectionModel): void
+}
+
+function ComputerList(props: Props) {
     const columnDefaults = {
         width: 200,
         sortable: false,
@@ -19,10 +35,10 @@ function ComputerList(props) {
             width: 130,
             renderCell: (params) => <ComputerType type={params.value} name={params.id}/>,
         },
-        { ...columnDefaults, field: 'name', headerName: 'Name' },
-        { ...columnDefaults, field: 'label', headerName: 'Label' },
-        { ...columnDefaults, field: 'inventory', headerName: 'Inventory number' },
-        { ...columnDefaults, field: 'location', headerName: 'Location' },
+        {...columnDefaults, field: 'name', headerName: 'Name'},
+        {...columnDefaults, field: 'label', headerName: 'Label'},
+        {...columnDefaults, field: 'inventory', headerName: 'Inventory number'},
+        {...columnDefaults, field: 'location', headerName: 'Location'},
     ]
 
     const rows = props.computers.map((computer) => {
@@ -37,7 +53,7 @@ function ComputerList(props) {
     })
 
     return (
-        <div className='dashboard' style={{ display: 'flex', height: '100%' }}>
+        <div className='dashboard' style={{display: 'flex', height: '100%'}}>
             <DataGrid
                 columns={columns}
                 rows={rows}
@@ -55,9 +71,3 @@ function ComputerList(props) {
 }
 
 export default ComputerList
-
-ComputerList.propTypes = {
-    computers: PropTypes.array.isRequired,
-    onComputerClick: PropTypes.func.isRequired,
-    switchSelection: PropTypes.func.isRequired,
-}

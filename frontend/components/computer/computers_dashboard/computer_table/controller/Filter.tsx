@@ -1,6 +1,6 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core'
+import {FormControl, InputLabel, MenuItem, Select} from '@material-ui/core'
 import PropTypes from 'prop-types'
-import React, { useEffect, useRef, useState } from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import style from '/styles/ComputerFilter.module.scss'
 
 const filterValue = {
@@ -9,7 +9,12 @@ const filterValue = {
     notSpecified: 'NOT_SPECIFIED',
 }
 
-function Filter(props) {
+
+export interface Props {
+    filterComputers(serialFilter: string, locationFilter: string, formFactorFilter: string): void
+}
+
+function Filter(props: Props) {
     const [serialNumberFilter, setSerialNumberFilter] = useState(filterValue.any)
     const [locationFilter, setLocationFilter] = useState(filterValue.any)
     const [formFactorFilter, setFormFactorFilter] = useState('ATX')
@@ -50,7 +55,7 @@ function Filter(props) {
                     labelId='serial-label'
                     id='serial'
                     value={serialNumberFilter}
-                    style={{ width: 150 }}
+                    style={{width: 150}}
                 >
                     <MenuItem
                         value={filterValue.any}
@@ -80,7 +85,7 @@ function Filter(props) {
                     labelId='serial-label'
                     id='serial'
                     value={locationFilter}
-                    style={{ width: 150 }}
+                    style={{width: 150}}
                 >
                     <MenuItem
                         value={filterValue.any}
@@ -107,7 +112,3 @@ function Filter(props) {
 }
 
 export default Filter
-
-Filter.propTypes = {
-    filterComputers: PropTypes.func,
-}

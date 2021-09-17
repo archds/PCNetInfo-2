@@ -9,7 +9,13 @@ const sortingType = {
     ram: 'MEMORY',
 }
 
-function Sorting(props) {
+
+export interface Props {
+    onSortingChange(sorting: string): void
+}
+
+
+function Sorting(props: Props) {
     const [sorting, setSorting] = useState('LABEL')
     const mounted = useRef(false)
 
@@ -54,7 +60,3 @@ function Sorting(props) {
 }
 
 export default Sorting
-
-Sorting.propTypes = {
-    onSortingChange: PropTypes.func.isRequired,
-}

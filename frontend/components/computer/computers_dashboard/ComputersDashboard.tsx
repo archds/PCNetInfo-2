@@ -1,4 +1,3 @@
-import { deletePC } from '/gql_api/mutations/deletePC'
 import style from '/styles/ComputersDashboard.module.scss'
 import { useMutation, useQuery } from '@apollo/client'
 import Loading from 'components/shared/Loading'
@@ -8,8 +7,15 @@ import React, { useState } from 'react'
 import ModalConfirm from '../../shared/ModalConfirm'
 import ComputerList from './computer_table/ComputerList'
 import ControllerDashboard from './computer_table/controller/ControllerDashboard'
+import {GridRowId} from "@mui/x-data-grid";
+import {deletePC} from "gql_api/mutations/deletePC";
 
-function ComputersDashboard(props) {
+export interface Props {
+    onAddComputer(): void,
+    onComputerClick(name: GridRowId): void,
+}
+
+function ComputersDashboard(props: Props) {
     const {
         data: computersData,
         loading: computersLoading,
@@ -25,14 +31,14 @@ function ComputersDashboard(props) {
         variables: {
             names: selectedComputers,
         },
-        onCompleted: () => {
+        onCompleted: (): void => {
             setSelectedComputers([])
             setShowDeleteModal(false)
         },
         refetchQueries: [allPCQuery],
     })
 
-    const onControllerChange = (sorting, filter, search) => {
+    const onControllerChange = (sorting: string, filter: object, search: string): void => {
         refetchComputers({
             sorting: sorting,
             filter: filter,
@@ -73,8 +79,3 @@ function ComputersDashboard(props) {
 }
 
 export default ComputersDashboard
-
-ComputersDashboard.propTypes = {
-    onAddComputer: PropTypes.func.isRequired,
-    onComputerClick: PropTypes.func.isRequired,
-}

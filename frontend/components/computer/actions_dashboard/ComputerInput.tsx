@@ -2,7 +2,11 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { GrClose } from 'react-icons/gr'
 
-function ComputerInput(props) {
+export interface Props {
+    resetComputerInput(): null
+}
+
+function ComputerInput(props:Props) {
     const formStyle = {
         display: 'flex',
         gap: 10,
@@ -17,7 +21,3 @@ function ComputerInput(props) {
 }
 
 export default ComputerInput
-
-ComputerInput.propTypes = {
-    resetComputerInput: PropTypes.func.isRequired,
-}

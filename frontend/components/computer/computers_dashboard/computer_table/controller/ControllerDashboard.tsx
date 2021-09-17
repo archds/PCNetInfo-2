@@ -4,7 +4,14 @@ import style from '/styles/ComputersDashboard.module.scss'
 import ComputerActions from './ComputerActions'
 import TableController from './TableController'
 
-function ControllerDashboard(props) {
+export interface Props {
+    onAddComputer(): void,
+    onControllerChange(sorting: string, filter: object, search: string): void,
+    onDelete(): void,
+    showActions: boolean,
+}
+
+function ControllerDashboard(props: Props) {
     const onControllerChange = (sorting, filter, search) => {
         props.onControllerChange(sorting, filter, search)
     }
@@ -13,17 +20,11 @@ function ControllerDashboard(props) {
         <div className='dashboard'>
             <div className={style.controllerContainer}>
                 <TableController onControllerChange={onControllerChange}/>
-                <ComputerActions onDelete={props.onDelete} show={props.showActions} onAddComputer={props.onAddComputer}/>
+                <ComputerActions onDelete={props.onDelete} show={props.showActions}
+                                 onAddComputer={props.onAddComputer}/>
             </div>
         </div>
     )
 }
 
 export default ControllerDashboard
-
-ControllerDashboard.propTypes = {
-  onAddComputer: PropTypes.func.isRequired,
-  onControllerChange: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  showActions: PropTypes.bool.isRequired
-}

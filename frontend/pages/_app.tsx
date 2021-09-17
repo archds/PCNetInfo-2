@@ -5,6 +5,7 @@ import client from '../apollo-client'
 import Footer from '../components/footer'
 import Navigation from '../components/navigation'
 import '../styles/main.scss'
+import {AppProps} from "next/app";
 
 const theme = createTheme({
     palette: {
@@ -38,7 +39,7 @@ const theme = createTheme({
 })
 
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: AppProps) {
     return (
         <>
             <ApolloProvider client={client}>

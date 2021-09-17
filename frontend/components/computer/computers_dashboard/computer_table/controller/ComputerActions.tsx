@@ -4,7 +4,13 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import PropTypes from 'prop-types'
 import React, { useEffect, useRef } from 'react'
 
-function ComputerActions(props) {
+export interface Props {
+    onAddComputer(): void
+    onDelete(): void
+    show: boolean
+}
+
+function ComputerActions(props: Props) {
     const buttonEl = useRef(null)
 
     useEffect(() => {
@@ -39,8 +45,3 @@ function ComputerActions(props) {
 
 export default ComputerActions
 
-ComputerActions.propTypes = {
-    onAddComputer: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired,
-    show: PropTypes.bool.isRequired,
-}

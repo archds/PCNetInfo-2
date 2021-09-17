@@ -1,8 +1,8 @@
-import ComputersDashboard from '/components/computer/computers_dashboard/ComputersDashboard'
 import style from '/styles/index.module.scss'
 import Head from 'next/head'
 import React, { useState } from 'react'
 import ActionsDashboard from '../components/computer/actions_dashboard/ActionsDashboard'
+import ComputersDashboard from "../components/computer/computers_dashboard/ComputersDashboard";
 
 const enums = {
     computerType: {
@@ -11,7 +11,9 @@ const enums = {
     },
 }
 
-export const ComputersContext = React.createContext()
+export const ComputersContext = React.createContext({
+    enums: enums
+})
 
 function Index() {
     const [activeComputer, setActiveComputer] = useState(undefined)

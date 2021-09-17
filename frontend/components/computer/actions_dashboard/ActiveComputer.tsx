@@ -8,12 +8,16 @@ import { GoCircuitBoard } from 'react-icons/go'
 import { GrClose } from 'react-icons/gr'
 import { MdEdit } from 'react-icons/md'
 import { RiCpuLine, RiWindowsFill } from 'react-icons/ri'
-import { getPCQuery } from '/gql_api/queries/getPC'
 import style from '/styles/ActiveComputer.module.scss'
-import Loading from '/components/shared/Loading'
+import Loading from "../../shared/Loading";
+import {getPCQuery} from "../../../gql_api/queries/getPC";
 
+export interface Props {
+    computerName: string,
+    resetActiveComputer(): null
+}
 
-function ActiveComputer(props) {
+function ActiveComputer(props: Props) {
     const {
         loading: computerLoading,
         error: computerError,
@@ -106,8 +110,3 @@ function ActiveComputer(props) {
 }
 
 export default ActiveComputer
-
-ActiveComputer.propTypes = {
-    computer: PropTypes.object,
-    resetActiveComputer: PropTypes.func,
-}

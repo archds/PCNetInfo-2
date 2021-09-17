@@ -1,18 +1,22 @@
 import style from '/styles/ComputersDashboard.module.scss'
-import { Button } from '@material-ui/core'
+import {Button} from '@material-ui/core'
 import Sorting from 'components/computer/computers_dashboard/computer_table/controller/Sorting'
 import PropTypes from 'prop-types'
-import React, { useEffect, useRef, useState } from 'react'
-import { Collapse } from 'react-collapse'
+import React, {useEffect, useRef, useState} from 'react'
+import {Collapse} from 'react-collapse'
 import Filter from './Filter'
 import Search from './Search'
 
-const collapse = {
-    filter: 'FILTER',
-    sorting: 'SORTING',
+enum ActiveAction {
+    FILTER,
+    SORTING
 }
 
-function TableController(props) {
+export interface Props {
+    onControllerChange(sorting: string, filter: object, search: string): null
+}
+
+function TableController(props: Props) {
     const [search, setSearch] = useState(null)
     const [filter, setFilter] = useState({})
     const [sorting, setSorting] = useState('LABEL')
@@ -20,22 +24,24 @@ function TableController(props) {
     const [showSorting, setShowSorting] = useState(false)
     const mounted = useRef(false)
 
-    const onSearchChange = (search) => setSearch(search)
-    const onFilterChange = (serialNumber, location, formFactor) => setFilter({
+    const onSearchChange = (search?: string): void => setSearch(search)
+    const onFilterChange = (serialNumber: string, location: string, formFactor: string): void => setFilter({
         serialNumber: serialNumber,
         location: location,
         formFactor: formFactor,
     })
-    const onSortingChange = (sorting) => setSorting(sorting)
+    const onSortingChange = (sorting: string): void => setSorting(sorting)
 
-    const switchCollapse = (collapseType) => {
-        if (collapseType === collapse.filter) {
-            setShowFilter(prevState => !prevState)
-            setShowSorting(false)
-        }
-        if (collapseType === collapse.sorting) {
-            setShowSorting(prevState => !prevState)
-            setShowFilter(false)
+    const switchCollapse = (collapseType: ActiveAction): null => {
+        switch (collapseType) {
+            case ActiveAction.FILTER:
+                setShowFilter(prevState => !prevState)
+                setShowSorting(false)
+                return
+            case ActiveAction.SORTING:
+                setShowSorting(prevState => !prevState)
+                setShowFilter(false)
+                return
         }
     }
 
@@ -48,20 +54,21 @@ function TableController(props) {
     }, [sorting, filter, search])
 
 
+    // @ts-ignore
     return (
         <div>
             <div className={style.controller}>
                 <Button
                     variant='outlined'
                     color='primary'
-                    onClick={() => switchCollapse(collapse.sorting)}
+                    onClick={() => switchCollapse(ActiveAction.SORTING)}
                 >
                     Sorting
                 </Button>
                 <Button
                     variant='outlined'
                     color='primary'
-                    onClick={() => switchCollapse(collapse.filter)}
+                    onClick={() => switchCollapse(ActiveAction.FILTER)}
                 >
                     Filter
                 </Button>
@@ -80,7 +87,3 @@ function TableController(props) {
 }
 
 export default TableController
-
-TableController.propTypes = {
-    onControllerChange: PropTypes.func.isRequired,
-}
