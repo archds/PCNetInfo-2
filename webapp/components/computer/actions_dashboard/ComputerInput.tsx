@@ -1,8 +1,13 @@
-import { Button, Grid, InputAdornment, TextField } from '@material-ui/core'
+import { useMutation } from '@apollo/client'
+import { Button, FormControl, Grid, InputAdornment, InputLabel, Select, TextField } from '@material-ui/core'
 import ConfirmationNumberOutlinedIcon from '@material-ui/icons/ConfirmationNumberOutlined'
 import DnsOutlinedIcon from '@material-ui/icons/DnsOutlined'
 import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined'
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
+import { ComputerType } from 'components/shared/enums'
+import { Computer } from 'components/shared/types/computers'
+import { createPC } from 'gql_api/mutations/createPC'
+import { allPCQuery } from 'gql_api/queries/allPC'
 import React, { useRef, useState } from 'react'
 import { GrClose } from 'react-icons/gr'
 
@@ -15,35 +20,53 @@ interface AddComputer {
     name: string
     serial: string
     location: string
+    type: ComputerType
 }
 
-interface AddComputerValidation {
-    [key: string]: {
-        result: boolean
-        reason?: string
-    }
+interface AddComputerValidationResult {
+    result: boolean
+    reason?: string
+}
+
+interface ValidationState {
+    [key: string]: AddComputerValidationResult
 }
 
 function ComputerInput(props: Props) {
-    // const addComputer = useMutation()
+    const [addComputerQuery] = useMutation<{ createPC: { name: string }, input: AddComputer }>(createPC)
     const formRef = useRef<HTMLDivElement>(null)
-    const [validationState, setValidationState] = useState<AddComputerValidation>({})
+    const [validationState, setValidationState] = useState<ValidationState>({})
+    const validators = {
+        label: (input: string): AddComputerValidationResult => {
+            const isValid = input.length > 3
+            return {
+                result: isValid,
+                reason: isValid ? null : 'Minimum 3 characters',
+            }
+        },
+        name: (input: string): AddComputerValidationResult => {
+            const isValid = input.length > 3
+            return {
+                result: isValid,
+                reason: isValid ? null : 'Minimum 3 characters',
+            }
+        },
+        serial: (input: string): AddComputerValidationResult => {
+            const isValid = input.length === 0 || input.length === 4
+            return {
+                result: isValid,
+                reason: isValid ? null : 'Serial number consist of 4 numbers',
+            }
+        },
+    }
 
     const validateInput = (input: AddComputer): boolean => {
         let validationResult: boolean = true
-        let newValidationState: AddComputerValidation = {}
+        let newValidationState: ValidationState = {}
         Object.entries(input).forEach(entry => {
             const [key, value] = entry
-            newValidationState[key] = {
-                result: true,
-                reason: ''
-            }
-            if (value.length < 3) {
-                validationResult = false
-                newValidationState[key] = {
-                    result: false,
-                    reason: 'Min 3 characters',
-                }
+            if (Object.keys(validators).includes(key)) {
+                newValidationState[key] = validators[key](value)
             }
         })
         setValidationState(newValidationState)
@@ -56,6 +79,7 @@ function ComputerInput(props: Props) {
             name: (formElement.querySelector('input#name') as HTMLInputElement).value,
             serial: (formElement.querySelector('input#serial') as HTMLInputElement).value,
             location: (formElement.querySelector('input#location') as HTMLInputElement).value,
+            type: ComputerType[(formElement.querySelector('select#type') as HTMLInputElement).value],
         }
         return form
     }
@@ -64,6 +88,13 @@ function ComputerInput(props: Props) {
         const input = collectInput(formRef.current)
         if (!validateInput(input)) {
             return
+        } else {
+            addComputerQuery({
+                variables: {
+                    input: input,
+                },
+                refetchQueries: [allPCQuery],
+            })
         }
     }
 
@@ -111,6 +142,8 @@ function ComputerInput(props: Props) {
                     <TextField
                         id='serial'
                         label='Inventory number'
+                        error={validationState.serial && !validationState.serial.result}
+                        helperText={validationState.serial ? validationState.serial.reason : ''}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position='start'>
@@ -132,6 +165,22 @@ function ComputerInput(props: Props) {
                             ),
                         }}
                     />
+                </Grid>
+                <Grid item xs={6}>
+                    <FormControl style={{ width: 230 }}>
+                        <InputLabel htmlFor='type'>Type</InputLabel>
+                        <Select
+                            required
+                            native
+                            inputProps={{
+                                name: 'Type',
+                                id: 'type',
+                            }}
+                        >
+                            <option value={ComputerType.DESKTOP}>Desktop</option>
+                            <option value={ComputerType.LAPTOP}>Laptop</option>
+                        </Select>
+                    </FormControl>
                 </Grid>
                 <Grid item xs={6}>
                     <Button

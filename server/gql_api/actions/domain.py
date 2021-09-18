@@ -24,7 +24,7 @@ def convert_gql_pc(gql_input: Dict) -> Dict:
         'username': gql_input.get('username'),
         'timezone': gql_input.get('timezone'),
         'user': gql_input.get('user'),
-        'serial_number': gql_input.get('serial_number'),
+        'serial_number': gql_input.get('serial'),
         'location': gql_input.get('location'),
         'updated': gql_input.get('updated'),
         'comment': gql_input.get('comment'),
