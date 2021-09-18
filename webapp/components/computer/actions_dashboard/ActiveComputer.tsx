@@ -14,15 +14,14 @@ import { RiCpuLine, RiWindowsFill } from 'react-icons/ri'
 
 export interface Props {
     computerName: string
-
     resetActiveComputer(): void
 }
 
 function ActiveComputer(props: Props) {
     const {
         loading: computerLoading,
-        data: computer,
-    } = useQuery<Computer, ComputerVariables>(
+        data: computerData,
+    } = useQuery<{ getPC: Computer }, ComputerVariables>(
         getPCQuery,
         {
             variables: {
@@ -34,6 +33,8 @@ function ActiveComputer(props: Props) {
     if (computerLoading) {
         return <Loading/>
     }
+
+    const computer = computerData.getPC
 
     const editBtn = <MdEdit className={style.edit}/>
     const iconPdg = <span className={style.iconPadding}></span>
