@@ -48,9 +48,13 @@ input FilterInput {
 
 input CreatePCInput {
     name: String!
-    os: OSInput!
-    cpu: CPUInput!
-    ram: RAMInput!
+    label: String!
+    type: HWType!
+    serial: String
+    location: String
+    os: OSInput
+    cpu: CPUInput
+    ram: RAMInput
 }
 
 input OSInput {
