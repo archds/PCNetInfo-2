@@ -5,7 +5,6 @@ import DnsOutlinedIcon from '@material-ui/icons/DnsOutlined'
 import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined'
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
 import { ComputerType } from 'components/shared/enums'
-import { Computer } from 'components/shared/types/computers'
 import { createPC } from 'gql_api/mutations/createPC'
 import { allPCQuery } from 'gql_api/queries/allPC'
 import React, { useRef, useState } from 'react'
@@ -61,7 +60,6 @@ function ComputerInput(props: Props) {
     }
 
     const validateInput = (input: AddComputer): boolean => {
-        let validationResult: boolean = true
         let newValidationState: ValidationState = {}
         Object.entries(input).forEach(entry => {
             const [key, value] = entry
@@ -70,7 +68,7 @@ function ComputerInput(props: Props) {
             }
         })
         setValidationState(newValidationState)
-        return validationResult
+        return !Object.values(newValidationState).some(item => !item.result)
     }
 
     const collectInput = (formElement: HTMLDivElement): AddComputer => {
