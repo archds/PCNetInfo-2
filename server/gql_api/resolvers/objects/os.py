@@ -4,14 +4,14 @@ from hardware.models import PC
 
 @gqt.os.field('name')
 def os_name_resolver(pc_obj: PC, info):
-    return pc_obj.os_name
+    return pc_obj.os.name
 
 
 @gqt.os.field('version')
 def os_version_resolver(pc_obj: PC, info):
-    return pc_obj.os_version
+    return pc_obj.os.version
 
 
 @gqt.os.field('architecture')
 def os_architecture_resolver(pc_obj: PC, info):
-    return pc_obj.os_architecture
+    return pc_obj.os.architecture

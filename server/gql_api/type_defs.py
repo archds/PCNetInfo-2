@@ -21,8 +21,6 @@ resolvers = [
     pc := ObjectType('PC'),
     os := ObjectType('OS'),
     cpu := ObjectType('CPU'),
-    ram := ObjectType('RAM'),
-    motherboard := ObjectType('Motherboard'),
     videocard := ObjectType('Videocard'),
     filter := ObjectType('Filter'),
 ]

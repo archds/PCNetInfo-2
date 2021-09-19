@@ -1,10 +1,8 @@
 from typing import Dict, List
 
-from ariadne import convert_kwargs_to_snake_case
-
 import gql_api.type_defs as gqt
 from gql_api.actions.domain import convert_gql_pc
-from hardware.models import PC
+from hardware.models import PC, OS, CPU, Videocard
 
 
 @gqt.mutation.field('deletePC')
@@ -15,8 +13,17 @@ def delete_pc(obj, info, names: List[str]) -> str:
 
 @gqt.mutation.field('createPC')
 def create_pc(obj, info, input: Dict) -> PC:
-    kwargs = convert_gql_pc(gql_input=input)
-    return PC.objects.create(**kwargs)
+    input = convert_gql_pc(gql_input=input)
+    return PC.objects.create(
+        **input['common'],
+        os=input['os'] and OS(
+            name=input['os']['name'],
+            version=input['os']['version'],
+            architecture='x64' if '64' in input['os']['architecture'] else 'x32',
+        ),
+        cpu=input['cpu'] and CPU(**input['cpu']),
+        videocard=input['videocard'] and Videocard(**input['videocard'])
+    )
 
 
 @gqt.mutation.field('updatePC')

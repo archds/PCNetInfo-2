@@ -4,24 +4,20 @@ from hardware.models import PC
 
 @gqt.cpu.field('name')
 def resolve_cpu_name(pc_obj: PC, info):
-    return pc_obj.formatted_cpu
+    return pc_obj.cpu.name
 
 
 @gqt.cpu.field('clock')
 def resolve_cpu_clock(pc_obj: PC, info):
-    return pc_obj.cpu_clock
+    return pc_obj.cpu.clock
 
 
 @gqt.cpu.field('cores')
 def resolve_cpu_cores(pc_obj: PC, info):
-    return pc_obj.cpu_cores
+    return pc_obj.cpu.cores
 
 
 @gqt.cpu.field('threads')
 def resolve_cpu_threads(pc_obj: PC, info):
-    return pc_obj.cpu_threads
+    return pc_obj.cpu.threads
 
-
-@gqt.cpu.field('socket')
-def resolve_cpu_socket(pc_obj: PC, info):
-    return pc_obj.cpu_socket

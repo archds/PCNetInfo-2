@@ -19,7 +19,7 @@ def resolve_pc_ip(pc_obj: PC, info):
 
 @gqt.pc.field('type')
 def resolve_pc_hardware_type(pc_obj: PC, info):
-    return pc_obj.hardware_type.upper()
+    return pc_obj.hardware_type
 
 
 @gqt.pc.field('username')
@@ -67,16 +67,6 @@ def resolve_pc_cpu(pc_obj: PC, info):
     return pc_obj
 
 
-@gqt.pc.field('motherboard')
-def resolve_pc_motherboard(pc_obj: PC, info):
-    return pc_obj
-
-
-@gqt.pc.field('ram')
-def resolve_pc_ram(pc_obj: PC, info):
-    return pc_obj
-
-
 @gqt.pc.field('videocard')
 def resolve_pc_videocard(pc_obj: PC, info):
     return pc_obj
@@ -90,3 +80,8 @@ def resolve_pc_form_factor(pc_obj: PC, info):
 @gqt.pc.field('serial')
 def resolve_pc_serial(pc_obj: PC, info):
     return pc_obj.serial_number
+
+
+@gqt.pc.field('ram')
+def resolve_pc_ram(pc_obj: PC, info):
+    return pc_obj.ram
