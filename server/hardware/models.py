@@ -26,11 +26,11 @@ class OS(Model):
         WIN = 'Windows'
 
     name = CharField(max_length=50, choices=Family.choices)
-    version = CharField(max_length=50, null=True)
+    # version = CharField(max_length=50, null=True)
     architecture = CharField(choices=Architecture.choices, max_length=50)
 
     class Meta:
-        unique_together = ('name', 'architecture', 'version')
+        unique_together = ('name', 'architecture')
 
 
 class CPU(Model):

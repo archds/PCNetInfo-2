@@ -19,7 +19,7 @@ def resolve_pc_ip(pc_obj: PC, info):
 
 @gqt.pc.field('type')
 def resolve_pc_hardware_type(pc_obj: PC, info):
-    return pc_obj.hardware_type
+    return pc_obj.hardware_type.upper()
 
 
 @gqt.pc.field('username')

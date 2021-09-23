@@ -70,11 +70,6 @@ def _parse_os_info(bs_obj: BeautifulSoup) -> Optional[Dict]:
         category='System Summary',
         bs_obj=bs_obj
     )
-    os_version = _get_item_value(
-        key='Version',
-        category='System Summary',
-        bs_obj=bs_obj
-    )
     os_system_type = _get_item_value(
         key='System Type',
         category='System Summary',
@@ -90,7 +85,6 @@ def _parse_os_info(bs_obj: BeautifulSoup) -> Optional[Dict]:
 
     os = {
         'name': OS.Family.WIN if 'windows' in os_name.lower() else None,
-        'version': os_version,
         'architecture': os_architecture
     }
 

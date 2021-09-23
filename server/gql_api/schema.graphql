@@ -115,7 +115,6 @@ enum ComputerType {
 # Software types definition
 type OS {
     name: String
-    version: String
     architecture: String
 }
 
