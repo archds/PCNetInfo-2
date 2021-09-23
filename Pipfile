@@ -12,6 +12,8 @@ django = "*"
 uvicorn = "*"
 graphqlclient = "*"
 django-cors-headers = "*"
+beautifulsoup4 = "*"
+lxml = "*"
 
 [dev-packages]
 

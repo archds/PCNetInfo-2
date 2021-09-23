@@ -4,7 +4,7 @@ from hardware.models import PC
 
 @gqt.pc.field('name')
 def resolve_pc_name(pc_obj: PC, info):
-    return pc_obj.pc_name
+    return pc_obj.name
 
 
 @gqt.pc.field('domain')
@@ -24,12 +24,7 @@ def resolve_pc_hardware_type(pc_obj: PC, info):
 
 @gqt.pc.field('username')
 def resolve_pc_username(pc_obj: PC, info):
-    return pc_obj.username.replace('?', '').replace('\\', '').replace(pc_obj.pc_name, '')
-
-
-@gqt.pc.field('timezone')
-def resolve_pc_timezone(pc_obj: PC, info):
-    return pc_obj.timezone
+    return pc_obj.username.replace('?', '').replace('\\', '').replace(pc_obj.name, '')
 
 
 @gqt.pc.field('user')
@@ -67,16 +62,6 @@ def resolve_pc_cpu(pc_obj: PC, info):
     return pc_obj
 
 
-@gqt.pc.field('motherboard')
-def resolve_pc_motherboard(pc_obj: PC, info):
-    return pc_obj
-
-
-@gqt.pc.field('ram')
-def resolve_pc_ram(pc_obj: PC, info):
-    return pc_obj
-
-
 @gqt.pc.field('videocard')
 def resolve_pc_videocard(pc_obj: PC, info):
     return pc_obj
@@ -90,3 +75,8 @@ def resolve_pc_form_factor(pc_obj: PC, info):
 @gqt.pc.field('serial')
 def resolve_pc_serial(pc_obj: PC, info):
     return pc_obj.serial_number
+
+
+@gqt.pc.field('ram')
+def resolve_pc_ram(pc_obj: PC, info):
+    return pc_obj.ram

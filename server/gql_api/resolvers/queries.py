@@ -46,4 +46,4 @@ def resolve_all_pc(obj, info, input: Optional[Dict] = None):
 
 @gqt.query.field('getPC')
 def resolve_get_pc(obj, info, name: str):
-    return PC.objects.get(pc_name=name)
+    return PC.objects.get(name=name)

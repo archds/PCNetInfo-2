@@ -11,6 +11,7 @@ type Mutation {
     ): PC!
     deletePC(names: [String!]!): Unit!
     createPC(input: CreatePCInput!): PC!
+    createFromMSInfo(file: Upload!): PC!
 }
 
 enum Unit {
@@ -19,10 +20,10 @@ enum Unit {
 
 input UpdatePCInput {
     name: String
-    type: HWType
+    type: ComputerType
     os: OSInput
     cpu: CPUInput
-    ram: RAMInput
+    ram: Int
 }
 
 
@@ -49,12 +50,12 @@ input FilterInput {
 input CreatePCInput {
     name: String!
     label: String!
-    type: HWType!
+    type: ComputerType!
     serial: String
     location: String
     os: OSInput
     cpu: CPUInput
-    ram: RAMInput
+    ram: Int
 }
 
 input OSInput {
@@ -82,11 +83,10 @@ type Subscription {
 
 
 type PC {
-    type: HWType!
+    type: ComputerType!
     name: String!
     domain: String
     username: String
-    timezone: String
     serial: String
     ip: String
     comment: String
@@ -97,8 +97,7 @@ type PC {
     form_factor: FormFactor
     os: OS
     cpu: CPU
-    ram: RAM
-    motherboard: Motherboard
+    ram: Int
     videocard: Videocard
 }
 
@@ -107,7 +106,7 @@ enum FormFactor {
     mATX
 }
 
-enum HWType {
+enum ComputerType {
     DESKTOP
     LAPTOP
 }
@@ -115,39 +114,20 @@ enum HWType {
 # Software types definition
 type OS {
     name: String
-    version: String
     architecture: String
 }
 
 # Hardware types definition
 type CPU {
     name: String
-    clock: String
-    cores: String
-    threads: String
-    socket: String
-}
-
-type RAM {
-    size: Int
-    banks: [RAMBank]!
-}
-
-type RAMBank {
-    speed: Int
-    capacity: Int
-}
-
-type Motherboard {
-    manufacturer: String
-    product: String
-    serial: String
+    clock: Int
+    cores: Int
+    threads: Int
 }
 
 type Videocard {
     name: String
-    resX: String
-    resY: String
+    memory: Int
 }
 
 type Filter {
@@ -155,3 +135,5 @@ type Filter {
     id: String,
     options: [String!]!,
 }
+
+scalar Upload

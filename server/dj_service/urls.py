@@ -17,7 +17,9 @@ from ariadne.contrib.django.views import GraphQLView
 from django.urls import path
 
 from gql_api.schema import schema
+from hardware.views import collect_msinfo
 
 urlpatterns = [
     path('api/', GraphQLView.as_view(schema=schema), name='api'),
+    path('api/collect-msinfo/', collect_msinfo)
 ]
