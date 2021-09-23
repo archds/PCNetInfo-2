@@ -3,6 +3,7 @@ import { Button, FormControl, Grid, InputAdornment, InputLabel, Select, TextFiel
 import ConfirmationNumberOutlinedIcon from '@material-ui/icons/ConfirmationNumberOutlined'
 import DnsOutlinedIcon from '@material-ui/icons/DnsOutlined'
 import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined'
+import MemoryIcon from '@material-ui/icons/Memory'
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
 import { ComputerType } from 'components/shared/enums'
 import { createPC } from 'gql_api/mutations/createPC'
@@ -72,14 +73,13 @@ function ComputerInput(props: Props) {
     }
 
     const collectInput = (formElement: HTMLDivElement): AddComputer => {
-        let form: AddComputer = {
+        return {
             label: (formElement.querySelector('input#label') as HTMLInputElement).value,
             name: (formElement.querySelector('input#name') as HTMLInputElement).value,
             serial: (formElement.querySelector('input#serial') as HTMLInputElement).value,
             location: (formElement.querySelector('input#location') as HTMLInputElement).value,
             type: ComputerType[(formElement.querySelector('select#type') as HTMLInputElement).value],
         }
-        return form
     }
 
     const addComputer = (): void => {
@@ -161,6 +161,21 @@ function ComputerInput(props: Props) {
                                     <RoomOutlinedIcon color='secondary'/>
                                 </InputAdornment>
                             ),
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        id='ram'
+                        label='Memory'
+                        type='number'
+                        InputProps={{
+                            endAdornment: <InputAdornment position='end'>GB</InputAdornment>,
+                            startAdornment: (
+                                <InputAdornment position='start'>
+                                    <MemoryIcon color='secondary'/>
+                                </InputAdornment>
+                            )
                         }}
                     />
                 </Grid>
