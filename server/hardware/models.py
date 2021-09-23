@@ -22,10 +22,7 @@ class OS(Model):
         x64 = 'x64'
         x32 = 'x32'
 
-    class Family(TextChoices):
-        WIN = 'Windows'
-
-    name = CharField(max_length=50, choices=Family.choices)
+    name = CharField(max_length=50)
     # version = CharField(max_length=50, null=True)
     architecture = CharField(choices=Architecture.choices, max_length=50)
 

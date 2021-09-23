@@ -27,11 +27,6 @@ def resolve_pc_username(pc_obj: PC, info):
     return pc_obj.username.replace('?', '').replace('\\', '').replace(pc_obj.name, '')
 
 
-@gqt.pc.field('timezone')
-def resolve_pc_timezone(pc_obj: PC, info):
-    return pc_obj.timezone
-
-
 @gqt.pc.field('user')
 def resolve_pc_user(pc_obj: PC, info):
     return pc_obj.user

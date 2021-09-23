@@ -84,7 +84,7 @@ def _parse_os_info(bs_obj: BeautifulSoup) -> Optional[Dict]:
         os_architecture = OS.Architecture.x64
 
     os = {
-        'name': OS.Family.WIN if 'windows' in os_name.lower() else None,
+        'name': os_name.replace('Microsoft ', ''),
         'architecture': os_architecture
     }
 
@@ -103,6 +103,9 @@ def _generate_response() -> str:
     pass
 
 
+# TODO: Parse drives
+# TODO: Parse domain
+# TODO: Parse ip
 @require_POST
 @csrf_exempt
 def collect_msinfo(request: HttpRequest):
