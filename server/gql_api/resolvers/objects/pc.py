@@ -4,7 +4,7 @@ from hardware.models import PC
 
 @gqt.pc.field('name')
 def resolve_pc_name(pc_obj: PC, info):
-    return pc_obj.pc_name
+    return pc_obj.name
 
 
 @gqt.pc.field('domain')
@@ -24,7 +24,7 @@ def resolve_pc_hardware_type(pc_obj: PC, info):
 
 @gqt.pc.field('username')
 def resolve_pc_username(pc_obj: PC, info):
-    return pc_obj.username.replace('?', '').replace('\\', '').replace(pc_obj.pc_name, '')
+    return pc_obj.username.replace('?', '').replace('\\', '').replace(pc_obj.name, '')
 
 
 @gqt.pc.field('timezone')

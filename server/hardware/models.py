@@ -22,7 +22,10 @@ class OS(Model):
         x64 = 'x64'
         x32 = 'x32'
 
-    name = CharField(max_length=50)
+    class Family(TextChoices):
+        WIN = 'Windows'
+
+    name = CharField(max_length=50, choices=Family.choices)
     version = CharField(max_length=50, null=True)
     architecture = CharField(choices=Architecture.choices, max_length=50)
 
@@ -57,7 +60,7 @@ class PC(Model):
     cpu = ForeignKey(to=CPU, on_delete=DO_NOTHING, null=True)
     videocard = ForeignKey(to=Videocard, on_delete=DO_NOTHING, null=True)
     ram = IntegerField(null=True)
-    pc_name = CharField(max_length=50, unique=True)
+    name = CharField(max_length=50, unique=True)
     domain = CharField(max_length=50, null=True)
     ip = GenericIPAddressField(null=True)
     username = CharField(max_length=100, null=True)
