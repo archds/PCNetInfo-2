@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client'
+import { ApolloError, useMutation } from '@apollo/client'
 import { Button, FormControl, Grid, InputAdornment, InputLabel, Select, TextField } from '@material-ui/core'
 import ConfirmationNumberOutlinedIcon from '@material-ui/icons/ConfirmationNumberOutlined'
 import DnsOutlinedIcon from '@material-ui/icons/DnsOutlined'
@@ -21,6 +21,7 @@ interface AddComputer {
     serial: string
     location: string
     type: ComputerType
+    ram?: number
 }
 
 interface AddComputerValidationResult {
@@ -33,7 +34,7 @@ interface ValidationState {
 }
 
 function ComputerInput(props: Props) {
-    const [addComputerQuery] = useMutation<{ createPC: { name: string }, input: AddComputer }>(createPC)
+    const [addComputerQuery, { error: addComputerError }] = useMutation<{ createPC: { name: string }, input: AddComputer }>(createPC)
     const formRef = useRef<HTMLDivElement>(null)
     const [validationState, setValidationState] = useState<ValidationState>({})
     const validators = {
@@ -79,6 +80,7 @@ function ComputerInput(props: Props) {
             serial: (formElement.querySelector('input#serial') as HTMLInputElement).value,
             location: (formElement.querySelector('input#location') as HTMLInputElement).value,
             type: ComputerType[(formElement.querySelector('select#type') as HTMLInputElement).value],
+            ram: parseInt((formElement.querySelector('input#ram') as HTMLInputElement).value),
         }
     }
 
@@ -92,6 +94,20 @@ function ComputerInput(props: Props) {
                     input: input,
                 },
                 refetchQueries: [allPCQuery],
+            }).catch((e: ApolloError) => {
+                e.graphQLErrors.forEach(err => {
+                    if (err.message.includes('Computer with this name already exists')) {
+                        setValidationState(prevState => {
+                            return {
+                                ...prevState,
+                                name: {
+                                    result: false,
+                                    reason: err.message
+                                }
+                            }
+                        })
+                    }
+                })
             })
         }
     }
@@ -175,7 +191,7 @@ function ComputerInput(props: Props) {
                                 <InputAdornment position='start'>
                                     <MemoryIcon color='secondary'/>
                                 </InputAdornment>
-                            )
+                            ),
                         }}
                     />
                 </Grid>

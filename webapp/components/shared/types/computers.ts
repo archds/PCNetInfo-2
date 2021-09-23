@@ -1,18 +1,18 @@
 import { ComputerType, FormFactor } from 'components/shared/enums'
 
-type OS = {
+export type OS = {
     name: string,
     architecture?: string
 }
 
-type CPU = {
+export type CPU = {
     name: string,
     clock: string,
     cores: string,
     threads: string,
 }
 
-type Videocard = {
+export type Videocard = {
     name: string
     memory: number
 }

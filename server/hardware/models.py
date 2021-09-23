@@ -62,7 +62,7 @@ class PC(Model):
     ip = GenericIPAddressField(null=True)
     username = CharField(max_length=100, null=True)
     user = CharField(max_length=200, null=True)
-    serial_number = IntegerField(null=True)
+    serial_number = CharField(null=True, max_length=50, unique=True)
     location = CharField(max_length=200, null=True)
     updated = DateTimeField(auto_now=True)
     comment = TextField(null=True)
