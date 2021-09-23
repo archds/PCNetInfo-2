@@ -7,7 +7,6 @@ import Image from 'next/image'
 import React from 'react'
 import { BsDisplayFill } from 'react-icons/bs'
 import { FaMemory } from 'react-icons/fa'
-import { GoCircuitBoard } from 'react-icons/go'
 import { GrClose } from 'react-icons/gr'
 import { MdEdit } from 'react-icons/md'
 import { RiCpuLine, RiWindowsFill } from 'react-icons/ri'
@@ -17,6 +16,7 @@ export interface Props {
     resetActiveComputer(): void
 }
 
+// TODO: computer type
 function ActiveComputer(props: Props) {
     const {
         loading: computerLoading,
@@ -54,18 +54,24 @@ function ActiveComputer(props: Props) {
 
     const computerOSInfo = (
         <p>
-            <RiWindowsFill/> {computer.os.name}, x{computer.os.architecture}<br/>
-            {iconPdg}ver. {computer.os.version}
+            <RiWindowsFill/> {computer.os.name}, {computer.os.architecture}<br/>
         </p>
     )
 
-    const computerRAMInfo = <p><FaMemory/> {computer.ram.size} GB</p>
+    const computerRAMInfo = <p><FaMemory/> {computer.ram} GB</p>
     const computerCPUInfo = (
         <p>
             <RiCpuLine/> {computer.cpu.name}<br/>
             {iconPdg}Clock: {computer.cpu.clock} MHz<br/>
             {iconPdg}Cores/Threads: {computer.cpu.cores}/{computer.cpu.threads}<br/>
-            {iconPdg}Socket: {computer.cpu.socket.replace('SOCKET', '')}
+        </p>
+    )
+
+    const computerVideocardInfo = (
+        <p>
+            <BsDisplayFill/>
+            {computer.videocard.name},
+            {computer.videocard.memory} GB
         </p>
     )
 
@@ -76,25 +82,14 @@ function ActiveComputer(props: Props) {
                 <div className={style.computerMainInfo}>
                     <div className={style.computerHardwareInfo}>
                         <div className={style.computerName}>
-                            <Image src='/img/computer.png' width='100%' height='100%'/>
+                            <Image src='/img/computer.png' width='180' height='100'/>
                             <p className='text-center'>{computer.name}</p>
                         </div>
                         <div>
                             {computerOSInfo}
                             {computerCPUInfo}
                             {computerRAMInfo}
-                            <p>
-                                <GoCircuitBoard/>
-                                {computer.motherboard.manufacturer},
-                                {computer.motherboard.product},
-                                {computer.motherboard.serial},
-                            </p>
-                            <p>
-                                <BsDisplayFill/>
-                                {computer.videocard.name},
-                                {computer.videocard.resX},
-                                {computer.videocard.resY}
-                            </p>
+                            {computerVideocardInfo}
                         </div>
                     </div>
                     <div className={style.computerCommonInfo}>

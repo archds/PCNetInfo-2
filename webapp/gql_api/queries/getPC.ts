@@ -8,7 +8,6 @@ export const getPCQuery = gql`
             form_factor
             domain
             username
-            timezone
             serial
             ip
             comment
@@ -17,10 +16,9 @@ export const getPCQuery = gql`
             location
             updated
             form_factor
+            ram
             ...OS
             ...CPU
-            ...RAM
-            ...Motherboard
             ...Videocard
         }
     }
@@ -28,18 +26,7 @@ export const getPCQuery = gql`
     fragment OS on PC {
         os {
             name
-            version
             architecture
-        }
-    }
-
-    fragment RAM on PC {
-        ram {
-            size
-            banks {
-                speed
-                capacity
-            }
         }
     }
 
@@ -49,23 +36,13 @@ export const getPCQuery = gql`
             clock
             cores
             threads
-            socket
-        }
-    }
-
-    fragment Motherboard on PC {
-        motherboard {
-            manufacturer
-            product
-            serial
         }
     }
 
     fragment Videocard on PC {
         videocard {
             name
-            resX
-            resY
+            memory
         }
     }
 `

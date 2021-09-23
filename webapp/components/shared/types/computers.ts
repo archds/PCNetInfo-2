@@ -2,7 +2,6 @@ import { ComputerType, FormFactor } from 'components/shared/enums'
 
 type OS = {
     name: string,
-    version?: string,
     architecture?: string
 }
 
@@ -11,24 +10,11 @@ type CPU = {
     clock: string,
     cores: string,
     threads: string,
-    socket?: string
-}
-
-type RAM = {
-    size: number
-    banks: { speed: number, capacity: number }[]
-}
-
-type Motherboard = {
-    manufacturer: string
-    product: string
-    serial: string
 }
 
 type Videocard = {
     name: string
-    resX: string
-    resY: string
+    memory: number
 }
 
 
@@ -46,11 +32,10 @@ export type Computer = {
     location?: string
     updated?: string
     form_factor: FormFactor
-    os: OS
-    cpu: CPU
-    ram: RAM
-    motherboard: Motherboard
-    videocard: Videocard
+    os?: OS
+    cpu?: CPU
+    ram?: number
+    videocard?: Videocard
 }
 
 export interface ComputerVariables {
