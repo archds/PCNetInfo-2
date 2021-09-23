@@ -21,7 +21,7 @@ def convert_gql_pc(gql_input: Dict) -> Dict:
     }
 
     common = {
-        'pc_name': gql_input.get('name'),
+        'name': gql_input.get('name'),
         'domain': gql_input.get('domain'),
         'ip': gql_input.get('ip'),
         'ram': gql_input.get('ram', {}).get('size'),
