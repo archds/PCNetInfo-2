@@ -3,7 +3,6 @@ from graphql import GraphQLError
 
 def format_error(error: GraphQLError, debug: bool = False):
     formatted = error.formatted
-    print(error.original_error.readable)
 
     if readable := getattr(error.original_error, 'readable', None):
         message = readable
