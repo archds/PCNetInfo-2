@@ -17,6 +17,7 @@ export interface Props {
 }
 
 // TODO: computer type
+// TODO: computer editing
 function ActiveComputer(props: Props) {
     const {
         loading: computerLoading,

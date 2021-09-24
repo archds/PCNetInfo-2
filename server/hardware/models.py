@@ -11,6 +11,7 @@ from django.db.models import Model
 from django.db.models import TextChoices, DO_NOTHING
 
 
+# ToDo: location refactor
 class Monitor(Model):
     serial_number = CharField(max_length=50, unique=True)
     model = CharField(max_length=100)
