@@ -16,10 +16,11 @@ Including another URLconf
 from ariadne.contrib.django.views import GraphQLView
 from django.urls import path
 
+from gql_api.error_formatter import format_error
 from gql_api.schema import schema
 from hardware.views import collect_msinfo
 
 urlpatterns = [
-    path('api/', GraphQLView.as_view(schema=schema), name='api'),
+    path('api/', GraphQLView.as_view(schema=schema, error_formatter=format_error), name='api'),
     path('api/collect-msinfo/', collect_msinfo)
 ]
