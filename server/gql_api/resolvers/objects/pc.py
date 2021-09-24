@@ -24,7 +24,7 @@ def resolve_pc_hardware_type(pc_obj: PC, info):
 
 @gqt.pc.field('username')
 def resolve_pc_username(pc_obj: PC, info):
-    return pc_obj.username.replace('?', '').replace('\\', '').replace(pc_obj.name, '')
+    return pc_obj.username and pc_obj.username.replace('?', '').replace('\\', '').replace(pc_obj.name, '')
 
 
 @gqt.pc.field('user')
@@ -54,17 +54,17 @@ def resolve_pc_label(pc_obj: PC, info):
 
 @gqt.pc.field('os')
 def resolve_pc_os(pc_obj: PC, info):
-    return pc_obj
+    return pc_obj.os
 
 
 @gqt.pc.field('cpu')
 def resolve_pc_cpu(pc_obj: PC, info):
-    return pc_obj
+    return pc_obj.cpu
 
 
 @gqt.pc.field('videocard')
 def resolve_pc_videocard(pc_obj: PC, info):
-    return pc_obj
+    return pc_obj.videocard
 
 
 @gqt.pc.field('form_factor')

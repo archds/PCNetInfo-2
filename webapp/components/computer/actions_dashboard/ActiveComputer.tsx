@@ -52,28 +52,28 @@ function ActiveComputer(props: Props) {
         return <p key={key.replace(':', '')}><b>{key} </b> <span>{editBtn} {value}</span></p>
     })
 
-    const computerOSInfo = (
+    const computerOSInfo = computer.os ? (
         <p>
             <RiWindowsFill/> {computer.os.name}, {computer.os.architecture}<br/>
         </p>
-    )
+    ) : null
 
-    const computerRAMInfo = <p><FaMemory/> {computer.ram} GB</p>
-    const computerCPUInfo = (
+    const computerRAMInfo = computer.ram ? <p><FaMemory/> {computer.ram} GB</p> : null
+    const computerCPUInfo = computer.cpu ? (
         <p>
             <RiCpuLine/> {computer.cpu.name}<br/>
             {iconPdg}Clock: {computer.cpu.clock} MHz<br/>
             {iconPdg}Cores/Threads: {computer.cpu.cores}/{computer.cpu.threads}<br/>
         </p>
-    )
+    ) : null
 
-    const computerVideocardInfo = (
+    const computerVideocardInfo = computer.videocard ? (
         <p>
             <BsDisplayFill/>
             {computer.videocard.name},
             {computer.videocard.memory} GB
         </p>
-    )
+    ) : null
 
     return (
         <>

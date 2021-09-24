@@ -6,6 +6,7 @@ import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined'
 import MemoryIcon from '@material-ui/icons/Memory'
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
 import { ComputerType } from 'components/shared/enums'
+import { InputError } from 'components/shared/types/errors'
 import { createPC } from 'gql_api/mutations/createPC'
 import { allPCQuery } from 'gql_api/queries/allPC'
 import React, { useRef, useState } from 'react'
@@ -94,17 +95,17 @@ function ComputerInput(props: Props) {
                     input: input,
                 },
                 refetchQueries: [allPCQuery],
-            }).catch((e: ApolloError) => {
+            }).catch((e) => {
                 e.graphQLErrors.forEach(err => {
-                    if (err.message.includes('Computer with this name already exists')) {
+                    if (err.__typename === 'InputError') {
+                        const field = err.field
                         setValidationState(prevState => {
-                            return {
-                                ...prevState,
-                                name: {
-                                    result: false,
-                                    reason: err.message
-                                }
+                            const newState = {...prevState}
+                            newState[err.field] = {
+                                result: false,
+                                reason: err.message
                             }
+                            return newState
                         })
                     }
                 })
