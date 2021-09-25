@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import { Input } from '@material-ui/core'
+import { Input, MenuItem, Select } from '@material-ui/core'
 import {
     BaseProps,
     defaultNoDataMessage,
@@ -46,20 +46,46 @@ function CommonInfo(props: Props) {
         onClick={(event => setEditing(event.currentTarget.parentElement.parentElement.id))}
     />
 
-    const editField = (value: string) => <Input
-        defaultValue={value}
-        autoFocus
-        margin='dense'
-        inputProps={{
-            style: { textAlign: 'right' },
-            onBlur: event => {
-                let input = {}
-                input[event.currentTarget.parentElement.parentElement.id] = event.currentTarget.value
-                updateComputer({ variables: { name: props.name, input: input } })
-                setEditing(null)
-            },
-        }}
-    />
+    const editField = (value: any) => {
+        return <Input
+            defaultValue={value}
+            autoFocus
+            margin='dense'
+            inputProps={{
+                style: { textAlign: 'right' },
+                onBlur: event => {
+                    if (event.currentTarget.value === value) {
+                        setEditing(null)
+                        return
+                    }
+                    let input = {}
+                    input[event.currentTarget.parentElement.parentElement.id] = event.currentTarget.value
+                    updateComputer({ variables: { name: props.name, input: input } })
+                },
+            }}
+        />
+    }
+
+    const selectField = (value: FormFactor) => {
+        return (
+            <Select
+                defaultValue={value}
+                onChange={event => {
+                    let target = event.currentTarget as HTMLSelectElement
+                    if (event.currentTarget.value === value) {
+                        setEditing(null)
+                        return
+                    }
+                    let input = {}
+                    input[target.parentElement.parentElement.id] = target.value
+                    updateComputer({ variables: { name: props.name, input: input } })
+                }}
+            >
+                <MenuItem value={FormFactor.ATX}>{FormFactor.ATX}</MenuItem>
+            </Select>
+        )
+    }
+
     const formatValue = (value: string) => {
         if (props.loading || updateLoading) {
             return skeletonText
@@ -70,7 +96,12 @@ function CommonInfo(props: Props) {
 
     const renderValue = (key: string, value: any) => {
         if (props.loading) return skeletonText
-        return editing === key ? editField(value) : formatValue(value)
+        switch (key) {
+            case 'formFactor':
+                return editing === key ? selectField(value) : formatValue(value)
+            default:
+                return editing === key ? editField(value) : formatValue(value)
+        }
     }
 
     const computerCommonInfo: commonInfoPayload = {
