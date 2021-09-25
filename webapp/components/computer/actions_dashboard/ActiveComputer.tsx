@@ -1,12 +1,14 @@
 import style from '/styles/ActiveComputer.module.scss'
 import { useQuery } from '@apollo/client'
 import CommonInfo from 'components/computer/actions_dashboard/computer_info/CommonInfo'
-import CpuInfo from 'components/computer/actions_dashboard/computer_info/CPUInfo'
 import { skeletonText } from 'components/computer/actions_dashboard/computer_info/defaults'
-import MemoryInfo from 'components/computer/actions_dashboard/computer_info/MemoryInfo'
-import OSInfo from 'components/computer/actions_dashboard/computer_info/OSInfo'
-import TypeIdentifier from 'components/computer/actions_dashboard/computer_info/TypeIdentifier'
-import VideocardInfo from 'components/computer/actions_dashboard/computer_info/VideocardInfo'
+import {
+    CpuInfo,
+    MemoryInfo,
+    OSInfo,
+    TypeIdentifier,
+    VideocardInfo,
+} from 'components/computer/actions_dashboard/computer_info/HardwareInfo'
 import { Computer, ComputerVariables } from 'components/shared/types/computers'
 import { getPCQuery } from 'gql_api/queries/getPC'
 import React from 'react'
