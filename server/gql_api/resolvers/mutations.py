@@ -8,7 +8,7 @@ from gql_api.errors import ReadableError, InputError
 
 @gqt.mutation.field('deletePC')
 def delete_pc(obj, info, names: List[str]) -> str:
-    PC.objects.filter(pc_name__in=names).delete()
+    PC.objects.filter(name__in=names).delete()
     return 'UNIT'
 
 
@@ -37,7 +37,7 @@ def create_pc(obj, info, input: Dict) -> PC:
 def update_pc(obj, info, name: str, input: Dict) -> PC:
     kwargs = convert_gql_pc(gql_input=input)
 
-    PC.objects.filter(pc_name=name).update(
+    PC.objects.filter(name=name).update(
         **{
             field: value
             for field, value in kwargs.items()

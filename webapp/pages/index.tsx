@@ -1,12 +1,25 @@
 import style from '/styles/index.module.scss'
+import { Snackbar } from '@material-ui/core'
+import Alert, { Color } from '@material-ui/lab/Alert'
+import { StateContext } from 'components/shared/interfaces'
 import Head from 'next/head'
-import React, { useState } from 'react'
+import React, { createContext, useState } from 'react'
 import ActionsDashboard from '../components/computer/actions_dashboard/ActionsDashboard'
 import ComputersDashboard from '../components/computer/computers_dashboard/ComputersDashboard'
+
+
+export interface SnackbarContextInterface {
+    severity: Color
+    message?: string
+    show: boolean
+}
+
+export const SnackbarContext = createContext<StateContext>(null)
 
 function Index() {
     const [activeComputer, setActiveComputer] = useState<string | undefined>(undefined)
     const [inputMode, setInputMode] = useState<boolean>(false)
+    const [snackbar, setSnackbar] = useState<SnackbarContextInterface>({ severity: 'success', show: false })
 
     const resetActionsDashboard = (): void => {
         setActiveComputer(undefined)
@@ -16,6 +29,11 @@ function Index() {
     const onComputerClick = (pcName): void => {
         setActiveComputer(pcName)
         setInputMode(false)
+    }
+
+    const snackbarContextValue: StateContext = {
+        state: snackbar,
+        setState: setSnackbar,
     }
 
 
@@ -34,16 +52,25 @@ function Index() {
                 <meta name='theme-color' content='#ffffff'/>
             </Head>
             <div className={style.indexContainer}>
-                <ComputersDashboard
-                    onComputerClick={onComputerClick}
-                    onAddComputer={() => setInputMode(true)}
-                />
-                <ActionsDashboard
-                    resetActionsDashboard={resetActionsDashboard}
-                    computerName={activeComputer}
-                    input={inputMode}
-                />
+                <SnackbarContext.Provider value={snackbarContextValue}>
+                    <ComputersDashboard
+                        onComputerClick={onComputerClick}
+                        onAddComputer={() => setInputMode(true)}
+                    />
+                    <ActionsDashboard
+                        resetActionsDashboard={resetActionsDashboard}
+                        computerName={activeComputer}
+                        input={inputMode}
+                    />
+                </SnackbarContext.Provider>
             </div>
+            <Snackbar
+                open={snackbar.show}
+                autoHideDuration={6000}
+                onClose={() => setSnackbar({ severity: 'success', show: false })}
+            >
+                <Alert variant='filled' severity={snackbar.severity}>{snackbar.message}</Alert>
+            </Snackbar>
         </>
     )
 }

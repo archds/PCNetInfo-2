@@ -18,7 +18,7 @@ export interface Props {
 }
 
 function ComputerList(props: Props) {
-    const {state: selectedContext, setState: setSelectedContext} = useContext(SelectedComputersContext)
+    const { state: selectedContext, setState: setSelectedContext } = useContext(SelectedComputersContext)
 
     const columnDefaults = {
         width: 200,

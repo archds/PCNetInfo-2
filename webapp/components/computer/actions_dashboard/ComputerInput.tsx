@@ -1,15 +1,16 @@
-import { ApolloError, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/client'
 import { Button, FormControl, Grid, InputAdornment, InputLabel, Select, TextField } from '@material-ui/core'
 import ConfirmationNumberOutlinedIcon from '@material-ui/icons/ConfirmationNumberOutlined'
 import DnsOutlinedIcon from '@material-ui/icons/DnsOutlined'
 import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined'
 import MemoryIcon from '@material-ui/icons/Memory'
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
+import { notifyError, notifySuccess } from 'components/shared/actions/notification'
 import { ComputerType } from 'components/shared/enums'
-import { InputError } from 'components/shared/types/errors'
 import { createPC } from 'gql_api/mutations/createPC'
 import { allPCQuery } from 'gql_api/queries/allPC'
-import React, { useRef, useState } from 'react'
+import { SnackbarContext } from 'pages'
+import React, { useContext, useRef, useState } from 'react'
 import { GrClose } from 'react-icons/gr'
 
 export interface Props {
@@ -34,33 +35,45 @@ interface ValidationState {
     [key: string]: AddComputerValidationResult
 }
 
+const validators = {
+    label: (input: string): AddComputerValidationResult => {
+        const isValid = input.length >= 3
+        return {
+            result: isValid,
+            reason: isValid ? null : 'Minimum 3 characters',
+        }
+    },
+    name: (input: string): AddComputerValidationResult => {
+        const isValid = input.length >= 3
+        return {
+            result: isValid,
+            reason: isValid ? null : 'Minimum 3 characters',
+        }
+    },
+    serial: (input: string): AddComputerValidationResult => {
+        const isValid = input.length === 0 || input.length === 4
+        return {
+            result: isValid,
+            reason: isValid ? null : 'Serial number consist of 4 numbers',
+        }
+    },
+}
+
 function ComputerInput(props: Props) {
-    const [addComputerQuery, { error: addComputerError }] = useMutation<{ createPC: { name: string }, input: AddComputer }>(createPC)
-    const formRef = useRef<HTMLDivElement>(null)
+    // Apollo
+    const [addComputerQuery] = useMutation<{ createPC: { name: string }, input: AddComputer }>(createPC, {
+        onError: (error => {
+            notifyError(error, setSnackbarContext)
+        }),
+        refetchQueries: [allPCQuery],
+        onCompleted: () => notifySuccess(`New computer added!`, setSnackbarContext)
+    })
+    // State
     const [validationState, setValidationState] = useState<ValidationState>({})
-    const validators = {
-        label: (input: string): AddComputerValidationResult => {
-            const isValid = input.length > 3
-            return {
-                result: isValid,
-                reason: isValid ? null : 'Minimum 3 characters',
-            }
-        },
-        name: (input: string): AddComputerValidationResult => {
-            const isValid = input.length > 3
-            return {
-                result: isValid,
-                reason: isValid ? null : 'Minimum 3 characters',
-            }
-        },
-        serial: (input: string): AddComputerValidationResult => {
-            const isValid = input.length === 0 || input.length === 4
-            return {
-                result: isValid,
-                reason: isValid ? null : 'Serial number consist of 4 numbers',
-            }
-        },
-    }
+    // Reference
+    const formRef = useRef<HTMLDivElement>(null)
+    // Context
+    const { setState: setSnackbarContext } = useContext(SnackbarContext)
 
     const validateInput = (input: AddComputer): boolean => {
         let newValidationState: ValidationState = {}
@@ -90,26 +103,7 @@ function ComputerInput(props: Props) {
         if (!validateInput(input)) {
             return
         } else {
-            addComputerQuery({
-                variables: {
-                    input: input,
-                },
-                refetchQueries: [allPCQuery],
-            }).catch((e) => {
-                e.graphQLErrors.forEach(err => {
-                    if (err.__typename === 'InputError') {
-                        const field = err.field
-                        setValidationState(prevState => {
-                            const newState = {...prevState}
-                            newState[err.field] = {
-                                result: false,
-                                reason: err.message
-                            }
-                            return newState
-                        })
-                    }
-                })
-            })
+            addComputerQuery({ variables: { input: input } })
         }
     }
 
@@ -199,24 +193,14 @@ function ComputerInput(props: Props) {
                 <Grid item xs={6}>
                     <FormControl style={{ width: 230 }}>
                         <InputLabel htmlFor='type'>Type</InputLabel>
-                        <Select
-                            required
-                            native
-                            inputProps={{
-                                name: 'Type',
-                                id: 'type',
-                            }}
-                        >
+                        <Select required native inputProps={{ name: 'Type', id: 'type' }}>
                             <option value={ComputerType.DESKTOP}>Desktop</option>
                             <option value={ComputerType.LAPTOP}>Laptop</option>
                         </Select>
                     </FormControl>
                 </Grid>
                 <Grid item xs={6}>
-                    <Button
-                        variant='contained' color='primary' disableElevation
-                        onClick={addComputer}
-                    >Add</Button>
+                    <Button variant='contained' color='primary' disableElevation onClick={addComputer}>Add</Button>
                 </Grid>
             </Grid>
         </>
