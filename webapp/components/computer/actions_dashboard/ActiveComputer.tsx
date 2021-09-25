@@ -17,6 +17,7 @@ export interface Props {
 }
 
 // TODO: computer type
+// TODO: computer editing
 function ActiveComputer(props: Props) {
     const {
         loading: computerLoading,
@@ -43,37 +44,37 @@ function ActiveComputer(props: Props) {
         'User:': computer.user,
         'Location:': computer.location,
         'Form factor:': computer.form_factor,
-        'Domain:': computer.domain,
-        'IP address:': computer.ip,
+        // 'Domain:': computer.domain,
+        // 'IP address:': computer.ip,
         'Username:': computer.username,
-        'Timezone:': computer.timezone,
+        // 'Timezone:': computer.timezone,
         'Serial number:': computer.serial,
     }).map(([key, value]) => {
         return <p key={key.replace(':', '')}><b>{key} </b> <span>{editBtn} {value}</span></p>
     })
 
-    const computerOSInfo = (
+    const computerOSInfo = computer.os ? (
         <p>
             <RiWindowsFill/> {computer.os.name}, {computer.os.architecture}<br/>
         </p>
-    )
+    ) : null
 
-    const computerRAMInfo = <p><FaMemory/> {computer.ram} GB</p>
-    const computerCPUInfo = (
+    const computerRAMInfo = computer.ram ? <p><FaMemory/> {computer.ram} GB</p> : null
+    const computerCPUInfo = computer.cpu ? (
         <p>
             <RiCpuLine/> {computer.cpu.name}<br/>
             {iconPdg}Clock: {computer.cpu.clock} MHz<br/>
             {iconPdg}Cores/Threads: {computer.cpu.cores}/{computer.cpu.threads}<br/>
         </p>
-    )
+    ) : null
 
-    const computerVideocardInfo = (
+    const computerVideocardInfo = computer.videocard ? (
         <p>
             <BsDisplayFill/>
             {computer.videocard.name},
             {computer.videocard.memory} GB
         </p>
-    )
+    ) : null
 
     return (
         <>

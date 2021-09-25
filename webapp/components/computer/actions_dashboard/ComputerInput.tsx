@@ -3,11 +3,14 @@ import { Button, FormControl, Grid, InputAdornment, InputLabel, Select, TextFiel
 import ConfirmationNumberOutlinedIcon from '@material-ui/icons/ConfirmationNumberOutlined'
 import DnsOutlinedIcon from '@material-ui/icons/DnsOutlined'
 import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined'
+import MemoryIcon from '@material-ui/icons/Memory'
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
+import { notifyError, notifySuccess } from 'components/shared/actions/notification'
 import { ComputerType } from 'components/shared/enums'
 import { createPC } from 'gql_api/mutations/createPC'
 import { allPCQuery } from 'gql_api/queries/allPC'
-import React, { useRef, useState } from 'react'
+import { SnackbarContext } from 'pages'
+import React, { useContext, useRef, useState } from 'react'
 import { GrClose } from 'react-icons/gr'
 
 export interface Props {
@@ -20,6 +23,7 @@ interface AddComputer {
     serial: string
     location: string
     type: ComputerType
+    ram?: number
 }
 
 interface AddComputerValidationResult {
@@ -31,33 +35,45 @@ interface ValidationState {
     [key: string]: AddComputerValidationResult
 }
 
+const validators = {
+    label: (input: string): AddComputerValidationResult => {
+        const isValid = input.length >= 3
+        return {
+            result: isValid,
+            reason: isValid ? null : 'Minimum 3 characters',
+        }
+    },
+    name: (input: string): AddComputerValidationResult => {
+        const isValid = input.length >= 3
+        return {
+            result: isValid,
+            reason: isValid ? null : 'Minimum 3 characters',
+        }
+    },
+    serial: (input: string): AddComputerValidationResult => {
+        const isValid = input.length === 0 || input.length === 4
+        return {
+            result: isValid,
+            reason: isValid ? null : 'Serial number consist of 4 numbers',
+        }
+    },
+}
+
 function ComputerInput(props: Props) {
-    const [addComputerQuery] = useMutation<{ createPC: { name: string }, input: AddComputer }>(createPC)
-    const formRef = useRef<HTMLDivElement>(null)
+    // Apollo
+    const [addComputerQuery] = useMutation<{ createPC: { name: string }, input: AddComputer }>(createPC, {
+        onError: (error => {
+            notifyError(error, setSnackbarContext)
+        }),
+        refetchQueries: [allPCQuery],
+        onCompleted: () => notifySuccess(`New computer added!`, setSnackbarContext)
+    })
+    // State
     const [validationState, setValidationState] = useState<ValidationState>({})
-    const validators = {
-        label: (input: string): AddComputerValidationResult => {
-            const isValid = input.length > 3
-            return {
-                result: isValid,
-                reason: isValid ? null : 'Minimum 3 characters',
-            }
-        },
-        name: (input: string): AddComputerValidationResult => {
-            const isValid = input.length > 3
-            return {
-                result: isValid,
-                reason: isValid ? null : 'Minimum 3 characters',
-            }
-        },
-        serial: (input: string): AddComputerValidationResult => {
-            const isValid = input.length === 0 || input.length === 4
-            return {
-                result: isValid,
-                reason: isValid ? null : 'Serial number consist of 4 numbers',
-            }
-        },
-    }
+    // Reference
+    const formRef = useRef<HTMLDivElement>(null)
+    // Context
+    const { setState: setSnackbarContext } = useContext(SnackbarContext)
 
     const validateInput = (input: AddComputer): boolean => {
         let newValidationState: ValidationState = {}
@@ -72,14 +88,14 @@ function ComputerInput(props: Props) {
     }
 
     const collectInput = (formElement: HTMLDivElement): AddComputer => {
-        let form: AddComputer = {
+        return {
             label: (formElement.querySelector('input#label') as HTMLInputElement).value,
             name: (formElement.querySelector('input#name') as HTMLInputElement).value,
             serial: (formElement.querySelector('input#serial') as HTMLInputElement).value,
             location: (formElement.querySelector('input#location') as HTMLInputElement).value,
             type: ComputerType[(formElement.querySelector('select#type') as HTMLInputElement).value],
+            ram: parseInt((formElement.querySelector('input#ram') as HTMLInputElement).value),
         }
-        return form
     }
 
     const addComputer = (): void => {
@@ -87,12 +103,7 @@ function ComputerInput(props: Props) {
         if (!validateInput(input)) {
             return
         } else {
-            addComputerQuery({
-                variables: {
-                    input: input,
-                },
-                refetchQueries: [allPCQuery],
-            })
+            addComputerQuery({ variables: { input: input } })
         }
     }
 
@@ -165,26 +176,31 @@ function ComputerInput(props: Props) {
                     />
                 </Grid>
                 <Grid item xs={6}>
+                    <TextField
+                        id='ram'
+                        label='Memory'
+                        type='number'
+                        InputProps={{
+                            endAdornment: <InputAdornment position='end'>GB</InputAdornment>,
+                            startAdornment: (
+                                <InputAdornment position='start'>
+                                    <MemoryIcon color='secondary'/>
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={6}>
                     <FormControl style={{ width: 230 }}>
                         <InputLabel htmlFor='type'>Type</InputLabel>
-                        <Select
-                            required
-                            native
-                            inputProps={{
-                                name: 'Type',
-                                id: 'type',
-                            }}
-                        >
+                        <Select required native inputProps={{ name: 'Type', id: 'type' }}>
                             <option value={ComputerType.DESKTOP}>Desktop</option>
                             <option value={ComputerType.LAPTOP}>Laptop</option>
                         </Select>
                     </FormControl>
                 </Grid>
                 <Grid item xs={6}>
-                    <Button
-                        variant='contained' color='primary' disableElevation
-                        onClick={addComputer}
-                    >Add</Button>
+                    <Button variant='contained' color='primary' disableElevation onClick={addComputer}>Add</Button>
                 </Grid>
             </Grid>
         </>

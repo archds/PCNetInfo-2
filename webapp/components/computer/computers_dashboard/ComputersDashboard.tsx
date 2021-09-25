@@ -1,15 +1,17 @@
 import style from '/styles/ComputersDashboard.module.scss'
 import { useMutation, useQuery } from '@apollo/client'
 import { GridRowId, GridSelectionModel } from '@mui/x-data-grid'
-import { SortingType, Unit } from 'components/shared/enums'
-import { ComputersQueryVariables, StateContext } from 'components/shared/interfaces'
+import { notifyError, notifySuccess } from 'components/shared/actions/notification'
 import Loading from 'components/shared/components/Loading'
 import ModalConfirm from 'components/shared/components/ModalConfirm'
+import { SortingType, Unit } from 'components/shared/enums'
+import { ComputersQueryVariables, StateContext } from 'components/shared/interfaces'
 import { FilterState } from 'components/shared/state'
 import { ComputerBaseInfo } from 'components/shared/types/computers'
 import { deletePC } from 'gql_api/mutations/deletePC'
 import { allPCQuery } from 'gql_api/queries/allPC'
-import React, { createContext, useState } from 'react'
+import { SnackbarContext } from 'pages'
+import React, { createContext, useContext, useState } from 'react'
 import ComputerList from './computer_table/ComputerList'
 import ControllerDashboard from './computer_table/controller/ControllerDashboard'
 
@@ -17,6 +19,7 @@ export interface Props {
     onAddComputer(): void,
     onComputerClick(name: GridRowId): void,
 }
+
 
 export const SelectedComputersContext = createContext<StateContext>(null)
 
@@ -31,20 +34,28 @@ function ComputersDashboard(props: Props) {
     // Display control
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     // Context
+    const { setState: setSnackbarContext } = useContext(SnackbarContext)
+
     const selectedComputerContextValue: StateContext = {
         state: selectedComputers,
         setState: setSelectedComputers,
     }
 
-    const [deleteComputers, { loading: deleteLoading }] = useMutation<Unit, {names: GridSelectionModel}>(deletePC, {
+    const [deleteComputers, { loading: deleteLoading }] = useMutation<Unit, { names: GridSelectionModel }>(deletePC, {
         variables: {
             names: selectedComputers,
         },
         onCompleted: (): void => {
+            notifySuccess('Computer successfully deleted!', setSnackbarContext)
             setSelectedComputers([])
             setShowDeleteModal(false)
         },
         refetchQueries: [allPCQuery],
+        onError: error => {
+            notifyError(error, setSnackbarContext)
+            setSelectedComputers([])
+            setShowDeleteModal(false)
+        },
     })
 
     const onControllerChange = (sorting: SortingType, filter: FilterState, search: string): void => {

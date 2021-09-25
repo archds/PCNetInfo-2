@@ -11,6 +11,7 @@ from django.db.models import Model
 from django.db.models import TextChoices, DO_NOTHING
 
 
+# ToDo: location refactor
 class Monitor(Model):
     serial_number = CharField(max_length=50, unique=True)
     model = CharField(max_length=100)
@@ -62,7 +63,7 @@ class PC(Model):
     ip = GenericIPAddressField(null=True)
     username = CharField(max_length=100, null=True)
     user = CharField(max_length=200, null=True)
-    serial_number = IntegerField(null=True)
+    serial_number = CharField(null=True, max_length=50, unique=True)
     location = CharField(max_length=200, null=True)
     updated = DateTimeField(auto_now=True)
     comment = TextField(null=True)
