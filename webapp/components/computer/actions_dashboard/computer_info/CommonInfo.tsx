@@ -66,22 +66,23 @@ function CommonInfo(props: Props) {
         />
     }
 
-    const selectField = (value: FormFactor) => {
+    const selectField = (value: FormFactor, id: string) => {
         return (
             <Select
                 defaultValue={value}
                 onChange={event => {
-                    let target = event.currentTarget as HTMLSelectElement
-                    if (event.currentTarget.value === value) {
+                    if (event.target.value === value) {
                         setEditing(null)
                         return
                     }
                     let input = {}
-                    input[target.parentElement.parentElement.id] = target.value
+                    input[id] = event.target.value
                     updateComputer({ variables: { name: props.name, input: input } })
+                    setEditing(null)
                 }}
             >
                 <MenuItem value={FormFactor.ATX}>{FormFactor.ATX}</MenuItem>
+                <MenuItem value={FormFactor.mATX}>{FormFactor.mATX}</MenuItem>
             </Select>
         )
     }
@@ -98,7 +99,7 @@ function CommonInfo(props: Props) {
         if (props.loading) return skeletonText
         switch (key) {
             case 'formFactor':
-                return editing === key ? selectField(value) : formatValue(value)
+                return editing === key ? selectField(value, key) : formatValue(value)
             default:
                 return editing === key ? editField(value) : formatValue(value)
         }
