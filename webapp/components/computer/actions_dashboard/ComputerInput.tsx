@@ -66,7 +66,7 @@ function ComputerInput(props: Props) {
             notifyError(error, setSnackbarContext)
         }),
         refetchQueries: [allPCQuery],
-        onCompleted: () => notifySuccess(`New computer added!`, setSnackbarContext)
+        onCompleted: () => notifySuccess(`New computer added!`, setSnackbarContext),
     })
     // State
     const [validationState, setValidationState] = useState<ValidationState>({})

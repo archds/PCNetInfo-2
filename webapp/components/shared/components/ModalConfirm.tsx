@@ -3,10 +3,10 @@ import React from 'react'
 
 export interface Props {
     isOpen: boolean
-    onClose(): void
-    onConfirm(): void
     title: string
     text: string
+    onClose(): void
+    onConfirm(): void
 }
 
 function ModalConfirm(props: Props) {
