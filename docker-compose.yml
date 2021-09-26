@@ -4,7 +4,16 @@ services:
     build: server
     ports:
       - "8001:8000"
+    volumes:
+      - type: volume
+        source: test_db
+        target: /database
+        volume:
+          nocopy: true
   frontend:
     build: webapp
     ports:
       - "3000:3000"
+
+volumes:
+  test_db:
