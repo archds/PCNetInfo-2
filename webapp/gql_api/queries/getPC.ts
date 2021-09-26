@@ -5,7 +5,6 @@ export const getPCQuery = gql`
         getPC(name: $name) {
             type
             name
-            form_factor
             domain
             username
             serial
@@ -15,7 +14,7 @@ export const getPCQuery = gql`
             user
             location
             updated
-            form_factor
+            formFactor
             ram
             ...OS
             ...CPU

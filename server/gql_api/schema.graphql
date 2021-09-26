@@ -20,9 +20,14 @@ enum Unit {
 
 input UpdatePCInput {
     name: String
+    user: String
+    location: String
+    formFactor: FormFactor
+    username: String
+    serial: String
     type: ComputerType
-    os: OSInput
-    cpu: CPUInput
+#    os: OSInput
+#    cpu: CPUInput
     ram: Int
 }
 
@@ -94,7 +99,7 @@ type PC {
     user: String
     location: String
     updated: String
-    form_factor: FormFactor
+    formFactor: FormFactor
     os: OS
     cpu: CPU
     ram: Int

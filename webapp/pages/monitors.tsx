@@ -13,8 +13,8 @@ export default function monitors() {
             <div className={'wipContainer'}>
                 <Image
                     src='/img/wip_cover.svg'
-                    width='100%'
-                    height='100%'
+                    width={1000}
+                    height={600}
                 />
             </div>
             <style jsx>{`

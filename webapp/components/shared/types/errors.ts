@@ -2,7 +2,7 @@ export interface MainError {
     __typename: string
 }
 
-export interface ReadableError extends MainError{
+export interface ReadableError extends MainError {
     message: string
 }
 

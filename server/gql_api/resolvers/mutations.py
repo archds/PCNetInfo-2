@@ -1,5 +1,5 @@
 from typing import Dict, List
-
+import itertools as it
 import gql_api.type_defs as gqt
 from gql_api.actions.domain import convert_gql_pc
 from hardware.models import PC, OS, CPU, Videocard
@@ -35,14 +35,14 @@ def create_pc(obj, info, input: Dict) -> PC:
 
 @gqt.mutation.field('updatePC')
 def update_pc(obj, info, name: str, input: Dict) -> PC:
-    kwargs = convert_gql_pc(gql_input=input)
+    input = convert_gql_pc(gql_input=input)
 
     PC.objects.filter(name=name).update(
         **{
             field: value
-            for field, value in kwargs.items()
+            for field, value in input['common'].items()
             if value is not None
         }
     )
 
-    return PC.objects.get(pc_name=name)
+    return PC.objects.get(name=name)

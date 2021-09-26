@@ -1,80 +1,35 @@
 import style from '/styles/ActiveComputer.module.scss'
 import { useQuery } from '@apollo/client'
-import Loading from 'components/shared/components/Loading'
+import CommonInfo from 'components/computer/actions_dashboard/computer_info/CommonInfo'
+import { skeletonText } from 'components/computer/actions_dashboard/computer_info/defaults'
+import {
+    CpuInfo,
+    MemoryInfo,
+    OSInfo,
+    TypeIdentifier,
+    VideocardInfo,
+} from 'components/computer/actions_dashboard/computer_info/HardwareInfo'
 import { Computer, ComputerVariables } from 'components/shared/types/computers'
 import { getPCQuery } from 'gql_api/queries/getPC'
-import Image from 'next/image'
 import React from 'react'
-import { BsDisplayFill } from 'react-icons/bs'
-import { FaMemory } from 'react-icons/fa'
 import { GrClose } from 'react-icons/gr'
-import { MdEdit } from 'react-icons/md'
-import { RiCpuLine, RiWindowsFill } from 'react-icons/ri'
 
 export interface Props {
     computerName: string
     resetActiveComputer(): void
 }
 
-// TODO: computer type
-// TODO: computer editing
 function ActiveComputer(props: Props) {
-    const {
-        loading: computerLoading,
-        data: computerData,
-    } = useQuery<{ getPC: Computer }, ComputerVariables>(
+    const { loading, data: computerData } = useQuery<{ getPC: Computer }, ComputerVariables>(
         getPCQuery,
-        {
-            variables: {
-                name: props.computerName,
-            },
-        },
+        { variables: { name: props.computerName } },
     )
 
-    if (computerLoading) {
-        return <Loading/>
-    }
-
-    const computer = computerData.getPC
-
-    const editBtn = <MdEdit className={style.edit}/>
-    const iconPdg = <span className={style.iconPadding}></span>
-
-    const computerCommonInfo = Object.entries({
-        'User:': computer.user,
-        'Location:': computer.location,
-        'Form factor:': computer.form_factor,
-        // 'Domain:': computer.domain,
-        // 'IP address:': computer.ip,
-        'Username:': computer.username,
-        // 'Timezone:': computer.timezone,
-        'Serial number:': computer.serial,
-    }).map(([key, value]) => {
-        return <p key={key.replace(':', '')}><b>{key} </b> <span>{editBtn} {value}</span></p>
-    })
-
-    const computerOSInfo = computer.os ? (
-        <p>
-            <RiWindowsFill/> {computer.os.name}, {computer.os.architecture}<br/>
-        </p>
-    ) : null
-
-    const computerRAMInfo = computer.ram ? <p><FaMemory/> {computer.ram} GB</p> : null
-    const computerCPUInfo = computer.cpu ? (
-        <p>
-            <RiCpuLine/> {computer.cpu.name}<br/>
-            {iconPdg}Clock: {computer.cpu.clock} MHz<br/>
-            {iconPdg}Cores/Threads: {computer.cpu.cores}/{computer.cpu.threads}<br/>
-        </p>
-    ) : null
-
-    const computerVideocardInfo = computer.videocard ? (
-        <p>
-            <BsDisplayFill/>
-            {computer.videocard.name},
-            {computer.videocard.memory} GB
-        </p>
-    ) : null
+    const os = loading ? null : computerData.getPC.os
+    const ram = loading ? null : computerData.getPC.ram
+    const cpu = loading ? null : computerData.getPC.cpu
+    const videocard = loading ? null : computerData.getPC.videocard
+    const type = loading ? null : computerData.getPC.type
 
     return (
         <>
@@ -83,19 +38,27 @@ function ActiveComputer(props: Props) {
                 <div className={style.computerMainInfo}>
                     <div className={style.computerHardwareInfo}>
                         <div className={style.computerName}>
-                            <Image src='/img/computer.png' width='180' height='100'/>
-                            <p className='text-center'>{computer.name}</p>
+                            <TypeIdentifier type={type} loading={loading}/>
+                            <p className='text-center'>{loading ? skeletonText : computerData.getPC.name}</p>
                         </div>
                         <div>
-                            {computerOSInfo}
-                            {computerCPUInfo}
-                            {computerRAMInfo}
-                            {computerVideocardInfo}
+                            <OSInfo os={os} loading={loading}/>
+                            <CpuInfo cpu={cpu} loading={loading}/>
+                            <MemoryInfo memoryAmount={ram} memoryUnit='GB' loading={loading}/>
+                            <VideocardInfo videocard={videocard} loading={loading}/>
                         </div>
                     </div>
                     <div className={style.computerCommonInfo}>
-                        <h3>{computer.label}</h3>
-                        {computerCommonInfo}
+                        <h3>{loading ? skeletonText : computerData.getPC.label}</h3>
+                        <CommonInfo
+                            name={loading ? null : computerData.getPC.name}
+                            user={loading ? null : computerData.getPC.user}
+                            location={loading ? null : computerData.getPC.location}
+                            formFactor={loading ? null : computerData.getPC.formFactor}
+                            username={loading ? null : computerData.getPC.username}
+                            serial={loading ? null : computerData.getPC.serial}
+                            loading={loading}
+                        />
                     </div>
                 </div>
             </div>

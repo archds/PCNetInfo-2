@@ -7,5 +7,5 @@ export function notifyError(error: ApolloError, setSnackbarContext: (newState: a
 }
 
 export function notifySuccess(message: string, setSnackbarContext: (newState: any) => void) {
-    setSnackbarContext({ severity: 'success', show: true, message: message})
+    setSnackbarContext({ severity: 'success', show: true, message: message })
 }

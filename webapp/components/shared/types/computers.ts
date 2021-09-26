@@ -31,7 +31,7 @@ export type Computer = {
     user?: string
     location?: string
     updated?: string
-    form_factor: FormFactor
+    formFactor: FormFactor
     os?: OS
     cpu?: CPU
     ram?: number

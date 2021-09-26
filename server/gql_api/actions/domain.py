@@ -32,7 +32,7 @@ def convert_gql_pc(gql_input: Dict) -> Dict:
         'updated': gql_input.get('updated'),
         'comment': gql_input.get('comment'),
         'label': gql_input.get('label'),
-        'form_factor': gql_input.get('form_factor', 'ATX'),
+        'form_factor': gql_input.get('formFactor', 'ATX'),
         'hardware_type': gql_input.get('type'),
     }
 
