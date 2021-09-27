@@ -26,18 +26,16 @@ input UpdatePCInput {
     username: String
     serial: String
     type: ComputerType
-#    os: OSInput
-#    cpu: CPUInput
+    #    os: OSInput
+    #    cpu: CPUInput
     ram: Int
 }
-
 
 input AllPCInput {
     filter: FilterInput
     search: String
     sort: SortField
 }
-
 
 enum SortField {
     LABEL
@@ -67,7 +65,6 @@ input OSInput {
     name: String
 }
 
-
 input CPUInput {
     name: String
 }
@@ -75,7 +72,6 @@ input CPUInput {
 input RAMInput {
     size: Int
 }
-
 
 enum FilterValue {
     SPECIFIED
@@ -85,7 +81,6 @@ enum FilterValue {
 type Subscription {
     PC: PC!
 }
-
 
 type PC {
     type: ComputerType!
