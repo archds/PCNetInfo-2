@@ -22,5 +22,4 @@ resolvers = [
     os := ObjectType('OS'),
     cpu := ObjectType('CPU'),
     videocard := ObjectType('Videocard'),
-    filter := ObjectType('Filter'),
 ]
