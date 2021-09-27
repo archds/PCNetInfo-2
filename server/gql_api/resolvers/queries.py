@@ -6,6 +6,7 @@ from django.db.models import Q
 import gql_api.type_defs as gqt
 from gql_api.actions.filter import filter_query
 from gql_api.actions.sort import sort
+from gql_api.errors import ReadableError
 from hardware.models import PC
 
 
@@ -46,4 +47,11 @@ def resolve_all_pc(obj, info, input: Optional[Dict] = None):
 
 @gqt.query.field('getPC')
 def resolve_get_pc(obj, info, name: str):
-    return PC.objects.get(name=name)
+    query = PC.objects.filter(name=name)
+
+    if not query.exists():
+        raise ReadableError(
+            message=f'Computer {name} does not found in database!'
+        )
+
+    return query
