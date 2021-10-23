@@ -1,4 +1,3 @@
-from pprint import pprint
 from typing import Dict, Optional
 
 from django.db.models import Q
@@ -7,7 +6,7 @@ import gql_api.type_defs as gqt
 from gql_api.actions.filter import filter_query
 from gql_api.actions.sort import sort
 from gql_api.errors import ReadableError
-from hardware.models import PC
+from hardware.models import PC, Location, User
 
 
 @gqt.query.field('hello')
@@ -15,9 +14,8 @@ def resolve_hello(*_):
     return 'Hello PCNetInfo!'
 
 
-@gqt.query.field('AllPC')
+@gqt.query.field('computers')
 def resolve_all_pc(obj, info, input: Optional[Dict] = None):
-    pprint(input)
     query = PC.objects.all()
 
     if input is None:
@@ -45,13 +43,25 @@ def resolve_all_pc(obj, info, input: Optional[Dict] = None):
     return query
 
 
-@gqt.query.field('getPC')
-def resolve_get_pc(obj, info, name: str):
-    query = PC.objects.filter(name=name)
+@gqt.query.field('computer')
+def resolve_get_pc(obj, info, id: str):
+    query = PC.objects.filter(pk=int(id))
 
     if not query.exists():
         raise ReadableError(
-            message=f'Computer {name} does not found in database!'
+            message=f'Computer does not found in database!'
         )
 
-    return query
+    return query.first()
+
+
+@gqt.query.field('locations')
+def resolve_locations(obj, info):
+    return Location.objects.all()
+
+
+@gqt.query.field('users')
+def resolve_users(obj, info):
+    return User.objects.all()
+
+

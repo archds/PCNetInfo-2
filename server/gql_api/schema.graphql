@@ -1,26 +1,31 @@
 type Query {
     hello: String!
-    getPC(name: String!): PC
-    AllPC(input: AllPCInput): [PC!]!
+    computer(id: ID!): Computer
+    computers(input: AllComputerInput): [Computer!]!
+    locations: [Location]!
+    users: [User]!
 }
 
 type Mutation {
-    updatePC(
-        name: String!
-        input: UpdatePCInput!
-    ): PC!
-    deletePC(names: [String!]!): Unit!
-    createPC(input: CreatePCInput!): PC!
+    updateComputer(name: String!, input: UpdateComputerInput!): Computer!
+    deleteComputer(names: [String!]!): Unit!
+    createComputer(input: CreateComputerInput!): Computer!
+    createUser(input: UserInput!): User!
+    updateUser(id: ID!, input: UserInput!): User!
+    deleteUser(id: ID!): Unit!
+    createLocation(input: LocationInput!): Location!
+    updateLocation(id: ID!, input: LocationInput!): Location!
+    deleteLocation(id: ID!): Unit!
 }
 
 enum Unit {
     UNIT
 }
 
-input UpdatePCInput {
+input UpdateComputerInput {
     name: String
-    user: String
-    location: String
+    user: ID
+    location: ID
     formFactor: FormFactor
     username: String
     serial: String
@@ -30,7 +35,7 @@ input UpdatePCInput {
     ram: Int
 }
 
-input AllPCInput {
+input AllComputerInput {
     filter: FilterInput
     search: String
     sort: SortField
@@ -49,7 +54,7 @@ input FilterInput {
     formFactor: FormFactor
 }
 
-input CreatePCInput {
+input CreateComputerInput {
     name: String!
     label: String!
     type: ComputerType!
@@ -77,11 +82,8 @@ enum FilterValue {
     NOT_SPECIFIED
 }
 
-type Subscription {
-    PC: PC!
-}
-
-type PC {
+type Computer {
+    id: ID!
     type: ComputerType!
     name: String!
     domain: String
@@ -101,22 +103,45 @@ type PC {
 }
 
 type User {
+    id: ID!
     firstName: String!
     lastName: String
-    roles: [String]!
+    role: String
+    computer: Computer
+}
+
+input UserInput {
+    firstName: String!
+    lastName: String
+    role: String
 }
 
 type Location {
+    id: ID!
     building: Building!
-    cabinet: Int!
+    cabinet: String!
     floor: Int
     employees: [User]!
     description: String
 }
 
 type Building {
+    id: ID!
     street: String!
-    house: Int!
+    house: String!
+}
+
+input LocationInput {
+    building: BuildingInput!
+    cabinet: String!
+    floor: Int
+    employees: [ID]
+    description: String
+}
+
+input BuildingInput {
+    street: String!
+    house: String!
 }
 
 enum FormFactor {

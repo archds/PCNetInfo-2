@@ -2,17 +2,17 @@ from typing import Dict, List
 import itertools as it
 import gql_api.type_defs as gqt
 from gql_api.actions.domain import convert_gql_pc
-from hardware.models import PC, OS, CPU, Videocard
+from hardware.models import PC, OS, CPU, Videocard, UserRole, User
 from gql_api.errors import ReadableError, InputError
 
 
-@gqt.mutation.field('deletePC')
+@gqt.mutation.field('deleteComputer')
 def delete_pc(obj, info, names: List[str]) -> str:
     PC.objects.filter(name__in=names).delete()
     return 'UNIT'
 
 
-@gqt.mutation.field('createPC')
+@gqt.mutation.field('createComputer')
 def create_pc(obj, info, input: Dict) -> PC:
     input = convert_gql_pc(gql_input=input)
     if PC.objects.filter(name=input['common']['name']).exists():
@@ -33,7 +33,7 @@ def create_pc(obj, info, input: Dict) -> PC:
     )
 
 
-@gqt.mutation.field('updatePC')
+@gqt.mutation.field('updateComputer')
 def update_pc(obj, info, name: str, input: Dict) -> PC:
     input = convert_gql_pc(gql_input=input)
 
@@ -46,3 +46,16 @@ def update_pc(obj, info, name: str, input: Dict) -> PC:
     )
 
     return PC.objects.get(name=name)
+
+
+@gqt.mutation.field('createUser')
+def create_user(obj, info, input: Dict):
+    role = input.get('role')
+    if role:
+        role, created = UserRole.objects.get_or_create(title=role)
+
+    return User.objects.create(
+        first_name=input['firstName'],
+        last_name=input['lastName'],
+        role=role,
+    )

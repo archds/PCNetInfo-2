@@ -5,7 +5,7 @@ from django.db.models import (
     IntegerField,
     DateTimeField,
     TextField,
-    ForeignKey, CASCADE,
+    ForeignKey, CASCADE, OneToOneField,
 )
 from django.db.models import Model
 from django.db.models import TextChoices, DO_NOTHING, SET_NULL
@@ -86,7 +86,7 @@ class PC(Model):
     domain = CharField(max_length=50, null=True)
     ip = GenericIPAddressField(null=True)
     username = CharField(max_length=100, null=True)
-    user = CharField(max_length=200, null=True)
+    user = OneToOneField(User, null=True, on_delete=SET_NULL, related_name='computer')
     serial_number = CharField(null=True, max_length=50, unique=True)
     location = ForeignKey(Location, related_name='computers', on_delete=SET_NULL, null=True)
     updated = DateTimeField(auto_now=True)
