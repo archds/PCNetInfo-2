@@ -39,10 +39,11 @@ export type Computer = {
 }
 
 export interface ComputerVariables {
-    name: string
+    id: string
 }
 
 export type ComputerBaseInfo = {
+    id: string
     name: string
     type: ComputerType
     label?: string

@@ -8,8 +8,8 @@ import {
 import { notifyError, notifySuccess } from 'components/shared/actions/notification'
 import { FormFactor } from 'components/shared/enums'
 import { updatePC } from 'gql_api/mutations/updatePC'
-import { allPCQuery } from 'gql_api/queries/allPC'
-import { getPCQuery } from 'gql_api/queries/getPC'
+import { computersQuery } from 'gql_api/queries/computers'
+import { computerQuery } from 'gql_api/queries/computer'
 import { SnackbarContext } from 'pages'
 import React, { useContext, useState } from 'react'
 import { MdEdit } from 'react-icons/md'
@@ -36,7 +36,7 @@ function CommonInfo(props: Props) {
     const { setState: setSnackbar } = useContext(SnackbarContext)
     const [editing, setEditing] = useState<string>(null)
     const [updateComputer, { loading: updateLoading }] = useMutation(updatePC, {
-        refetchQueries: [getPCQuery, allPCQuery],
+        refetchQueries: [computerQuery, computersQuery],
         onError: error => notifyError(error, setSnackbar),
         onCompleted: () => notifySuccess('Information updated!', setSnackbar),
     })

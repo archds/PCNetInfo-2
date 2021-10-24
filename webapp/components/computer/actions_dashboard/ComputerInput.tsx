@@ -8,7 +8,7 @@ import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
 import { notifyError, notifySuccess } from 'components/shared/actions/notification'
 import { ComputerType } from 'components/shared/enums'
 import { createPC } from 'gql_api/mutations/createPC'
-import { allPCQuery } from 'gql_api/queries/allPC'
+import { computersQuery } from 'gql_api/queries/computers'
 import { SnackbarContext } from 'pages'
 import React, { useContext, useRef, useState } from 'react'
 import { GrClose } from 'react-icons/gr'
@@ -65,7 +65,7 @@ function ComputerInput(props: Props) {
         onError: (error => {
             notifyError(error, setSnackbarContext)
         }),
-        refetchQueries: [allPCQuery],
+        refetchQueries: [computersQuery],
         onCompleted: () => notifySuccess(`New computer added!`, setSnackbarContext),
     })
     // State

@@ -5,6 +5,7 @@ import { ComputerType } from 'components/shared/enums'
 import React, { useContext } from 'react'
 
 interface Computer {
+    id: string,
     name: string,
     type: string,
     label?: string,
@@ -41,9 +42,10 @@ function ComputerList(props: Props) {
         { ...columnDefaults, field: 'location', headerName: 'Location' },
     ]
 
+
     const rows = props.computers.map((computer) => {
         return {
-            id: computer.name,
+            id: computer.id,
             name: computer.name,
             type: ComputerType[computer.type],
             label: computer.label,

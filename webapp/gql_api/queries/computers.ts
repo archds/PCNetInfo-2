@@ -1,14 +1,15 @@
 import { gql } from '@apollo/client'
 
-export const allPCQuery = gql`
+export const computersQuery = gql`
     query ($filter: FilterInput, $sorting: SortField, $search: String){
-        AllPC(
+        computers(
             input: {
                 filter: $filter
                 sort: $sorting
                 search: $search
             }
         ) {
+            id
             name
             type
             label

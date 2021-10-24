@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
-export const deletePC = gql`
+export const deleteComputers = gql`
     mutation ($names: [String!]!) {
-        deletePC(names: $names)
+        deleteComputer(names: $names)
     }
 `

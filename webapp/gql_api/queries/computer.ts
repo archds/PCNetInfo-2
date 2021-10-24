@@ -1,8 +1,9 @@
 import { gql } from '@apollo/client'
 
-export const getPCQuery = gql`
-    query ($name: String!) {
-        getPC(name: $name) {
+export const computerQuery = gql`
+    query ($id: ID!) {
+        computer(id: $id) {
+            id
             type
             name
             domain
@@ -11,7 +12,12 @@ export const getPCQuery = gql`
             ip
             comment
             label
-            user
+            user {
+                id
+                firstName
+                lastName
+                role
+            }
             location
             updated
             formFactor
@@ -22,14 +28,14 @@ export const getPCQuery = gql`
         }
     }
 
-    fragment OS on PC {
+    fragment OS on Computer {
         os {
             name
             architecture
         }
     }
 
-    fragment CPU on PC {
+    fragment CPU on Computer {
         cpu {
             name
             clock
@@ -38,7 +44,7 @@ export const getPCQuery = gql`
         }
     }
 
-    fragment Videocard on PC {
+    fragment Videocard on Computer {
         videocard {
             name
             memory
