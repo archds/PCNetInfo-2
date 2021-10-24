@@ -51,6 +51,7 @@ function ActiveComputer(props: Props) {
                     <div className={style.computerCommonInfo}>
                         <h3>{loading ? skeletonText : computerData.computer.label}</h3>
                         <CommonInfo
+                            id={loading ? null : computerData.computer.id}
                             name={loading ? null : computerData.computer.name}
                             user={loading ? null : computerData.computer.user}
                             location={loading ? null : computerData.computer.location}

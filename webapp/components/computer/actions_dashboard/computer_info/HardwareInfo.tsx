@@ -54,9 +54,11 @@ export function CpuInfo(props: CPUProps) {
     if (props.loading) {
         content = skeletonText
     } else if (props.cpu) {
-        content = ` ${props.cpu.name}\n
-            Clock: ${props.cpu.clock} MHz\n
-            Cores/Threads: ${props.cpu.cores}/${props.cpu.threads}`
+        content = <>
+            {props.cpu.name}<br/>
+            Clock: {props.cpu.clock} MHz<br/>
+            Cores/Threads: {props.cpu.cores}/{props.cpu.threads}<br/>
+        </>
     } else {
         content = defaultNoDataMessage
     }

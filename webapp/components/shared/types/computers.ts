@@ -19,6 +19,7 @@ export type Videocard = {
 
 
 export type Computer = {
+    id: string
     type: ComputerType
     name: string
     domain?: string

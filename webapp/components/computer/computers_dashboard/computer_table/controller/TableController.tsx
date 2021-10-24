@@ -57,8 +57,6 @@ function TableController(props: Props) {
         }
     }, [sorting, filter, search])
 
-
-    // @ts-ignore
     return (
         <div>
             <div className={style.controller}>

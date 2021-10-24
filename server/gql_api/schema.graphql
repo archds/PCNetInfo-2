@@ -7,8 +7,8 @@ type Query {
 }
 
 type Mutation {
-    updateComputer(name: String!, input: UpdateComputerInput!): Computer!
-    deleteComputer(names: [String!]!): Unit!
+    updateComputer(id: ID!, input: UpdateComputerInput!): Computer!
+    deleteComputer(ids: [ID!]!): Unit!
     createComputer(input: CreateComputerInput!): Computer!
     createUser(input: UserInput!): User!
     updateUser(id: ID!, input: UserInput!): User!

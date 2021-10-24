@@ -7,7 +7,7 @@ import MemoryIcon from '@material-ui/icons/Memory'
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
 import { notifyError, notifySuccess } from 'components/shared/actions/notification'
 import { ComputerType } from 'components/shared/enums'
-import { createPC } from 'gql_api/mutations/createPC'
+import { createComputer } from 'gql_api/mutations/createComputer'
 import { computersQuery } from 'gql_api/queries/computers'
 import { SnackbarContext } from 'pages'
 import React, { useContext, useRef, useState } from 'react'
@@ -61,7 +61,7 @@ const validators = {
 
 function ComputerInput(props: Props) {
     // Apollo
-    const [addComputerQuery] = useMutation<{ createPC: { name: string }, input: AddComputer }>(createPC, {
+    const [addComputerQuery] = useMutation<{ createPC: { id: string }, input: AddComputer }>(createComputer, {
         onError: (error => {
             notifyError(error, setSnackbarContext)
         }),
@@ -92,7 +92,7 @@ function ComputerInput(props: Props) {
             label: (formElement.querySelector('input#label') as HTMLInputElement).value,
             name: (formElement.querySelector('input#name') as HTMLInputElement).value,
             serial: (formElement.querySelector('input#serial') as HTMLInputElement).value,
-            location: (formElement.querySelector('input#location') as HTMLInputElement).value,
+            location: (formElement.querySelector('input#location') as HTMLInputElement).value || null,
             type: ComputerType[(formElement.querySelector('select#type') as HTMLInputElement).value],
             ram: parseInt((formElement.querySelector('input#ram') as HTMLInputElement).value),
         }
@@ -166,6 +166,8 @@ function ComputerInput(props: Props) {
                     <TextField
                         id='location'
                         label='Location'
+                        disabled
+                        helperText='Location system on maintenance'
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position='start'>

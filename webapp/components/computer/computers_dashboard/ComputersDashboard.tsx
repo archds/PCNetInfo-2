@@ -41,9 +41,9 @@ function ComputersDashboard(props: Props) {
         setState: setSelectedComputers,
     }
 
-    const [onDelete, { loading: deleteLoading }] = useMutation<Unit, { names: GridSelectionModel }>(deleteComputers, {
+    const [deleteComputersQuery, { loading: deleteLoading }] = useMutation<Unit, { ids: GridSelectionModel }>(deleteComputers, {
         variables: {
-            names: selectedComputers,
+            ids: selectedComputers,
         },
         onCompleted: (): void => {
             notifySuccess('Computer successfully deleted!', setSnackbarContext)
@@ -89,8 +89,8 @@ function ComputersDashboard(props: Props) {
                 />
                 <ModalConfirm
                     onClose={() => setShowDeleteModal(false)}
-                    onConfirm={onDelete}
-                    title={'Delete this PC?'}
+                    onConfirm={deleteComputersQuery}
+                    title='Delete this PC?'
                     text={`To delete: ${selectedComputers.join(', ')}`}
                     isOpen={showDeleteModal}
                 />
