@@ -3,7 +3,7 @@ import { useMutation } from '@apollo/client'
 import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows'
 import LaptopIcon from '@material-ui/icons/Laptop'
 import { ComputerType } from 'components/shared/enums'
-import { updatePC } from 'gql_api/mutations/updatePC'
+import { updateComputer } from 'gql_api/mutations/updateComputer'
 import React, { useState } from 'react'
 
 
@@ -14,10 +14,10 @@ export interface Props {
 
 function ComputerTypeIdentifier(props: Props) {
     const [type, setType] = useState<ComputerType>(props.type)
-    const [updateComputer] = useMutation(updatePC)
+    const [updateComputerQuery] = useMutation(updateComputer)
     const switchType = () => {
         const newType = type === ComputerType.DESKTOP ? ComputerType.LAPTOP : ComputerType.DESKTOP
-        updateComputer({
+        updateComputerQuery({
             variables: {
                 name: props.name,
                 input: {

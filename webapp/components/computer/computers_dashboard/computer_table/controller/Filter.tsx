@@ -58,7 +58,7 @@ function Filter(props: Props) {
                     </MenuItem>
                 </Select>
             </FormControl>
-            <FormControl>
+            <FormControl disabled>
                 <InputLabel shrink id='serial-label'>
                     Location
                 </InputLabel>

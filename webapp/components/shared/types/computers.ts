@@ -19,6 +19,7 @@ export type Videocard = {
 
 
 export type Computer = {
+    id: string
     type: ComputerType
     name: string
     domain?: string
@@ -39,10 +40,11 @@ export type Computer = {
 }
 
 export interface ComputerVariables {
-    name: string
+    id: string
 }
 
 export type ComputerBaseInfo = {
+    id: string
     name: string
     type: ComputerType
     label?: string

@@ -17,10 +17,11 @@ type_defs = load_schema_from_path(str(SCHEMA_PATH))
 resolvers = [
     query := QueryType(),
     mutation := MutationType(),
-    subscription := SubscriptionType(),
-    pc := ObjectType('PC'),
+    pc := ObjectType('Computer'),
     os := ObjectType('OS'),
     cpu := ObjectType('CPU'),
+    location := ObjectType('Location'),
+    user := ObjectType('User'),
+
     videocard := ObjectType('Videocard'),
-    filter := ObjectType('Filter'),
 ]

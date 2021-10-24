@@ -5,10 +5,10 @@ from django.db.models import (
     IntegerField,
     DateTimeField,
     TextField,
-    ForeignKey,
+    ForeignKey, CASCADE, OneToOneField,
 )
 from django.db.models import Model
-from django.db.models import TextChoices, DO_NOTHING
+from django.db.models import TextChoices, DO_NOTHING, SET_NULL
 
 
 # ToDo: location refactor
@@ -44,6 +44,30 @@ class Videocard(Model):
     memory = SmallIntegerField()
 
 
+class UserRole(Model):
+    title = CharField(max_length=100, unique=True)
+    priority = SmallIntegerField(null=True)
+
+
+class Building(Model):
+    street = CharField(max_length=100)
+    house = CharField(max_length=50)
+
+
+class Location(Model):
+    building = ForeignKey(Building, related_name='locations', on_delete=CASCADE)
+    cabinet = CharField(max_length=50)
+    floor = SmallIntegerField()
+    description = TextField()
+
+
+class User(Model):
+    first_name = CharField(max_length=100)
+    last_name = CharField(max_length=100)
+    role = ForeignKey(UserRole, null=True, related_name='users', on_delete=SET_NULL)
+    location = ForeignKey(Location, null=True, related_name='employees', on_delete=SET_NULL)
+
+
 class PC(Model):
     class HwType(TextChoices):
         DESKTOP = 'DESKTOP'
@@ -62,9 +86,9 @@ class PC(Model):
     domain = CharField(max_length=50, null=True)
     ip = GenericIPAddressField(null=True)
     username = CharField(max_length=100, null=True)
-    user = CharField(max_length=200, null=True)
+    user = OneToOneField(User, null=True, on_delete=SET_NULL, related_name='computer')
     serial_number = CharField(null=True, max_length=50, unique=True)
-    location = CharField(max_length=200, null=True)
+    location = ForeignKey(Location, related_name='computers', on_delete=SET_NULL, null=True)
     updated = DateTimeField(auto_now=True)
     comment = TextField(null=True)
     label = CharField(max_length=100, null=True)

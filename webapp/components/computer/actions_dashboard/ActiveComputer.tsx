@@ -10,26 +10,26 @@ import {
     VideocardInfo,
 } from 'components/computer/actions_dashboard/computer_info/HardwareInfo'
 import { Computer, ComputerVariables } from 'components/shared/types/computers'
-import { getPCQuery } from 'gql_api/queries/getPC'
+import { computerQuery } from 'gql_api/queries/computer'
 import React from 'react'
 import { GrClose } from 'react-icons/gr'
 
 export interface Props {
-    computerName: string
+    computerId: string
     resetActiveComputer(): void
 }
 
 function ActiveComputer(props: Props) {
-    const { loading, data: computerData } = useQuery<{ getPC: Computer }, ComputerVariables>(
-        getPCQuery,
-        { variables: { name: props.computerName } },
+    const { loading, data: computerData } = useQuery<{ computer: Computer }, ComputerVariables>(
+        computerQuery,
+        { variables: { id: props.computerId } },
     )
 
-    const os = loading ? null : computerData.getPC.os
-    const ram = loading ? null : computerData.getPC.ram
-    const cpu = loading ? null : computerData.getPC.cpu
-    const videocard = loading ? null : computerData.getPC.videocard
-    const type = loading ? null : computerData.getPC.type
+    const os = loading ? null : computerData.computer.os
+    const ram = loading ? null : computerData.computer.ram
+    const cpu = loading ? null : computerData.computer.cpu
+    const videocard = loading ? null : computerData.computer.videocard
+    const type = loading ? null : computerData.computer.type
 
     return (
         <>
@@ -39,7 +39,7 @@ function ActiveComputer(props: Props) {
                     <div className={style.computerHardwareInfo}>
                         <div className={style.computerName}>
                             <TypeIdentifier type={type} loading={loading}/>
-                            <p className='text-center'>{loading ? skeletonText : computerData.getPC.name}</p>
+                            <p className='text-center'>{loading ? skeletonText : computerData.computer.name}</p>
                         </div>
                         <div>
                             <OSInfo os={os} loading={loading}/>
@@ -49,14 +49,15 @@ function ActiveComputer(props: Props) {
                         </div>
                     </div>
                     <div className={style.computerCommonInfo}>
-                        <h3>{loading ? skeletonText : computerData.getPC.label}</h3>
+                        <h3>{loading ? skeletonText : computerData.computer.label}</h3>
                         <CommonInfo
-                            name={loading ? null : computerData.getPC.name}
-                            user={loading ? null : computerData.getPC.user}
-                            location={loading ? null : computerData.getPC.location}
-                            formFactor={loading ? null : computerData.getPC.formFactor}
-                            username={loading ? null : computerData.getPC.username}
-                            serial={loading ? null : computerData.getPC.serial}
+                            id={loading ? null : computerData.computer.id}
+                            name={loading ? null : computerData.computer.name}
+                            user={loading ? null : computerData.computer.user}
+                            location={loading ? null : computerData.computer.location}
+                            formFactor={loading ? null : computerData.computer.formFactor}
+                            username={loading ? null : computerData.computer.username}
+                            serial={loading ? null : computerData.computer.serial}
                             loading={loading}
                         />
                     </div>

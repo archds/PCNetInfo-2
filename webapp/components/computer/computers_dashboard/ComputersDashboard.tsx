@@ -8,8 +8,8 @@ import { SortingType, Unit } from 'components/shared/enums'
 import { ComputersQueryVariables, StateContext } from 'components/shared/interfaces'
 import { FilterState } from 'components/shared/state'
 import { ComputerBaseInfo } from 'components/shared/types/computers'
-import { deletePC } from 'gql_api/mutations/deletePC'
-import { allPCQuery } from 'gql_api/queries/allPC'
+import { deleteComputers } from 'gql_api/mutations/deleteComputers'
+import { computersQuery } from 'gql_api/queries/computers'
 import { SnackbarContext } from 'pages'
 import React, { createContext, useContext, useState } from 'react'
 import ComputerList from './computer_table/ComputerList'
@@ -17,7 +17,7 @@ import ControllerDashboard from './computer_table/controller/ControllerDashboard
 
 export interface Props {
     onAddComputer(): void,
-    onComputerClick(name: GridRowId): void,
+    onComputerClick(id: GridRowId): void,
 }
 
 
@@ -28,7 +28,7 @@ function ComputersDashboard(props: Props) {
         data: computers,
         loading: computersLoading,
         refetch: refetchComputers,
-    } = useQuery<{ AllPC: ComputerBaseInfo[] }, ComputersQueryVariables>(allPCQuery)
+    } = useQuery<{ computers: ComputerBaseInfo[] }, ComputersQueryVariables>(computersQuery)
     // Management control
     const [selectedComputers, setSelectedComputers] = useState<GridSelectionModel>([])
     // Display control
@@ -41,16 +41,16 @@ function ComputersDashboard(props: Props) {
         setState: setSelectedComputers,
     }
 
-    const [deleteComputers, { loading: deleteLoading }] = useMutation<Unit, { names: GridSelectionModel }>(deletePC, {
+    const [deleteComputersQuery, { loading: deleteLoading }] = useMutation<Unit, { ids: GridSelectionModel }>(deleteComputers, {
         variables: {
-            names: selectedComputers,
+            ids: selectedComputers,
         },
         onCompleted: (): void => {
             notifySuccess('Computer successfully deleted!', setSnackbarContext)
             setSelectedComputers([])
             setShowDeleteModal(false)
         },
-        refetchQueries: [allPCQuery],
+        refetchQueries: [computersQuery],
         onError: error => {
             notifyError(error, setSnackbarContext)
             setSelectedComputers([])
@@ -85,12 +85,12 @@ function ComputersDashboard(props: Props) {
                 />
                 <ComputerList
                     onComputerClick={props.onComputerClick}
-                    computers={computers.AllPC}
+                    computers={computers.computers}
                 />
                 <ModalConfirm
                     onClose={() => setShowDeleteModal(false)}
-                    onConfirm={deleteComputers}
-                    title={'Delete this PC?'}
+                    onConfirm={deleteComputersQuery}
+                    title='Delete this PC?'
                     text={`To delete: ${selectedComputers.join(', ')}`}
                     isOpen={showDeleteModal}
                 />

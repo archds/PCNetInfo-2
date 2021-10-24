@@ -7,7 +7,7 @@ import ComputerInput from './ComputerInput'
 
 export interface Props {
     input: boolean,
-    computerName: string,
+    computerId: string,
     resetActionsDashboard(): void
 }
 
@@ -21,10 +21,10 @@ function ActionsDashboard(props: Props) {
             />
         </div>
     }
-    if (props.computerName) {
+    if (props.computerId) {
         return (
             <div className={dashboardClass}>
-                <ActiveComputer computerName={props.computerName} resetActiveComputer={props.resetActionsDashboard}/>
+                <ActiveComputer computerId={props.computerId} resetActiveComputer={props.resetActionsDashboard}/>
             </div>
         )
     }

@@ -24,7 +24,7 @@ def sort(sort_input: Dict, query: QuerySet) -> QuerySet:
 
     if sort_field == SortField.CPU:
         query = query.annotate(
-            performance=F('cpu_threads') * F('cpu_clock')
+            performance=F('cpu__threads') * F('cpu__clock')
         )
         return query.order_by('-performance')
 

@@ -7,15 +7,16 @@ import {
 } from 'components/computer/actions_dashboard/computer_info/defaults'
 import { notifyError, notifySuccess } from 'components/shared/actions/notification'
 import { FormFactor } from 'components/shared/enums'
-import { updatePC } from 'gql_api/mutations/updatePC'
-import { allPCQuery } from 'gql_api/queries/allPC'
-import { getPCQuery } from 'gql_api/queries/getPC'
+import { updateComputer } from 'gql_api/mutations/updateComputer'
+import { computersQuery } from 'gql_api/queries/computers'
+import { computerQuery } from 'gql_api/queries/computer'
 import { SnackbarContext } from 'pages'
 import React, { useContext, useState } from 'react'
 import { MdEdit } from 'react-icons/md'
 import style from 'styles/ActiveComputer.module.scss'
 
 export interface Props extends BaseProps {
+    id: string
     name: string
     user: string | null
     location: string | null
@@ -35,8 +36,8 @@ interface commonInfoPayload {
 function CommonInfo(props: Props) {
     const { setState: setSnackbar } = useContext(SnackbarContext)
     const [editing, setEditing] = useState<string>(null)
-    const [updateComputer, { loading: updateLoading }] = useMutation(updatePC, {
-        refetchQueries: [getPCQuery, allPCQuery],
+    const [updateComputerQuery, { loading: updateLoading }] = useMutation(updateComputer, {
+        refetchQueries: [computerQuery, computersQuery],
         onError: error => notifyError(error, setSnackbar),
         onCompleted: () => notifySuccess('Information updated!', setSnackbar),
     })
@@ -54,13 +55,13 @@ function CommonInfo(props: Props) {
             inputProps={{
                 style: { textAlign: 'right' },
                 onBlur: event => {
-                    if (event.currentTarget.value === value) {
+                    if (event.currentTarget.value === value || !event.currentTarget.value) {
                         setEditing(null)
                         return
                     }
                     let input = {}
                     input[event.currentTarget.parentElement.parentElement.id] = event.currentTarget.value
-                    updateComputer({ variables: { name: props.name, input: input } })
+                    updateComputerQuery({ variables: { id: props.id, input: input } })
                 },
             }}
         />
@@ -77,7 +78,7 @@ function CommonInfo(props: Props) {
                     }
                     let input = {}
                     input[id] = event.target.value
-                    updateComputer({ variables: { name: props.name, input: input } })
+                    updateComputerQuery({ variables: { name: props.name, input: input } })
                     setEditing(null)
                 }}
             >

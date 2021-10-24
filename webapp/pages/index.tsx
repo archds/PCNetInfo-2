@@ -26,8 +26,8 @@ function Index() {
         setInputMode(false)
     }
 
-    const onComputerClick = (pcName): void => {
-        setActiveComputer(pcName)
+    const onComputerClick = (computerId: string): void => {
+        setActiveComputer(computerId)
         setInputMode(false)
     }
 
@@ -59,7 +59,7 @@ function Index() {
                     />
                     <ActionsDashboard
                         resetActionsDashboard={resetActionsDashboard}
-                        computerName={activeComputer}
+                        computerId={activeComputer}
                         input={inputMode}
                     />
                 </SnackbarContext.Provider>

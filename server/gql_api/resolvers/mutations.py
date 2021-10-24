@@ -1,18 +1,18 @@
 from typing import Dict, List
-import itertools as it
+
 import gql_api.type_defs as gqt
 from gql_api.actions.domain import convert_gql_pc
-from hardware.models import PC, OS, CPU, Videocard
-from gql_api.errors import ReadableError, InputError
+from gql_api.errors import InputError
+from hardware.models import PC, OS, CPU, Videocard, UserRole, User
 
 
-@gqt.mutation.field('deletePC')
-def delete_pc(obj, info, names: List[str]) -> str:
-    PC.objects.filter(name__in=names).delete()
+@gqt.mutation.field('deleteComputer')
+def delete_pc(obj, info, ids: List[str]) -> str:
+    PC.objects.filter(pk__in=ids).delete()
     return 'UNIT'
 
 
-@gqt.mutation.field('createPC')
+@gqt.mutation.field('createComputer')
 def create_pc(obj, info, input: Dict) -> PC:
     input = convert_gql_pc(gql_input=input)
     if PC.objects.filter(name=input['common']['name']).exists():
@@ -33,11 +33,11 @@ def create_pc(obj, info, input: Dict) -> PC:
     )
 
 
-@gqt.mutation.field('updatePC')
-def update_pc(obj, info, name: str, input: Dict) -> PC:
+@gqt.mutation.field('updateComputer')
+def update_pc(obj, info, id: str, input: Dict) -> PC:
     input = convert_gql_pc(gql_input=input)
 
-    PC.objects.filter(name=name).update(
+    PC.objects.filter(pk=id).update(
         **{
             field: value
             for field, value in input['common'].items()
@@ -45,4 +45,17 @@ def update_pc(obj, info, name: str, input: Dict) -> PC:
         }
     )
 
-    return PC.objects.get(name=name)
+    return PC.objects.get(pk=id)
+
+
+@gqt.mutation.field('createUser')
+def create_user(obj, info, input: Dict):
+    role = input.get('role')
+    if role:
+        role, created = UserRole.objects.get_or_create(title=role)
+
+    return User.objects.create(
+        first_name=input['firstName'],
+        last_name=input['lastName'],
+        role=role,
+    )
