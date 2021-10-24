@@ -78,10 +78,10 @@ function TableController(props: Props) {
             </div>
             <div>
                 <Collapse in={showSorting}>
-                    <Filter filterComputers={onFilterChange}/>
+                    <Sorting onSortingChange={onSortingChange}/>
                 </Collapse>
                 <Collapse in={showFilter}>
-                    <Sorting onSortingChange={onSortingChange}/>
+                    <Filter filterComputers={onFilterChange}/>
                 </Collapse>
             </div>
         </div>
