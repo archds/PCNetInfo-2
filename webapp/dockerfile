@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:16.13-alpine
 ENV PORT 3000
 WORKDIR .
 COPY package*.json ./
