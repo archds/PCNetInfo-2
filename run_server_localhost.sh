@@ -1,1 +1,1 @@
-pipenv run python3 server/manage.py runserver localhost:8001
+python3 server/manage.py runserver 0.0.0.0:8000
