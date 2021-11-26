@@ -6,7 +6,8 @@ import gql_api.type_defs as gqt
 from gql_api.actions.filter import filter_query
 from gql_api.actions.sort import sort
 from gql_api.errors import ReadableError
-from hardware.models import PC, Location, User
+from gql_api.resolvers.presentation.computer import gql_computer_convert
+from hardware.models import Computer, Location, User
 
 
 @gqt.query.field('hello')
@@ -16,7 +17,7 @@ def resolve_hello(*_):
 
 @gqt.query.field('computers')
 def resolve_all_pc(obj, info, input: Optional[Dict] = None):
-    query = PC.objects.all()
+    query = Computer.objects.all()
 
     if input is None:
         return query
@@ -40,19 +41,19 @@ def resolve_all_pc(obj, info, input: Optional[Dict] = None):
     if sort_input := input.get('sort'):
         query = sort(sort_input, query)
 
-    return query
+    return [gql_computer_convert(comp) for comp in query]
 
 
 @gqt.query.field('computer')
 def resolve_get_pc(obj, info, id: str):
-    query = PC.objects.filter(pk=int(id))
+    query = Computer.objects.filter(pk=int(id))
 
     if not query.exists():
         raise ReadableError(
             message=f'Computer does not found in database!'
         )
 
-    return query.first()
+    return gql_computer_convert(query.first())
 
 
 @gqt.query.field('locations')

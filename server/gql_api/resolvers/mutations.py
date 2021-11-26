@@ -3,12 +3,12 @@ from typing import Dict, List
 import gql_api.type_defs as gqt
 from gql_api.actions.domain import convert_gql_pc
 from gql_api.errors import InputError
-from hardware.models import PC, OS, CPU, Videocard, UserRole, User
+from hardware.models import Computer
 
 
 @gqt.mutation.field('deleteComputer')
 def delete_pc(obj, info, ids: List[str]) -> str:
-    PC.objects.filter(pk__in=ids).delete()
+    Computer.objects.filter(pk__in=ids).delete()
     return 'UNIT'
 
 
@@ -34,10 +34,10 @@ def create_pc(obj, info, input: Dict) -> PC:
 
 
 @gqt.mutation.field('updateComputer')
-def update_pc(obj, info, id: str, input: Dict) -> PC:
+def update_pc(obj, info, id: str, input: Dict) -> Computer:
     input = convert_gql_pc(gql_input=input)
 
-    PC.objects.filter(pk=id).update(
+    Computer.objects.filter(pk=id).update(
         **{
             field: value
             for field, value in input['common'].items()
@@ -45,7 +45,7 @@ def update_pc(obj, info, id: str, input: Dict) -> PC:
         }
     )
 
-    return PC.objects.get(pk=id)
+    return Computer.objects.get(pk=id)
 
 
 @gqt.mutation.field('createUser')

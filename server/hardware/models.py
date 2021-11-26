@@ -1,14 +1,17 @@
 from django.db.models import (
+    CASCADE,
     CharField,
-    GenericIPAddressField,
-    SmallIntegerField,
-    IntegerField,
     DateTimeField,
-    TextField,
-    ForeignKey, CASCADE, OneToOneField,
+    ForeignKey,
+    GenericIPAddressField,
+    IntegerField,
+    Model,
+    OneToOneField,
+    SET_NULL,
+    SmallIntegerField,
+    TextChoices,
+    TextField
 )
-from django.db.models import Model
-from django.db.models import TextChoices, DO_NOTHING, SET_NULL
 
 
 # ToDo: location refactor
@@ -16,32 +19,6 @@ class Monitor(Model):
     serial_number = CharField(max_length=50, unique=True)
     model = CharField(max_length=100)
     user = CharField(max_length=100)
-
-
-class OS(Model):
-    class Architecture(TextChoices):
-        x64 = 'x64'
-        x32 = 'x32'
-
-    name = CharField(max_length=50)
-    # version = CharField(max_length=50, null=True)
-    architecture = CharField(choices=Architecture.choices, max_length=50)
-
-    class Meta:
-        unique_together = ('name', 'architecture')
-
-
-class CPU(Model):
-    name = CharField(max_length=100, unique=True)
-    clock = SmallIntegerField()
-    cores = SmallIntegerField()
-    threads = SmallIntegerField()
-    # socket = CharField(max_length=20)
-
-
-class Videocard(Model):
-    name = CharField(max_length=100, unique=True)
-    memory = SmallIntegerField()
 
 
 class UserRole(Model):
@@ -68,7 +45,11 @@ class User(Model):
     location = ForeignKey(Location, null=True, related_name='employees', on_delete=SET_NULL)
 
 
-class PC(Model):
+class Computer(Model):
+    class Architecture(TextChoices):
+        x64 = 'x64'
+        x32 = 'x32'
+
     class HwType(TextChoices):
         DESKTOP = 'DESKTOP'
         LAPTOP = 'LAPTOP'
@@ -78,10 +59,25 @@ class PC(Model):
         mATX = 'mATX'
 
     hardware_type = CharField(choices=HwType.choices, default=HwType.DESKTOP, max_length=50)
-    os = ForeignKey(to=OS, on_delete=DO_NOTHING, null=True)
-    cpu = ForeignKey(to=CPU, on_delete=DO_NOTHING, null=True)
-    videocard = ForeignKey(to=Videocard, on_delete=DO_NOTHING, null=True)
+
+    # OS
+    os_name = CharField(max_length=50)
+    os_architecture = CharField(max_length=50, choices=Architecture.choices)
+
+    # CPU
+    cpu_name = CharField(max_length=100)
+    cpu_clock = SmallIntegerField()
+    cpu_cores = SmallIntegerField()
+    cpu_threads = SmallIntegerField()
+
+    # Videocard
+    videocard_name = CharField(max_length=100)
+    videocard_memory = SmallIntegerField()
+
+    # RAM
     ram = IntegerField(null=True)
+
+    # Common
     name = CharField(max_length=50, unique=True)
     domain = CharField(max_length=50, null=True)
     ip = GenericIPAddressField(null=True)

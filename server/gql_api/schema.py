@@ -6,8 +6,7 @@ from typing import Dict
 from ariadne import make_executable_schema
 
 import gql_api.resolvers as root_resolvers
-import gql_api.resolvers.objects as object_resolvers
-from gql_api.type_defs import type_defs, resolvers
+from gql_api.type_defs import resolvers, type_defs
 
 
 def import_submodules(package, recursive: bool = True) -> Dict[str, ModuleType]:
@@ -36,6 +35,5 @@ def import_submodules(package, recursive: bool = True) -> Dict[str, ModuleType]:
 
 
 import_submodules(root_resolvers)
-import_submodules(object_resolvers)
 
 schema = make_executable_schema(type_defs, resolvers)
