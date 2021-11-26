@@ -9,7 +9,7 @@ import {
     TypeIdentifier,
     VideocardInfo,
 } from 'components/computer/actions_dashboard/computer_info/HardwareInfo'
-import { Computer, ComputerVariables } from 'components/shared/types/computers'
+import { Computer, ComputerVariables } from 'core/types/computers'
 import { computerQuery } from 'gql_api/queries/computer'
 import React from 'react'
 import { GrClose } from 'react-icons/gr'

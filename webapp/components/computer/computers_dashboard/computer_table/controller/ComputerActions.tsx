@@ -5,6 +5,7 @@ import * as CSS from 'csstype'
 import React from 'react'
 
 export interface Props {
+    disabled: boolean
     show: boolean
     onAddComputer(): void
     onDelete(): void
@@ -14,7 +15,7 @@ function ComputerActions(props: Props) {
     const delButtonStyles: CSS.Properties = {
         visibility: props.show ? 'visible' : 'hidden',
         opacity: props.show ? 100 : 0,
-        backgroundColor: '#d32f2f',
+        backgroundColor: '#D32F2F',
         color: 'white',
         transition: '0.3s',
     }
@@ -27,6 +28,7 @@ function ComputerActions(props: Props) {
                 onClick={props.onDelete}
                 startIcon={<DeleteIcon/>}
                 style={delButtonStyles}
+                disabled={props.disabled}
             >
                 Delete
             </Button>
@@ -35,6 +37,7 @@ function ComputerActions(props: Props) {
                 onClick={props.onAddComputer}
                 variant='contained'
                 color='primary'
+                disabled={props.disabled}
             >
                 Add
             </Button>

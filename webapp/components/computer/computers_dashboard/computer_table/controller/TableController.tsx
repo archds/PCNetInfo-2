@@ -1,8 +1,8 @@
 import style from '/styles/ComputersDashboard.module.scss'
 import { Button, Collapse } from '@material-ui/core'
 import Sorting from 'components/computer/computers_dashboard/computer_table/controller/Sorting'
-import { FilterType, SortingType } from 'components/shared/enums'
-import { FilterState } from 'components/shared/state'
+import { FilterType, SortingType } from 'core/enums'
+import { FilterState } from 'core/state'
 import React, { useEffect, useRef, useState } from 'react'
 import Filter from './Filter'
 import Search from './Search'
@@ -13,6 +13,7 @@ enum ActiveAction {
 }
 
 export interface Props {
+    disabled: boolean
     onControllerChange(sorting: SortingType, filter: FilterState, search: string): void
 }
 
@@ -64,6 +65,7 @@ function TableController(props: Props) {
                     variant='outlined'
                     color='primary'
                     onClick={() => switchCollapse(ActiveAction.SORTING)}
+                    disabled={props.disabled}
                 >
                     Sorting
                 </Button>
@@ -71,10 +73,11 @@ function TableController(props: Props) {
                     variant='outlined'
                     color='primary'
                     onClick={() => switchCollapse(ActiveAction.FILTER)}
+                    disabled={props.disabled}
                 >
                     Filter
                 </Button>
-                <Search onSearchChange={onSearchChange}/>
+                <Search onSearchChange={onSearchChange} inputProps={{disabled: props.disabled}}/>
             </div>
             <div>
                 <Collapse in={showSorting}>

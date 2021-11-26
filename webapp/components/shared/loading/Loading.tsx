@@ -1,4 +1,4 @@
-import style from '/styles/Loading.module.scss'
+import style from 'components/shared/loading/Loading.module.scss'
 import { CircularProgress } from '@material-ui/core'
 import React from 'react'
 

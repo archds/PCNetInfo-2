@@ -4,8 +4,8 @@ import {
     defaultNoDataMessage,
     skeletonText,
 } from 'components/computer/actions_dashboard/computer_info/defaults'
-import { ComputerType } from 'components/shared/enums'
-import { CPU, OS, Videocard } from 'components/shared/types/computers'
+import { ComputerType } from 'core/enums'
+import { CPU, OS, Videocard } from 'core/types/computers'
 import Image from 'next/image'
 import React from 'react'
 import { BsDisplayFill } from 'react-icons/bs'

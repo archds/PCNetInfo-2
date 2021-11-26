@@ -1,5 +1,5 @@
-import { SortingType } from 'components/shared/enums'
-import { FilterState } from 'components/shared/state'
+import { SortingType } from 'core/enums'
+import { FilterState } from 'core/state'
 
 export interface StateContext {
     state: any

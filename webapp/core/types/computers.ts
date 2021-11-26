@@ -1,4 +1,4 @@
-import { ComputerType, FormFactor } from 'components/shared/enums'
+import { ComputerType, FormFactor } from 'core/enums'
 
 export type OS = {
     name: string,

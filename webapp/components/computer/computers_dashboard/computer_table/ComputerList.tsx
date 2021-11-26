@@ -1,7 +1,7 @@
 import { DataGrid, GridRowId, GridSelectionModel } from '@mui/x-data-grid'
 import ComputerTypeIdentifier from 'components/computer/computers_dashboard/computer_table/ComputerTypeIdentifier'
 import { SelectedComputersContext } from 'components/computer/computers_dashboard/ComputersDashboard'
-import { ComputerType } from 'components/shared/enums'
+import { ComputerType } from 'core/enums'
 import React, { useContext } from 'react'
 
 interface Computer {
@@ -55,7 +55,6 @@ function ComputerList(props: Props) {
     })
 
     return (
-        <div className='dashboard' style={{ display: 'flex', height: '100%' }}>
             <DataGrid
                 columns={columns}
                 rows={rows}
@@ -68,7 +67,6 @@ function ComputerList(props: Props) {
                 // sortModel={sorting}
                 // onSortModelChange={handleSorting}
             />
-        </div>
     )
 }
 

@@ -5,8 +5,8 @@ import {
     defaultNoDataMessage,
     skeletonText,
 } from 'components/computer/actions_dashboard/computer_info/defaults'
-import { notifyError, notifySuccess } from 'components/shared/actions/notification'
-import { FormFactor } from 'components/shared/enums'
+import { notifyError, notifySuccess } from 'core/actions/notification'
+import { FormFactor } from 'core/enums'
 import { updateComputer } from 'gql_api/mutations/updateComputer'
 import { computersQuery } from 'gql_api/queries/computers'
 import { computerQuery } from 'gql_api/queries/computer'

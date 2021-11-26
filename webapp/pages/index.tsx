@@ -1,7 +1,7 @@
 import style from '/styles/index.module.scss'
 import { Snackbar } from '@material-ui/core'
 import Alert, { Color } from '@material-ui/lab/Alert'
-import { StateContext } from 'components/shared/interfaces'
+import { StateContext } from 'core/interfaces'
 import Head from 'next/head'
 import React, { createContext, useState } from 'react'
 import ActionsDashboard from '../components/computer/actions_dashboard/ActionsDashboard'
