@@ -64,5 +64,3 @@ def resolve_locations(obj, info):
 @gqt.query.field('users')
 def resolve_users(obj, info):
     return User.objects.all()
-
-
