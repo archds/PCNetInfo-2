@@ -61,18 +61,18 @@ class Computer(Model):
     hardware_type = CharField(choices=HwType.choices, default=HwType.DESKTOP, max_length=50)
 
     # OS
-    os_name = CharField(max_length=50)
-    os_architecture = CharField(max_length=50, choices=Architecture.choices)
+    os_name = CharField(max_length=50, null=True)
+    os_architecture = CharField(max_length=50, choices=Architecture.choices, null=True)
 
     # CPU
-    cpu_name = CharField(max_length=100)
-    cpu_clock = SmallIntegerField()
-    cpu_cores = SmallIntegerField()
-    cpu_threads = SmallIntegerField()
+    cpu_name = CharField(max_length=100, null=True)
+    cpu_clock = SmallIntegerField(null=True)
+    cpu_cores = SmallIntegerField(null=True)
+    cpu_threads = SmallIntegerField(null=True)
 
     # Videocard
-    videocard_name = CharField(max_length=100)
-    videocard_memory = SmallIntegerField()
+    videocard_name = CharField(max_length=100, null=True)
+    videocard_memory = SmallIntegerField(null=True)
 
     # RAM
     ram = IntegerField(null=True)

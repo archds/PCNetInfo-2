@@ -107,7 +107,7 @@ def _generate_response() -> str:
 @require_POST
 @csrf_exempt
 def collect_msinfo(request: HttpRequest):
-    raw = BytesIO(request.body)
+    raw = BytesIO(request.read())
     bs = BeautifulSoup(raw, 'xml')
 
     get_system_summary = partial(_get_item_value, category='System Summary', bs_obj=bs)

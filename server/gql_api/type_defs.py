@@ -13,7 +13,7 @@ resolvers = [
     query := QueryType(),
     mutation := MutationType(),
 
-    pc := ObjectType('Computer'),
+    computer := ObjectType('Computer'),
 
     form_factor := EnumType(
         'FormFactor',
