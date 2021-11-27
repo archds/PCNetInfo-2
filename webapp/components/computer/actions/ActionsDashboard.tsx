@@ -1,9 +1,9 @@
-import style from '/styles/ActionsDashboard.module.scss'
+import style from '/components/computer/actions/ActionsDashboard.module.scss'
 import classNames from 'classnames'
 import React from 'react'
-import ActiveComputer from './ActiveComputer'
-import ActiveComputerStub from './ActiveComputerStub'
-import ComputerInput from './ComputerInput'
+import ActiveComputer from 'components/computer/active/ActiveComputer'
+import ActiveComputerStub from 'components/computer/stub/ActiveComputerStub'
+import ComputerInput from 'components/computer/ComputerInput'
 
 export interface Props {
     input: boolean,

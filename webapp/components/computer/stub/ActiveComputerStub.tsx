@@ -1,4 +1,4 @@
-import style from '/styles/ActiveComputerStub.module.scss'
+import style from '/components/computer/stub/ActiveComputerStub.module.scss'
 import Image from 'next/image'
 import React from 'react'
 import ReactFitText from 'react-fittext'

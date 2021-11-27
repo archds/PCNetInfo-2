@@ -1,4 +1,4 @@
-import style from '/styles/ComputerType.module.scss'
+import style from '/components/computer/type/ComputerType.module.scss'
 import { useMutation } from '@apollo/client'
 import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows'
 import LaptopIcon from '@material-ui/icons/Laptop'

@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client'
-import { BaseProps } from 'components/computer/actions_dashboard/computer_info/defaults'
+import { BaseProps } from 'components/shared/defaults'
 import { notifyError, notifySuccess } from 'core/actions/notification'
 import { FormFactor } from 'core/enums'
 import { updateComputer } from 'gql_api/mutations/updateComputer'
@@ -9,7 +9,7 @@ import { SnackbarContext } from 'pages'
 import React, { useContext } from 'react'
 import { EditText } from 'react-edit-text'
 import 'react-edit-text/dist/index.css'
-import commonStyle from './Common.module.scss'
+import commonStyle from 'components/computer/info/common/Common.module.scss'
 
 export interface Props extends BaseProps {
     id: string

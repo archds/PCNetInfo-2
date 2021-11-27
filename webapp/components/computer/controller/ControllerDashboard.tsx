@@ -1,9 +1,9 @@
-import style from '/styles/ComputersDashboard.module.scss'
+import style from '/components/computer/controller/ControllerDashboard.module.scss'
 import { SortingType } from 'core/enums'
 import { FilterState } from 'core/state'
 import React from 'react'
-import ComputerActions from './ComputerActions'
-import TableController from './TableController'
+import ComputerActions from 'components/computer/controller/ComputerActions'
+import TableController from 'components/computer/controller/TableController'
 
 export interface Props {
     showActions: boolean,
