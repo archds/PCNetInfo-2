@@ -33,7 +33,9 @@
     .computerCommonInfo {
       p {
         display: flex;
+        flex-flow: column;
         justify-content: space-between;
+        align-items: center;
         margin-bottom: 13px;
 
         &:hover .edit {

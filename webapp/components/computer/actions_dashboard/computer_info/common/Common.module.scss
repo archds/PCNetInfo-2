@@ -1,0 +1,109 @@
+._3sXmF {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+  min-height: 28px;
+}
+
+._3sXmF:hover {
+  cursor: pointer;
+  background: rgba(220, 220, 220, 0.4);
+}
+
+._ygkSb {
+  overflow-y: auto;
+  transition: background 0.2s ease;
+}
+
+/* Width */
+._ygkSb::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+._ygkSb::-webkit-scrollbar-track {
+  background: #F1F1F1;
+}
+
+/* Handle */
+._ygkSb::-webkit-scrollbar-thumb {
+  background: #CCCCCC;
+}
+
+/* Handle on hover */
+._ygkSb::-webkit-scrollbar-thumb:hover {
+  background: #AAAAAA;
+}
+
+/* Handle on drag */
+._ygkSb::-webkit-scrollbar-thumb:active {
+  background: #666666;
+}
+
+._ygkSb:hover {
+  cursor: pointer;
+  background: rgba(220, 220, 220, 0.4);
+}
+
+.field {
+  width: 50%;
+  padding: 5px;
+  display: block;
+  margin: 3px 0 3px 0;
+  scrollbar-width: thin;
+  text-align: right;
+}
+
+input.field {
+  border: none;
+  outline: none;
+}
+
+/* Width */
+.field::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+.field::-webkit-scrollbar-track {
+  background: #F1F1F1;
+}
+
+/* Handle */
+.field::-webkit-scrollbar-thumb {
+  background: #CCCCCC;
+}
+
+/* Handle on hover */
+.field::-webkit-scrollbar-thumb:hover {
+  background: #AAAAAA;
+}
+
+/* Handle on drag */
+.field::-webkit-scrollbar-thumb:active {
+  background: #666666;
+}
+
+._3qwMT {
+  color: #999999;
+}
+
+._3F-ST {
+  display: inline !important;
+}
+
+._38077 {
+  cursor: auto !important;
+}
+
+._38077:hover {
+  cursor: auto !important;
+}
+
+.fieldContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

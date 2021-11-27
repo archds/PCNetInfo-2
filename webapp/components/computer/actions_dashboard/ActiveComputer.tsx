@@ -1,6 +1,6 @@
 import style from '/styles/ActiveComputer.module.scss'
 import { useQuery } from '@apollo/client'
-import CommonInfo from 'components/computer/actions_dashboard/computer_info/CommonInfo'
+import CommonInfo from 'components/computer/actions_dashboard/computer_info/common/CommonInfo'
 import { skeletonText } from 'components/computer/actions_dashboard/computer_info/defaults'
 import {
     CpuInfo,
@@ -30,6 +30,8 @@ function ActiveComputer(props: Props) {
     const cpu = loading ? null : computerData.computer.cpu
     const videocard = loading ? null : computerData.computer.videocard
     const type = loading ? null : computerData.computer.type
+
+    // let commonInfo =
 
     return (
         <>
