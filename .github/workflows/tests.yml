@@ -3,7 +3,7 @@ name: Django CI
 on:
   push:
     branches-ignore:
-      - 'master'
+      - 'main'
     paths:
       - 'server/**'
 
