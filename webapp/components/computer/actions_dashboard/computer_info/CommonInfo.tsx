@@ -8,8 +8,8 @@ import {
 import { notifyError, notifySuccess } from 'core/actions/notification'
 import { FormFactor } from 'core/enums'
 import { updateComputer } from 'gql_api/mutations/updateComputer'
-import { computersQuery } from 'gql_api/queries/computers'
 import { computerQuery } from 'gql_api/queries/computer'
+import { computersQuery } from 'gql_api/queries/computers'
 import { SnackbarContext } from 'pages'
 import React, { useContext, useState } from 'react'
 import { MdEdit } from 'react-icons/md'
@@ -108,7 +108,7 @@ function CommonInfo(props: Props) {
 
     const computerCommonInfo: commonInfoPayload = {
         'User:': { value: props.user, key: 'user' },
-        'Location:': { value: props.location, key: 'location' },
+        // 'Location:': { value: props.location, key: 'location' },
         'Form factor:': { value: props.formFactor, key: 'formFactor' },
         'Username:': { value: props.username, key: 'username' },
         'Serial number:': { value: props.serial, key: 'serial' },

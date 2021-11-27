@@ -21,7 +21,7 @@ interface AddComputer {
     label: string
     name: string
     serial: string
-    location: string
+    // location: string
     type: ComputerType
     ram?: number
 }
@@ -92,7 +92,7 @@ function ComputerInput(props: Props) {
             label: (formElement.querySelector('input#label') as HTMLInputElement).value,
             name: (formElement.querySelector('input#name') as HTMLInputElement).value,
             serial: (formElement.querySelector('input#serial') as HTMLInputElement).value,
-            location: (formElement.querySelector('input#location') as HTMLInputElement).value || null,
+            // location: (formElement.querySelector('input#location') as HTMLInputElement).value || null,
             type: ComputerType[(formElement.querySelector('select#type') as HTMLInputElement).value],
             ram: parseInt((formElement.querySelector('input#ram') as HTMLInputElement).value),
         }

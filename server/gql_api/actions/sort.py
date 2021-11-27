@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Dict
 
-from django.db.models import QuerySet, F
+from django.db.models import F, QuerySet
 
 __all__ = ['sort']
 
@@ -24,7 +24,7 @@ def sort(sort_input: Dict, query: QuerySet) -> QuerySet:
 
     if sort_field == SortField.CPU:
         query = query.annotate(
-            performance=F('cpu__threads') * F('cpu__clock')
+            performance=F('cpu_threads') * F('cpu_clock')
         )
         return query.order_by('-performance')
 
