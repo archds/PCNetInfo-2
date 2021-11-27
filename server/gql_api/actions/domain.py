@@ -3,21 +3,20 @@ from typing import Dict
 
 def convert_gql_pc(gql_input: Dict) -> Dict:
     os = {
-        'name': gql_input.get('os', {}).get('name'),
-        'version': gql_input.get('os', {}).get('version'),
-        'architecture': gql_input.get('os', {}).get('architecture'),
+        'os_name': gql_input.get('os', {}).get('name'),
+        'os_architecture': gql_input.get('os', {}).get('architecture'),
     }
 
     cpu = {
-        'name': gql_input.get('cpu', {}).get('name'),
-        'clock': gql_input.get('cpu', {}).get('clock'),
-        'cores': gql_input.get('cpu', {}).get('cores'),
-        'threads': gql_input.get('cpu', {}).get('threads'),
+        'cpu_name': gql_input.get('cpu', {}).get('name'),
+        'cpu_clock': gql_input.get('cpu', {}).get('clock'),
+        'cpu_cores': gql_input.get('cpu', {}).get('cores'),
+        'cpu_threads': gql_input.get('cpu', {}).get('threads'),
     }
 
     videocard = {
-        'name': gql_input.get('videocard', {}).get('name'),
-        'memory': gql_input.get('videocard', {}).get('memory'),
+        'videocard_name': gql_input.get('videocard', {}).get('name'),
+        'videocard_memory': gql_input.get('videocard', {}).get('memory'),
     }
 
     common = {
@@ -36,11 +35,4 @@ def convert_gql_pc(gql_input: Dict) -> Dict:
         'hardware_type': gql_input.get('type'),
     }
 
-    output = {
-        'common': dict(**common),
-        'videocard': dict(**videocard) if all(value is not None for value in videocard.values()) else None,
-        'os': dict(**os) if all(value is not None for value in os.values()) else None,
-        'cpu': dict(**cpu) if all(value is not None for value in cpu.values()) else None,
-    }
-
-    return output
+    return common | videocard | os | cpu

@@ -3,49 +3,43 @@ from typing import Dict, List
 import gql_api.type_defs as gqt
 from gql_api.actions.domain import convert_gql_pc
 from gql_api.errors import InputError
-from hardware.models import PC, OS, CPU, Videocard, UserRole, User
+from gql_api.resolvers.presentation.computer import gql_computer_convert
+from hardware.models import Computer, User, UserRole
 
 
 @gqt.mutation.field('deleteComputer')
 def delete_pc(obj, info, ids: List[str]) -> str:
-    PC.objects.filter(pk__in=ids).delete()
+    Computer.objects.filter(pk__in=ids).delete()
     return 'UNIT'
 
 
 @gqt.mutation.field('createComputer')
-def create_pc(obj, info, input: Dict) -> PC:
-    input = convert_gql_pc(gql_input=input)
-    if PC.objects.filter(name=input['common']['name']).exists():
+def create_pc(obj, info, input: Dict):
+    converted = convert_gql_pc(gql_input=input)
+    if Computer.objects.filter(name=converted['name']).exists():
         raise InputError(
             message='Computer with this name already exists',
             field='name'
         )
 
-    return PC.objects.create(
-        **input['common'],
-        os=input['os'] and OS(
-            name=input['os']['name'],
-            version=input['os']['version'],
-            architecture='x64' if '64' in input['os']['architecture'] else 'x32',
-        ),
-        cpu=input['cpu'] and CPU(**input['cpu']),
-        videocard=input['videocard'] and Videocard(**input['videocard'])
-    )
+    comp = Computer.objects.create(**converted)
+
+    return gql_computer_convert(comp)
 
 
 @gqt.mutation.field('updateComputer')
-def update_pc(obj, info, id: str, input: Dict) -> PC:
+def update_pc(obj, info, id: str, input: Dict):
     input = convert_gql_pc(gql_input=input)
 
-    PC.objects.filter(pk=id).update(
+    Computer.objects.filter(pk=id).update(
         **{
             field: value
-            for field, value in input['common'].items()
+            for field, value in input.items()
             if value is not None
         }
     )
 
-    return PC.objects.get(pk=id)
+    return gql_computer_convert(Computer.objects.get(pk=id))
 
 
 @gqt.mutation.field('createUser')

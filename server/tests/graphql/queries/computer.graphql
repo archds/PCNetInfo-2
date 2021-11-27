@@ -1,0 +1,39 @@
+query computer($id: ID!) {
+    computer(id: $id) {
+        ...Computer
+    }
+}
+
+fragment Computer on Computer {
+    id
+    type
+    name
+    domain
+    username
+    serial
+    ip
+    comment
+    label
+    user {
+        firstName
+        lastName
+    }
+    location
+    updated
+    formFactor
+    os {
+        name
+        architecture
+    }
+    cpu {
+        name
+        clock
+        cores
+        threads
+    }
+    ram
+    videocard {
+        name
+        memory
+    }
+}

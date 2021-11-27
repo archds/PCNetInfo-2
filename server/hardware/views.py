@@ -1,7 +1,7 @@
 import re
 from functools import partial
 from io import BytesIO
-from typing import Dict, Optional
+from typing import Optional
 
 from bs4 import BeautifulSoup
 from django.http import HttpRequest, HttpResponse
@@ -9,7 +9,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from dj_service.settings import BASE_DIR
-from hardware.models import Videocard, OS, PC, CPU
+from hardware.domain import OS, Processor, Videocard
+from hardware.models import Computer
 
 
 def _get_item_value(key: str, category: str, bs_obj: BeautifulSoup) -> str:
@@ -22,7 +23,7 @@ def _get_item_value(key: str, category: str, bs_obj: BeautifulSoup) -> str:
     ).find_next_sibling().text
 
 
-def _parse_processor_info(bs_obj: BeautifulSoup) -> Optional[Dict]:
+def _parse_processor_info(bs_obj: BeautifulSoup) -> Optional[Processor]:
     processor = _get_item_value(
         key='Processor',
         category='System Summary',
@@ -31,20 +32,20 @@ def _parse_processor_info(bs_obj: BeautifulSoup) -> Optional[Dict]:
     pattern = re.compile(r'(.+?), (\d+ Mhz).+(\d Core).+?(\d+ Logical)')
     name, clock, cores, threads = pattern.match(processor).groups()
 
-    processor = dict(
+    processor = Processor(
         name=name,
         clock=int(clock.replace(' Mhz', '')),
         cores=int(cores.replace(' Core', '')),
         threads=int(threads.replace(' Logical', ''))
     )
 
-    if any(item is None for item in processor.values()):
+    if any(item is None for item in (processor.name, processor.threads, processor.cores, processor.clock)):
         return None
 
     return processor
 
 
-def _parse_videocard_info(bs_obj: BeautifulSoup) -> Optional[Dict]:
+def _parse_videocard_info(bs_obj: BeautifulSoup) -> Optional[Videocard]:
     videocard = _get_item_value(
         key='Name',
         category='Display',
@@ -53,18 +54,18 @@ def _parse_videocard_info(bs_obj: BeautifulSoup) -> Optional[Dict]:
     pattern = re.compile(r'(.+) (\dGB)')
     name, memory = pattern.match(videocard).groups()
 
-    videocard = dict(
+    videocard = Videocard(
         name=name,
         memory=int(memory.replace('GB', ''))
     )
 
-    if any(item is None for item in videocard.values()):
+    if any(item is None for item in (videocard.name, videocard.memory)):
         return None
 
     return videocard
 
 
-def _parse_os_info(bs_obj: BeautifulSoup) -> Optional[Dict]:
+def _parse_os_info(bs_obj: BeautifulSoup) -> Optional[OS]:
     os_name = _get_item_value(
         key='OS Name',
         category='System Summary',
@@ -79,16 +80,13 @@ def _parse_os_info(bs_obj: BeautifulSoup) -> Optional[Dict]:
     os_architecture = None
 
     if 'x32' in os_system_type or 'x86' in os_system_type:
-        os_architecture = OS.Architecture.x32
+        os_architecture = Computer.Architecture.x32
     if 'x64' in os_system_type:
-        os_architecture = OS.Architecture.x64
+        os_architecture = Computer.Architecture.x64
 
-    os = {
-        'name': os_name.replace('Microsoft ', ''),
-        'architecture': os_architecture
-    }
+    os = OS(name=os_name.replace('Microsoft ', ''), architecture=os_architecture)
 
-    if any(item is None for item in (os['name'], os['architecture'])):
+    if any(item is None for item in (os.name, os.architecture)):
         return None
 
     return os
@@ -109,7 +107,7 @@ def _generate_response() -> str:
 @require_POST
 @csrf_exempt
 def collect_msinfo(request: HttpRequest):
-    raw = BytesIO(request.body)
+    raw = BytesIO(request.read())
     bs = BeautifulSoup(raw, 'xml')
 
     get_system_summary = partial(_get_item_value, category='System Summary', bs_obj=bs)
@@ -118,12 +116,17 @@ def collect_msinfo(request: HttpRequest):
     cpu_info = _parse_processor_info(bs_obj=bs)
     videocard_info = _parse_videocard_info(bs_obj=bs)
 
-    pc, is_pc_created = PC.objects.update_or_create(
+    pc, is_pc_created = Computer.objects.update_or_create(
         defaults=dict(
             hardware_type=get_system_summary('Platform Role'),
-            os=os_info and OS.objects.get_or_create(os_info)[0],
-            videocard=videocard_info and Videocard.objects.get_or_create(videocard_info)[0],
-            cpu=cpu_info and CPU.objects.get_or_create(cpu_info)[0],
+            os_name=os_info.name,
+            os_architecture=os_info.architecture,
+            cpu_name=cpu_info.name,
+            cpu_clock=cpu_info.clock,
+            cpu_cores=cpu_info.cores,
+            cpu_threads=cpu_info.threads,
+            videocard_name=videocard_info.name,
+            videocard_memory=videocard_info.memory,
             ram=int(float(get_system_summary('Total Physical Memory').strip(' GB'))),
             username=get_system_summary('User Name').split('\\')[1],
         ),

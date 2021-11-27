@@ -1,0 +1,45 @@
+query computers($filter:FilterInput,$search:String,$sort:SortField) {
+    computers(
+        input: {
+            filter: $filter
+            search: $search
+            sort: $sort
+        }
+    ) {
+        ...Computer
+    }
+}
+
+fragment Computer on Computer {
+    id
+    type
+    name
+    domain
+    username
+    serial
+    ip
+    comment
+    label
+    user {
+        firstName
+        lastName
+    }
+    location
+    updated
+    formFactor
+    os {
+        name
+        architecture
+    }
+    cpu {
+        name
+        clock
+        cores
+        threads
+    }
+    ram
+    videocard {
+        name
+        memory
+    }
+}
