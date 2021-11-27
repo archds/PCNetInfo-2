@@ -1,6 +1,6 @@
 import { DataGrid, GridRowId, GridSelectionModel } from '@mui/x-data-grid'
-import ComputerTypeIdentifier from 'components/computer/computers_dashboard/computer_table/ComputerTypeIdentifier'
-import { SelectedComputersContext } from 'components/computer/computers_dashboard/ComputersDashboard'
+import ComputerTypeIdentifier from 'components/computer/type/ComputerTypeIdentifier'
+import { SelectedComputersContext } from 'components/computer/ComputersDashboard'
 import { ComputerType } from 'core/enums'
 import React, { useContext } from 'react'
 
@@ -34,7 +34,7 @@ function ComputerList(props: Props) {
             field: 'type',
             headerName: 'Desktop',
             width: 130,
-            renderCell: (params) => <ComputerTypeIdentifier type={params.value} name={params.id}/>,
+            renderCell: (params) => <ComputerTypeIdentifier type={params.value} id={params.id}/>,
         },
         { ...columnDefaults, field: 'name', headerName: 'Name' },
         { ...columnDefaults, field: 'label', headerName: 'Label' },

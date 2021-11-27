@@ -1,6 +1,6 @@
 from typing import Dict
 
-from django.db.models import QuerySet, Q
+from django.db.models import Q, QuerySet
 
 
 def filter_query(filter_input: Dict, query: QuerySet) -> QuerySet:

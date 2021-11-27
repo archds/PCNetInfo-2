@@ -1,4 +1,4 @@
-import style from '/styles/ComputersDashboard.module.scss'
+import style from '/components/computer/controller/ControllerDashboard.module.scss'
 import { Button } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
 import * as CSS from 'csstype'

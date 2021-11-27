@@ -4,7 +4,7 @@ from hardware.models import Computer
 def gql_computer_convert(comp: Computer) -> dict:
     return {
         'id': comp.pk,
-        'type': comp.hardware_type,
+        'type': comp.hardware_type.upper(),
         'name': comp.name,
         'domain': comp.domain,
         'username': comp.username,

@@ -1,14 +1,14 @@
-import style from '/styles/ActiveComputer.module.scss'
+import style from '/components/computer/active/ActiveComputer.module.scss'
 import { useQuery } from '@apollo/client'
-import CommonInfo from 'components/computer/actions_dashboard/computer_info/CommonInfo'
-import { skeletonText } from 'components/computer/actions_dashboard/computer_info/defaults'
+import CommonInfo from 'components/computer/info/common/CommonInfo'
+import { skeletonText } from 'components/shared/defaults'
 import {
     CpuInfo,
     MemoryInfo,
     OSInfo,
     TypeIdentifier,
     VideocardInfo,
-} from 'components/computer/actions_dashboard/computer_info/HardwareInfo'
+} from 'components/computer/info/HardwareInfo'
 import { Computer, ComputerVariables } from 'core/types/computers'
 import { computerQuery } from 'gql_api/queries/computer'
 import React from 'react'
@@ -30,6 +30,8 @@ function ActiveComputer(props: Props) {
     const cpu = loading ? null : computerData.computer.cpu
     const videocard = loading ? null : computerData.computer.videocard
     const type = loading ? null : computerData.computer.type
+
+    // let commonInfo =
 
     return (
         <>

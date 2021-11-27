@@ -3,7 +3,7 @@ import {
     BaseProps,
     defaultNoDataMessage,
     skeletonText,
-} from 'components/computer/actions_dashboard/computer_info/defaults'
+} from 'components/shared/defaults'
 import { ComputerType } from 'core/enums'
 import { CPU, OS, Videocard } from 'core/types/computers'
 import Image from 'next/image'

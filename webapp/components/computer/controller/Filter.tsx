@@ -1,4 +1,4 @@
-import style from '/styles/ComputerFilter.module.scss'
+import style from '/components/computer/controller/Filter.module.scss'
 import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core'
 import { FilterType } from 'core/enums'
 import React, { useEffect, useRef, useState } from 'react'

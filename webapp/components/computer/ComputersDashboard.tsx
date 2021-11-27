@@ -1,4 +1,4 @@
-import style from '/styles/ComputersDashboard.module.scss'
+import style from '/components/computer/controller/ControllerDashboard.module.scss'
 import { useMutation, useQuery } from '@apollo/client'
 import { GridRowId, GridSelectionModel } from '@mui/x-data-grid'
 import Loading from 'components/shared/loading/Loading'
@@ -13,8 +13,8 @@ import { deleteComputers } from 'gql_api/mutations/deleteComputers'
 import { computersQuery } from 'gql_api/queries/computers'
 import { SnackbarContext } from 'pages'
 import React, { createContext, ReactElement, useContext, useState } from 'react'
-import ComputerList from './computer_table/ComputerList'
-import ControllerDashboard from './computer_table/controller/ControllerDashboard'
+import ComputerList from 'components/computer/ComputerList'
+import ControllerDashboard from 'components/computer/controller/ControllerDashboard'
 
 export interface Props {
     onAddComputer(): void,

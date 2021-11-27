@@ -1,11 +1,11 @@
-import style from '/styles/ComputersDashboard.module.scss'
+import style from '/components/computer/controller/ControllerDashboard.module.scss'
 import { Button, Collapse } from '@material-ui/core'
-import Sorting from 'components/computer/computers_dashboard/computer_table/controller/Sorting'
+import Sorting from 'components/computer/controller/Sorting'
 import { FilterType, SortingType } from 'core/enums'
 import { FilterState } from 'core/state'
 import React, { useEffect, useRef, useState } from 'react'
-import Filter from './Filter'
-import Search from './Search'
+import Filter from 'components/computer/controller/Filter'
+import Search from 'components/computer/controller/Search'
 
 enum ActiveAction {
     FILTER,

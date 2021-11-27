@@ -25,7 +25,7 @@ enum Unit {
 input UpdateComputerInput {
     name: String
     user: ID
-#    location: ID
+    #    location: ID
     formFactor: FormFactor
     username: String
     serial: String

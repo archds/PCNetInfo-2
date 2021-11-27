@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import style from '../styles/mainPage.module.scss'
 
 export default function monitors() {
     return (
