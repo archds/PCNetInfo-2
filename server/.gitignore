@@ -139,3 +139,8 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
+# GraphQL
+gql_api/schema.graphql
+
+# DB
+database/django_sqlite.db

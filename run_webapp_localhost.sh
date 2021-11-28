@@ -1,1 +1,1 @@
-cd webapp && npm run dev
+cd webapp && npm run generate && npm run dev
