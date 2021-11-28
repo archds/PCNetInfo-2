@@ -10,10 +10,17 @@ services:
         target: /database
         volume:
           nocopy: true
+      - type: bind
+        source: ./config
+        target: /config
   frontend:
     build: webapp
     ports:
       - "3000:3000"
+    volumes:
+      - type: bind
+        source: ./config
+        target: /config
 
 volumes:
   test_db:

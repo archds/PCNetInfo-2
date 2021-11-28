@@ -1,11 +1,9 @@
-from pathlib import Path
-
 from ariadne import (EnumType, MutationType, ObjectType, QueryType, load_schema_from_path)
 
-from dj_service.settings import BASE_DIR
+from dj_service.settings import BASE_DIR, CONFIG_DIR
 from hardware.models import Computer
 
-SCHEMA_PATH = BASE_DIR / Path('gql_api/schema.graphql')
+SCHEMA_PATH = BASE_DIR / CONFIG_DIR / 'schema.graphql'
 
 # GraphQL definition
 type_defs = load_schema_from_path(str(SCHEMA_PATH))

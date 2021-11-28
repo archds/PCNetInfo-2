@@ -16,6 +16,7 @@ from pathlib import Path
 from corsheaders.defaults import default_methods
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+CONFIG_DIR = BASE_DIR / 'config'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/

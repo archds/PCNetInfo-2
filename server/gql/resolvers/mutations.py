@@ -1,9 +1,9 @@
 from typing import Dict, List
 
-import gql_api.type_defs as gqt
-from gql_api.actions.domain import convert_gql_pc
-from gql_api.errors import InputError
-from gql_api.resolvers.presentation.computer import gql_computer_convert
+import gql.type_defs as gqt
+from gql.actions.domain import convert_gql_pc
+from gql.errors import InputError
+from gql.resolvers.presentation.computer import gql_computer_convert
 from hardware.models import Computer, User, UserRole
 
 
