@@ -1,26 +1,19 @@
 version: "3.5"
+
 services:
   backend:
     build: server
     ports:
       - "8000:8000"
     volumes:
-      - type: volume
-        source: test_db
-        target: /database
-        volume:
-          nocopy: true
-      - type: bind
-        source: ./config
-        target: /config
+      - /database
+      - ./config:/app/config
+
+
   frontend:
     build: webapp
     ports:
       - "3000:3000"
     volumes:
-      - type: bind
-        source: ./config
-        target: /config
+      - ./config:/app/config
 
-volumes:
-  test_db:

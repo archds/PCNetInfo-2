@@ -1,6 +1,6 @@
 FROM node:16.13-alpine
 ENV PORT 3000
-WORKDIR .
+WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
