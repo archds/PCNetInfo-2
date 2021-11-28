@@ -1,22 +1,15 @@
 import { Button, ButtonGroup } from '@material-ui/core'
-import { SortingType } from 'core/enums'
+import { SortField } from 'api/generated/graphql'
 import React, { useEffect, useRef, useState } from 'react'
-
-const sortingType = {
-    label: 'LABEL',
-    serial: 'SERIAL',
-    cpu: 'CPU',
-    ram: 'MEMORY',
-}
 
 
 export interface Props {
-    onSortingChange(sorting: SortingType): void
+    onSortingChange(sorting: SortField): void
 }
 
 
 function Sorting(props: Props) {
-    const [sorting, setSorting] = useState<SortingType>(SortingType.LABEL)
+    const [sorting, setSorting] = useState<SortField>(SortField.LABEL)
     const mounted = useRef(false)
 
     useEffect(() => {
@@ -31,26 +24,26 @@ function Sorting(props: Props) {
         <div style={{ paddingTop: 20 }}>
             <ButtonGroup disableElevation color='secondary'>
                 <Button
-                    variant={sorting === SortingType.LABEL ? 'contained' : 'outlined'}
-                    onClick={() => setSorting(SortingType.LABEL)}
+                    variant={sorting === SortField.LABEL ? 'contained' : 'outlined'}
+                    onClick={() => setSorting(SortField.LABEL)}
                 >
                     Label
                 </Button>
                 <Button
-                    variant={sorting === SortingType.SERIAL ? 'contained' : 'outlined'}
-                    onClick={() => setSorting(SortingType.SERIAL)}
+                    variant={sorting === SortField.SERIAL ? 'contained' : 'outlined'}
+                    onClick={() => setSorting(SortField.SERIAL)}
                 >
                     Serial
                 </Button>
                 <Button
-                    variant={sorting === SortingType.CPU ? 'contained' : 'outlined'}
-                    onClick={() => setSorting(SortingType.CPU)}
+                    variant={sorting === SortField.CPU ? 'contained' : 'outlined'}
+                    onClick={() => setSorting(SortField.CPU)}
                 >
                     CPU Performance
                 </Button>
                 <Button
-                    variant={sorting === SortingType.MEMORY ? 'contained' : 'outlined'}
-                    onClick={() => setSorting(SortingType.MEMORY)}
+                    variant={sorting === SortField.MEMORY ? 'contained' : 'outlined'}
+                    onClick={() => setSorting(SortField.MEMORY)}
                 >
                     Memory size
                 </Button>

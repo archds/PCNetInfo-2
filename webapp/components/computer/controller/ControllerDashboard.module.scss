@@ -48,14 +48,14 @@
 }
 
 .loading:after {
-  content: " ";
+  content: ' ';
   display: block;
   width: 100px;
   height: 100px;
   margin: 8px;
   border-radius: 50%;
-  border: 8px solid #41b883;
-  border-color: #35495e transparent #35495e transparent;
+  border: 8px solid #41B883;
+  border-color: #35495E transparent #35495E transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
 

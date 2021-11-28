@@ -1,0 +1,16 @@
+query Computers ($filter: FilterInput, $sorting: SortField, $search: String){
+    computers(
+        input: {
+            filter: $filter
+            sort: $sorting
+            search: $search
+        }
+    ) {
+        id
+        name
+        type
+        label
+        serial
+        location
+    }
+}

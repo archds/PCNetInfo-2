@@ -1,11 +1,6 @@
 import { Skeleton } from '@material-ui/lab'
-import {
-    BaseProps,
-    defaultNoDataMessage,
-    skeletonText,
-} from 'components/shared/defaults'
-import { ComputerType } from 'core/enums'
-import { CPU, OS, Videocard } from 'core/types/computers'
+import { ComputerType, CPU, OS, Videocard } from 'api/generated/graphql'
+import { BaseProps, defaultNoDataMessage, skeletonText } from 'components/shared/defaults'
 import Image from 'next/image'
 import React from 'react'
 import { BsDisplayFill } from 'react-icons/bs'

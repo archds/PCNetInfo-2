@@ -1,16 +1,15 @@
 import style from '/components/computer/controller/ControllerDashboard.module.scss'
-import { SortingType } from 'core/enums'
-import { FilterState } from 'core/state'
-import React from 'react'
+import { FilterInput, SortField } from 'api/generated/graphql'
 import ComputerActions from 'components/computer/controller/ComputerActions'
 import TableController from 'components/computer/controller/TableController'
+import React from 'react'
 
 export interface Props {
     showActions: boolean,
-    onAddComputer(): void,
-    onControllerChange(sorting: SortingType, filter: FilterState, search: string): void,
-    onDelete(): void,
     disabled: boolean
+    onAddComputer(): void,
+    onControllerChange(sorting: SortField, filter: FilterInput, search: string): void,
+    onDelete(): void,
 }
 
 function ControllerDashboard(props: Props) {

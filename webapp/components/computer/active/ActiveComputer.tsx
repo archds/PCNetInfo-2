@@ -1,16 +1,8 @@
 import style from '/components/computer/active/ActiveComputer.module.scss'
-import { useQuery } from '@apollo/client'
+import { useComputerQuery } from 'api/generated/graphql'
 import CommonInfo from 'components/computer/info/common/CommonInfo'
+import { CpuInfo, MemoryInfo, OSInfo, TypeIdentifier, VideocardInfo } from 'components/computer/info/HardwareInfo'
 import { skeletonText } from 'components/shared/defaults'
-import {
-    CpuInfo,
-    MemoryInfo,
-    OSInfo,
-    TypeIdentifier,
-    VideocardInfo,
-} from 'components/computer/info/HardwareInfo'
-import { Computer, ComputerVariables } from 'core/types/computers'
-import { computerQuery } from 'gql_api/queries/computer'
 import React from 'react'
 import { GrClose } from 'react-icons/gr'
 
@@ -20,18 +12,13 @@ export interface Props {
 }
 
 function ActiveComputer(props: Props) {
-    const { loading, data: computerData } = useQuery<{ computer: Computer }, ComputerVariables>(
-        computerQuery,
-        { variables: { id: props.computerId } },
-    )
+    const { loading, data: computerData } = useComputerQuery({ variables: { id: props.computerId } })
 
     const os = loading ? null : computerData.computer.os
     const ram = loading ? null : computerData.computer.ram
     const cpu = loading ? null : computerData.computer.cpu
     const videocard = loading ? null : computerData.computer.videocard
     const type = loading ? null : computerData.computer.type
-
-    // let commonInfo =
 
     return (
         <>
@@ -55,7 +42,7 @@ function ActiveComputer(props: Props) {
                         <CommonInfo
                             id={loading ? null : computerData.computer.id}
                             name={loading ? null : computerData.computer.name}
-                            user={loading ? null : computerData.computer.user}
+                            // user={loading ? null : computerData.computer.user}
                             location={loading ? null : computerData.computer.location}
                             formFactor={loading ? null : computerData.computer.formFactor}
                             username={loading ? null : computerData.computer.username}

@@ -1,20 +1,21 @@
 import style from '/components/computer/controller/ControllerDashboard.module.scss'
-import { useMutation, useQuery } from '@apollo/client'
 import { GridRowId, GridSelectionModel } from '@mui/x-data-grid'
+import {
+    ComputersDocument,
+    FilterInput,
+    SortField,
+    useComputersQuery,
+    useDeleteComputersMutation,
+} from 'api/generated/graphql'
+import ComputerList from 'components/computer/ComputerList'
+import ControllerDashboard from 'components/computer/controller/ControllerDashboard'
 import Loading from 'components/shared/loading/Loading'
 import ModalConfirm from 'components/shared/ModalConfirm'
 import NotFound from 'components/shared/not_found/NotFound'
 import { notifyError, notifySuccess } from 'core/actions/notification'
-import { SortingType, Unit } from 'core/enums'
-import { ComputersQueryVariables, StateContext } from 'core/interfaces'
-import { FilterState } from 'core/state'
-import { ComputerBaseInfo } from 'core/types/computers'
-import { deleteComputers } from 'gql_api/mutations/deleteComputers'
-import { computersQuery } from 'gql_api/queries/computers'
+import { StateContext } from 'core/interfaces'
 import { SnackbarContext } from 'pages'
 import React, { createContext, ReactElement, useContext, useState } from 'react'
-import ComputerList from 'components/computer/ComputerList'
-import ControllerDashboard from 'components/computer/controller/ControllerDashboard'
 
 export interface Props {
     onAddComputer(): void,
@@ -31,7 +32,7 @@ function ComputersDashboard(props: Props) {
         loading: computersLoading,
         refetch: refetchComputers,
         error: computersFetchError,
-    } = useQuery<{ computers: ComputerBaseInfo[] }, ComputersQueryVariables>(computersQuery)
+    } = useComputersQuery()
     // Management control
     const [selectedComputers, setSelectedComputers] = useState<GridSelectionModel>([])
     // Display control
@@ -44,18 +45,17 @@ function ComputersDashboard(props: Props) {
         setState: setSelectedComputers,
     }
 
-    const [deleteComputersQuery, { loading: deleteLoading }] = useMutation<Unit, { ids: GridSelectionModel }>(
-        deleteComputers,
+    const [deleteComputersQuery, { loading: deleteLoading }] = useDeleteComputersMutation(
         {
             variables: {
-                ids: selectedComputers,
+                ids: selectedComputers as string[],
             },
             onCompleted: (): void => {
                 notifySuccess('Computer successfully deleted!', setSnackbarContext)
                 setSelectedComputers([])
                 setShowDeleteModal(false)
             },
-            refetchQueries: [computersQuery],
+            refetchQueries: [ComputersDocument],
             onError: error => {
                 notifyError(error, setSnackbarContext)
                 setSelectedComputers([])
@@ -64,7 +64,7 @@ function ComputersDashboard(props: Props) {
         },
     )
 
-    const onControllerChange = (sorting: SortingType, filter: FilterState, search: string): void => {
+    const onControllerChange = (sorting: SortField, filter: FilterInput, search: string): void => {
         refetchComputers({
             sorting: sorting,
             filter: filter,
