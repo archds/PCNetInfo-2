@@ -2,8 +2,8 @@ import { Input, InputProps } from '@material-ui/core'
 import React from 'react'
 
 export interface Props {
-    onSearchChange(value?: string): void
     inputProps?: InputProps
+    onSearchChange(value?: string): void
 }
 
 function Search(props: Props) {

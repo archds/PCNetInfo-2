@@ -1,7 +1,7 @@
 import { DataGrid, GridRowId, GridSelectionModel } from '@mui/x-data-grid'
-import ComputerTypeIdentifier from 'components/computer/type/ComputerTypeIdentifier'
+import { ComputerType } from 'api/generated/graphql'
 import { SelectedComputersContext } from 'components/computer/ComputersDashboard'
-import { ComputerType } from 'core/enums'
+import ComputerTypeIdentifier from 'components/computer/type/ComputerTypeIdentifier'
 import React, { useContext } from 'react'
 
 interface Computer {
@@ -55,18 +55,18 @@ function ComputerList(props: Props) {
     })
 
     return (
-            <DataGrid
-                columns={columns}
-                rows={rows}
-                // autoPageSize
-                checkboxSelection
-                disableSelectionOnClick
-                onSelectionModelChange={(newSelected: GridSelectionModel) => setSelectedContext(newSelected)}
-                onRowClick={(params) => props.onComputerClick(params.id)}
-                // sortingMode='server'
-                // sortModel={sorting}
-                // onSortModelChange={handleSorting}
-            />
+        <DataGrid
+            columns={columns}
+            rows={rows}
+            // autoPageSize
+            checkboxSelection
+            disableSelectionOnClick
+            onSelectionModelChange={(newSelected: GridSelectionModel) => setSelectedContext(newSelected)}
+            onRowClick={(params) => props.onComputerClick(params.id)}
+            // sortingMode='server'
+            // sortModel={sorting}
+            // onSortModelChange={handleSorting}
+        />
     )
 }
 

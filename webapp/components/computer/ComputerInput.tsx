@@ -1,14 +1,11 @@
-import { useMutation } from '@apollo/client'
 import { Button, FormControl, Grid, InputAdornment, InputLabel, Select, TextField } from '@material-ui/core'
 import ConfirmationNumberOutlinedIcon from '@material-ui/icons/ConfirmationNumberOutlined'
 import DnsOutlinedIcon from '@material-ui/icons/DnsOutlined'
 import LabelOutlinedIcon from '@material-ui/icons/LabelOutlined'
 import MemoryIcon from '@material-ui/icons/Memory'
 import RoomOutlinedIcon from '@material-ui/icons/RoomOutlined'
+import { ComputersDocument, ComputerType, useCreateComputerMutation } from 'api/generated/graphql'
 import { notifyError, notifySuccess } from 'core/actions/notification'
-import { ComputerType } from 'core/enums'
-import { createComputer } from 'gql_api/mutations/createComputer'
-import { computersQuery } from 'gql_api/queries/computers'
 import { SnackbarContext } from 'pages'
 import React, { useContext, useRef, useState } from 'react'
 import { GrClose } from 'react-icons/gr'
@@ -61,11 +58,11 @@ const validators = {
 
 function ComputerInput(props: Props) {
     // Apollo
-    const [addComputerQuery] = useMutation<{ createPC: { id: string }, input: AddComputer }>(createComputer, {
+    const [addComputerQuery] = useCreateComputerMutation({
         onError: (error => {
             notifyError(error, setSnackbarContext)
         }),
-        refetchQueries: [computersQuery],
+        refetchQueries: [ComputersDocument],
         onCompleted: () => notifySuccess(`New computer added!`, setSnackbarContext),
     })
     // State

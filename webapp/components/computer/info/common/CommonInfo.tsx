@@ -1,20 +1,16 @@
-import { useMutation } from '@apollo/client'
+import { ComputerDocument, ComputersDocument, FormFactor, useUpdateComputerMutation } from 'api/generated/graphql'
+import commonStyle from 'components/computer/info/common/Common.module.scss'
 import { BaseProps } from 'components/shared/defaults'
 import { notifyError, notifySuccess } from 'core/actions/notification'
-import { FormFactor } from 'core/enums'
-import { updateComputer } from 'gql_api/mutations/updateComputer'
-import { computerQuery } from 'gql_api/queries/computer'
-import { computersQuery } from 'gql_api/queries/computers'
 import { SnackbarContext } from 'pages'
 import React, { useContext } from 'react'
 import { EditText } from 'react-edit-text'
 import 'react-edit-text/dist/index.css'
-import commonStyle from 'components/computer/info/common/Common.module.scss'
 
 export interface Props extends BaseProps {
     id: string
     name: string
-    user: string | null
+    // user: string | null
     location: string | null
     formFactor: FormFactor
     username: string | null
@@ -25,8 +21,8 @@ export interface Props extends BaseProps {
 
 function CommonInfo(props: Props) {
     const { setState: setSnackbar } = useContext(SnackbarContext)
-    const [updateComputerQuery, { loading: updateLoading }] = useMutation(updateComputer, {
-        refetchQueries: [computerQuery, computersQuery],
+    const [updateComputerQuery, { loading: updateLoading }] = useUpdateComputerMutation({
+        refetchQueries: [ComputerDocument, ComputersDocument],
         onError: error => notifyError(error, setSnackbar),
         onCompleted: () => notifySuccess('Information updated!', setSnackbar),
     })
@@ -48,7 +44,7 @@ function CommonInfo(props: Props) {
             <EditText
                 id='user-input'
                 name='user'
-                defaultValue={props.user}
+                // defaultValue={props.user}
                 placeholder='No data'
                 className={commonStyle.field}
                 onSave={({ value }) => updateComputerQuery({

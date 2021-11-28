@@ -1,0 +1,5 @@
+mutation UpdateComputer($id: ID!, $input: UpdateComputerInput!) {
+    updateComputer(id: $id, input: $input) {
+        name
+    }
+}
