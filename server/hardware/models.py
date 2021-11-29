@@ -1,91 +1,78 @@
-from django.db.models import (
-    CASCADE,
-    CharField,
-    DateTimeField,
-    ForeignKey,
-    GenericIPAddressField,
-    IntegerField,
-    Model,
-    OneToOneField,
-    SET_NULL,
-    SmallIntegerField,
-    TextChoices,
-    TextField
-)
+from django.db import models
 
 
 # ToDo: location refactor
-class Monitor(Model):
-    serial_number = CharField(max_length=50, unique=True)
-    model = CharField(max_length=100)
-    user = CharField(max_length=100)
+class Monitor(models.Model):
+    serial_number = models.CharField(max_length=50, unique=True)
+    model = models.CharField(max_length=100)
+    user = models.CharField(max_length=100)
 
 
-class UserRole(Model):
-    title = CharField(max_length=100, unique=True)
-    priority = SmallIntegerField(null=True)
+class UserRole(models.Model):
+    title = models.CharField(max_length=100, unique=True)
+    priority = models.SmallIntegerField(null=True)
 
 
-class Building(Model):
-    street = CharField(max_length=100)
-    house = CharField(max_length=50)
+class Building(models.Model):
+    street = models.CharField(max_length=100)
+    house = models.CharField(max_length=50)
 
 
-class Location(Model):
-    building = ForeignKey(Building, related_name='locations', on_delete=CASCADE)
-    cabinet = CharField(max_length=50)
-    floor = SmallIntegerField()
-    description = TextField()
+class Location(models.Model):
+    building = models.ForeignKey(Building, related_name='locations', on_delete=models.CASCADE)
+    cabinet = models.CharField(max_length=50)
+    floor = models.SmallIntegerField()
+    description = models.TextField()
 
 
-class User(Model):
-    first_name = CharField(max_length=100)
-    last_name = CharField(max_length=100)
-    role = ForeignKey(UserRole, null=True, related_name='users', on_delete=SET_NULL)
-    location = ForeignKey(Location, null=True, related_name='employees', on_delete=SET_NULL)
+class User(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    role = models.ForeignKey(UserRole, null=True, related_name='users', on_delete=models.SET_NULL)
+    location = models.ForeignKey(Location, null=True, related_name='employees', on_delete=models.SET_NULL)
 
 
-class Computer(Model):
-    class Architecture(TextChoices):
+class Computer(models.Model):
+    class Architecture(models.TextChoices):
         x64 = 'x64'
         x32 = 'x32'
 
-    class HwType(TextChoices):
+    class HwType(models.TextChoices):
         DESKTOP = 'DESKTOP'
         LAPTOP = 'LAPTOP'
 
-    class FormFactor(TextChoices):
+    class FormFactor(models.TextChoices):
         ATX = 'ATX'
         mATX = 'mATX'
 
-    hardware_type = CharField(choices=HwType.choices, default=HwType.DESKTOP, max_length=50)
+    hardware_type = models.CharField(choices=HwType.choices, default=HwType.DESKTOP, max_length=50)
 
     # OS
-    os_name = CharField(max_length=50, null=True)
-    os_architecture = CharField(max_length=50, choices=Architecture.choices, null=True)
+    os_name = models.CharField(max_length=50, null=True)
+    os_architecture = models.CharField(max_length=50, choices=Architecture.choices, null=True)
 
     # CPU
-    cpu_name = CharField(max_length=100, null=True)
-    cpu_clock = SmallIntegerField(null=True)
-    cpu_cores = SmallIntegerField(null=True)
-    cpu_threads = SmallIntegerField(null=True)
+    cpu_name = models.CharField(max_length=100, null=True)
+    cpu_clock = models.SmallIntegerField(null=True)
+    cpu_cores = models.SmallIntegerField(null=True)
+    cpu_threads = models.SmallIntegerField(null=True)
 
     # Videocard
-    videocard_name = CharField(max_length=100, null=True)
-    videocard_memory = SmallIntegerField(null=True)
+    videocard_name = models.CharField(max_length=100, null=True)
+    videocard_memory = models.SmallIntegerField(null=True)
 
     # RAM
-    ram = IntegerField(null=True)
+    ram = models.FloatField(null=True)
 
     # Common
-    name = CharField(max_length=50, unique=True)
-    domain = CharField(max_length=50, null=True)
-    ip = GenericIPAddressField(null=True)
-    username = CharField(max_length=100, null=True)
-    user = OneToOneField(User, null=True, on_delete=SET_NULL, related_name='computer')
-    serial_number = CharField(null=True, max_length=50, unique=True)
-    location = ForeignKey(Location, related_name='computers', on_delete=SET_NULL, null=True)
-    updated = DateTimeField(auto_now=True)
-    comment = TextField(null=True)
-    label = CharField(max_length=100, null=True)
-    form_factor = CharField(choices=FormFactor.choices, default=FormFactor.ATX, max_length=20)
+    name = models.CharField(max_length=50, unique=True)
+    domain = models.CharField(max_length=50, null=True)
+    ip = models.GenericIPAddressField(null=True)
+    username = models.CharField(max_length=100, null=True)
+    user = models.OneToOneField(User, null=True, on_delete=models.SET_NULL, related_name='computer')
+    serial_number = models.CharField(null=True, max_length=50, unique=True)
+    location = models.ForeignKey(Location, related_name='computers', on_delete=models.SET_NULL, null=True)
+    updated = models.DateTimeField(auto_now=True)
+    comment = models.TextField(null=True)
+    label = models.CharField(max_length=100, null=True)
+    form_factor = models.CharField(choices=FormFactor.choices, default=FormFactor.ATX, max_length=20)

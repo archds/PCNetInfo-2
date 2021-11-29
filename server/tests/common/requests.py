@@ -2,6 +2,8 @@ from functools import lru_cache
 
 from django.test import Client
 
+from hardware.domain import Locale
+
 
 @lru_cache
 def get_request_body(name, file_dir):
@@ -26,11 +28,12 @@ def send_request(request_body_dir, name, variables=None, additional_headers=None
     return response.json()
 
 
-def post_msinfo(msinfo: bytes):
+def post_msinfo(msinfo: bytes, locale: Locale = Locale.eng):
     response = Client().post(
         path='/api/collect-msinfo/',
         data=msinfo,
-        content_type='text/xml'
+        content_type='text/xml',
+        HTTP_LOCALE=str(locale.value),
     )
 
     return response
