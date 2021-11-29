@@ -3,8 +3,13 @@
 import os
 import sys
 
+import dotenv
+
+from dj_service.settings import CONFIG_DIR
+
 
 def main():
+    dotenv.read_dotenv(CONFIG_DIR / '.env')
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dj_service.settings')
     try:

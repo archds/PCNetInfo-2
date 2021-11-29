@@ -1,6 +1,5 @@
 import re
 from functools import partial
-from io import BytesIO
 from typing import Optional
 
 from bs4 import BeautifulSoup
@@ -13,14 +12,24 @@ from hardware.domain import OS, Processor, Videocard
 from hardware.models import Computer
 
 
-def _get_item_value(key: str, category: str, bs_obj: BeautifulSoup) -> str:
-    return bs_obj.find(
+def _get_item_value(key: str, category: str, bs_obj: BeautifulSoup) -> Optional[str]:
+    bs_category = bs_obj.find(
         name='Category',
         attrs={'name': category}
-    ).find(
+    )
+
+    if bs_category is None:
+        return
+
+    bs_item = bs_category.find(
         name='Item',
         text=key
-    ).find_next_sibling().text
+    )
+
+    if bs_item is None:
+        return
+
+    return bs_item.find_next_sibling().text
 
 
 def _parse_processor_info(bs_obj: BeautifulSoup) -> Optional[Processor]:
@@ -29,6 +38,8 @@ def _parse_processor_info(bs_obj: BeautifulSoup) -> Optional[Processor]:
         category='System Summary',
         bs_obj=bs_obj
     )
+    if processor is None:
+        return
     pattern = re.compile(r'(.+?), (\d+ Mhz).+(\d Core).+?(\d+ Logical)')
     name, clock, cores, threads = pattern.match(processor).groups()
 
@@ -39,9 +50,6 @@ def _parse_processor_info(bs_obj: BeautifulSoup) -> Optional[Processor]:
         threads=int(threads.replace(' Logical', ''))
     )
 
-    if any(item is None for item in (processor.name, processor.threads, processor.cores, processor.clock)):
-        return None
-
     return processor
 
 
@@ -51,6 +59,9 @@ def _parse_videocard_info(bs_obj: BeautifulSoup) -> Optional[Videocard]:
         category='Display',
         bs_obj=bs_obj
     )
+    if videocard is None:
+        return
+
     pattern = re.compile(r'(.+) (\dGB)')
     name, memory = pattern.match(videocard).groups()
 
@@ -58,9 +69,6 @@ def _parse_videocard_info(bs_obj: BeautifulSoup) -> Optional[Videocard]:
         name=name,
         memory=int(memory.replace('GB', ''))
     )
-
-    if any(item is None for item in (videocard.name, videocard.memory)):
-        return None
 
     return videocard
 
@@ -76,18 +84,16 @@ def _parse_os_info(bs_obj: BeautifulSoup) -> Optional[OS]:
         category='System Summary',
         bs_obj=bs_obj
     )
-
-    os_architecture = None
-
-    if 'x32' in os_system_type or 'x86' in os_system_type:
+    if os_name is None:
+        return
+    if os_system_type is None:
+        os_architecture = None
+    elif 'x32' in os_system_type or 'x86' in os_system_type:
         os_architecture = Computer.Architecture.x32
-    if 'x64' in os_system_type:
+    elif 'x64' in os_system_type:
         os_architecture = Computer.Architecture.x64
 
     os = OS(name=os_name.replace('Microsoft ', ''), architecture=os_architecture)
-
-    if any(item is None for item in (os.name, os.architecture)):
-        return None
 
     return os
 
@@ -107,30 +113,33 @@ def _generate_response() -> str:
 @require_POST
 @csrf_exempt
 def collect_msinfo(request: HttpRequest):
-    raw = BytesIO(request.read())
-    bs = BeautifulSoup(raw, 'xml')
+    bs = BeautifulSoup(request.read(), 'xml')
 
     get_system_summary = partial(_get_item_value, category='System Summary', bs_obj=bs)
 
     os_info = _parse_os_info(bs_obj=bs)
     cpu_info = _parse_processor_info(bs_obj=bs)
     videocard_info = _parse_videocard_info(bs_obj=bs)
+    ram = get_system_summary('Total Physical Memory')
+    username = get_system_summary('User Name')
+    hw_type = get_system_summary('Platform Role')
+    name = get_system_summary('User Name')
 
     pc, is_pc_created = Computer.objects.update_or_create(
         defaults=dict(
-            hardware_type=get_system_summary('Platform Role'),
-            os_name=os_info.name,
-            os_architecture=os_info.architecture,
-            cpu_name=cpu_info.name,
-            cpu_clock=cpu_info.clock,
-            cpu_cores=cpu_info.cores,
-            cpu_threads=cpu_info.threads,
-            videocard_name=videocard_info.name,
-            videocard_memory=videocard_info.memory,
-            ram=int(float(get_system_summary('Total Physical Memory').strip(' GB'))),
-            username=get_system_summary('User Name').split('\\')[1],
+            hardware_type=hw_type or Computer.HwType.DESKTOP,
+            os_name=os_info and os_info.name,
+            os_architecture=os_info and os_info.architecture,
+            cpu_name=cpu_info and cpu_info.name,
+            cpu_clock=cpu_info and cpu_info.clock,
+            cpu_cores=cpu_info and cpu_info.cores,
+            cpu_threads=cpu_info and cpu_info.threads,
+            videocard_name=videocard_info and videocard_info.name,
+            videocard_memory=videocard_info and videocard_info.memory,
+            ram=ram and int(float(ram.strip(' GB'))),
+            username=username and username.split('\\')[1],
         ),
-        name=get_system_summary('User Name').split('\\')[0],
+        name=name and name.split('\\')[0],
     )
 
     response_str = f'New computer added in database - {pc.name}' if is_pc_created else f'{pc.name} updated'

@@ -5,8 +5,8 @@ from typing import Union
 
 from ariadne import make_executable_schema
 
-import gql_api.resolvers as root_resolvers
-from gql_api.type_defs import resolvers, type_defs
+import gql.resolvers as root_resolvers
+from gql.type_defs import resolvers, type_defs
 
 
 def import_submodules(package: Union[ModuleType, str], recursive: bool = True) -> None:

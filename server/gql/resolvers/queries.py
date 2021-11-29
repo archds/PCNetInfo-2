@@ -2,11 +2,11 @@ from typing import Dict, Optional
 
 from django.db.models import Q
 
-import gql_api.type_defs as gqt
-from gql_api.actions.filter import filter_query
-from gql_api.actions.sort import sort
-from gql_api.errors import ReadableError
-from gql_api.resolvers.presentation.computer import gql_computer_convert
+import gql.type_defs as gqt
+from gql.actions.filter import filter_query
+from gql.actions.sort import sort
+from gql.errors import ReadableError
+from gql.resolvers.presentation.computer import gql_computer_convert
 from hardware.models import Computer, Location, User
 
 

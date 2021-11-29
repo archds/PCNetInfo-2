@@ -16,8 +16,8 @@ Including another URLconf
 from ariadne.contrib.django.views import GraphQLView
 from django.urls import path
 
-from gql_api.error_formatter import format_error
-from gql_api.schema import schema
+from gql.error_formatter import format_error
+from gql.schema import schema
 from hardware.views import collect_msinfo
 
 urlpatterns = [
