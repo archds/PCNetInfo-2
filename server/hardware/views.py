@@ -1,6 +1,5 @@
 import re
 from functools import partial
-from io import BytesIO
 from typing import Optional
 
 from bs4 import BeautifulSoup
@@ -13,14 +12,24 @@ from hardware.domain import OS, Processor, Videocard
 from hardware.models import Computer
 
 
-def _get_item_value(key: str, category: str, bs_obj: BeautifulSoup) -> str:
-    return bs_obj.find(
+def _get_item_value(key: str, category: str, bs_obj: BeautifulSoup) -> Optional[str]:
+    bs_category = bs_obj.find(
         name='Category',
         attrs={'name': category}
-    ).find(
+    )
+
+    if bs_category is None:
+        return
+
+    bs_item = bs_category.find(
         name='Item',
         text=key
-    ).find_next_sibling().text
+    )
+
+    if bs_item is None:
+        return
+
+    return bs_item.find_next_sibling().text
 
 
 def _parse_processor_info(bs_obj: BeautifulSoup) -> Optional[Processor]:
@@ -107,8 +116,7 @@ def _generate_response() -> str:
 @require_POST
 @csrf_exempt
 def collect_msinfo(request: HttpRequest):
-    raw = BytesIO(request.read())
-    bs = BeautifulSoup(raw, 'xml')
+    bs = BeautifulSoup(request.read(), 'xml')
 
     get_system_summary = partial(_get_item_value, category='System Summary', bs_obj=bs)
 
