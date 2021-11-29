@@ -38,6 +38,8 @@ def _parse_processor_info(bs_obj: BeautifulSoup) -> Optional[Processor]:
         category='System Summary',
         bs_obj=bs_obj
     )
+    if processor is None:
+        return
     pattern = re.compile(r'(.+?), (\d+ Mhz).+(\d Core).+?(\d+ Logical)')
     name, clock, cores, threads = pattern.match(processor).groups()
 
@@ -48,9 +50,6 @@ def _parse_processor_info(bs_obj: BeautifulSoup) -> Optional[Processor]:
         threads=int(threads.replace(' Logical', ''))
     )
 
-    if any(item is None for item in (processor.name, processor.threads, processor.cores, processor.clock)):
-        return None
-
     return processor
 
 
@@ -60,6 +59,9 @@ def _parse_videocard_info(bs_obj: BeautifulSoup) -> Optional[Videocard]:
         category='Display',
         bs_obj=bs_obj
     )
+    if videocard is None:
+        return
+
     pattern = re.compile(r'(.+) (\dGB)')
     name, memory = pattern.match(videocard).groups()
 
@@ -67,9 +69,6 @@ def _parse_videocard_info(bs_obj: BeautifulSoup) -> Optional[Videocard]:
         name=name,
         memory=int(memory.replace('GB', ''))
     )
-
-    if any(item is None for item in (videocard.name, videocard.memory)):
-        return None
 
     return videocard
 
@@ -85,18 +84,16 @@ def _parse_os_info(bs_obj: BeautifulSoup) -> Optional[OS]:
         category='System Summary',
         bs_obj=bs_obj
     )
-
-    os_architecture = None
-
-    if 'x32' in os_system_type or 'x86' in os_system_type:
+    if os_name is None:
+        return
+    if os_system_type is None:
+        os_architecture = None
+    elif 'x32' in os_system_type or 'x86' in os_system_type:
         os_architecture = Computer.Architecture.x32
-    if 'x64' in os_system_type:
+    elif 'x64' in os_system_type:
         os_architecture = Computer.Architecture.x64
 
     os = OS(name=os_name.replace('Microsoft ', ''), architecture=os_architecture)
-
-    if any(item is None for item in (os.name, os.architecture)):
-        return None
 
     return os
 
