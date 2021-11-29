@@ -127,7 +127,7 @@ def collect_msinfo(request: HttpRequest):
 
     pc, is_pc_created = Computer.objects.update_or_create(
         defaults=dict(
-            hardware_type=hw_type,
+            hardware_type=hw_type or Computer.HwType.DESKTOP,
             os_name=os_info and os_info.name,
             os_architecture=os_info and os_info.architecture,
             cpu_name=cpu_info and cpu_info.name,
