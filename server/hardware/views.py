@@ -33,6 +33,7 @@ def error_intercept(func: Callable) -> Callable:
         try:
             return func(*args, **kwargs)
         except Exception as err:  # noqa
+            print(err.__traceback__)
             return HttpResponse('Unexpected error', status=500)
 
     return wrapper
