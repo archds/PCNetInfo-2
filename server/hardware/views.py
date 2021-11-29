@@ -120,22 +120,26 @@ def collect_msinfo(request: HttpRequest):
     os_info = _parse_os_info(bs_obj=bs)
     cpu_info = _parse_processor_info(bs_obj=bs)
     videocard_info = _parse_videocard_info(bs_obj=bs)
+    ram = get_system_summary('Total Physical Memory')
+    username = get_system_summary('User Name')
+    hw_type = get_system_summary('Platform Role')
+    name = get_system_summary('User Name')
 
     pc, is_pc_created = Computer.objects.update_or_create(
         defaults=dict(
-            hardware_type=get_system_summary('Platform Role'),
-            os_name=os_info.name,
-            os_architecture=os_info.architecture,
-            cpu_name=cpu_info.name,
-            cpu_clock=cpu_info.clock,
-            cpu_cores=cpu_info.cores,
-            cpu_threads=cpu_info.threads,
-            videocard_name=videocard_info.name,
-            videocard_memory=videocard_info.memory,
-            ram=int(float(get_system_summary('Total Physical Memory').strip(' GB'))),
-            username=get_system_summary('User Name').split('\\')[1],
+            hardware_type=hw_type,
+            os_name=os_info and os_info.name,
+            os_architecture=os_info and os_info.architecture,
+            cpu_name=cpu_info and cpu_info.name,
+            cpu_clock=cpu_info and cpu_info.clock,
+            cpu_cores=cpu_info and cpu_info.cores,
+            cpu_threads=cpu_info and cpu_info.threads,
+            videocard_name=videocard_info and videocard_info.name,
+            videocard_memory=videocard_info and videocard_info.memory,
+            ram=ram and int(float(ram.strip(' GB'))),
+            username=username and username.split('\\')[1],
         ),
-        name=get_system_summary('User Name').split('\\')[0],
+        name=name and name.split('\\')[0],
     )
 
     response_str = f'New computer added in database - {pc.name}' if is_pc_created else f'{pc.name} updated'
