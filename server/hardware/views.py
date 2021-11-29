@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from dj_service.settings import BASE_DIR
-from hardware.domain import Locale
+from hardware.domain import Locale, ProcessingResult
 from hardware.processor import MSInfoProcessor
 
 
@@ -14,8 +14,18 @@ def _get_console_response() -> str:
         return file.read()
 
 
-def _generate_response() -> str:
-    pass
+def _generate_response(result: ProcessingResult) -> HttpResponse:
+    if result.name is None:
+        return HttpResponse('Can\'t parse even computer name, unable to create database record!')
+
+    if not result.unparsed:
+        additional = 'All information collected successfully'
+    else:
+        additional = 'Unable to collect information about: ' + ', '.join(result.unparsed)
+
+    main = f'New computer added - {result.name}' if result.is_created else f'Updated - {result.name}'
+
+    return HttpResponse(f'{main}\n{additional}')
 
 
 def error_intercept(func: Callable) -> Callable:
@@ -40,8 +50,6 @@ def collect_msinfo(request: HttpRequest):
 
     locale = Locale(request.headers['Locale'])
 
-    pc, is_pc_created = MSInfoProcessor(locale).process(request.read())
+    processing_result = MSInfoProcessor(locale).process(request.read())
 
-    response_str = f'New computer added in database - {pc.name}' if is_pc_created else f'{pc.name} updated'
-
-    return HttpResponse(response_str)
+    return _generate_response(processing_result)

@@ -4,7 +4,7 @@ from typing import Optional
 
 from bs4 import BeautifulSoup
 
-from hardware.domain import Locale, OS, Processor, Videocard
+from hardware.domain import Locale, OS, ProcessingResult, Processor, Videocard
 from hardware.models import Computer
 
 
@@ -140,7 +140,7 @@ class MSInfoProcessor:
 
         return float(f'{match.group(1)}.{match.group(2)}')
 
-    def process(self, data: bytes) -> tuple[Computer, bool]:
+    def process(self, data: bytes) -> ProcessingResult:
         bs = BeautifulSoup(data, 'xml')
 
         get_system_summary = partial(self._get_item_value, category='System Summary', bs_obj=bs)
@@ -153,7 +153,14 @@ class MSInfoProcessor:
         hw_type = get_system_summary('Platform Role')
         name = get_system_summary('User Name')
 
-        return Computer.objects.update_or_create(
+        if name is None:
+            return ProcessingResult(
+                is_created=False,
+                unparsed=[],
+                name=None
+            )
+
+        computer, is_created = Computer.objects.update_or_create(
             defaults=dict(
                 hardware_type=hw_type,
                 os_name=os_info and os_info.name,
@@ -168,4 +175,19 @@ class MSInfoProcessor:
                 username=username and username.split('\\')[1],
             ),
             name=name and name.split('\\')[0],
+        )
+
+        return ProcessingResult(
+            name=computer.name,
+            is_created=is_created,
+            unparsed=[
+                item[0] for item in {
+                    'OS': os_info,
+                    'CPU': cpu_info,
+                    'Videocard': videocard_info,
+                    'RAM Size': ram,
+                    'Username': username,
+                }.items() if not item[1]
+            ]
+
         )

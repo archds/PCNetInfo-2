@@ -26,3 +26,10 @@ class Processor:
 class Locale(Enum):
     eng = 'en-US'
     rus = 'ru-RU'
+
+
+@dataclass
+class ProcessingResult:
+    is_created: bool
+    name: Optional[str]
+    unparsed: list[str]
