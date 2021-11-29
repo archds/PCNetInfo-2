@@ -66,7 +66,7 @@ class MSInfoProcessor:
         if processor is None:
             return
 
-        match = self.patterns['processor'][self.locale].match(processor)
+        match = self.patterns['processor'][self.locale].match(processor.strip())
         name, clock, cores, threads = match.group(1), match.group(3), match.group(5), match.group(7)
 
         processor = Processor(
@@ -88,7 +88,7 @@ class MSInfoProcessor:
         if videocard is None:
             return
 
-        match = self.patterns['videocard'].match(videocard)
+        match = self.patterns['videocard'].match(videocard.strip())
         name, memory = match.group(1), match.group(3)
 
         videocard = Videocard(
