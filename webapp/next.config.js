@@ -5,6 +5,6 @@ require('dotenv').config({
 module.exports = {
     reactStrictMode: true,
     env: {
-        NEXT_PUBLIC_BACKEND_ROOT_URI: process.env.BACKEND_ROOT_URI
+        NEXT_PUBLIC_BACKEND_ROOT_URI: `http://${process.env.BACKEND_IP_ADDR}:8000`
     }
 }
