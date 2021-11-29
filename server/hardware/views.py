@@ -19,7 +19,7 @@ def _generate_response(result: ProcessingResult) -> HttpResponse:
         return HttpResponse('Can\'t parse even computer name, unable to create database record!')
 
     if not result.unparsed:
-        additional = 'All information collected successfully'
+        additional = 'All information collected successfully. Have a good day!'
     else:
         additional = 'Unable to collect information about: ' + ', '.join(result.unparsed)
 
