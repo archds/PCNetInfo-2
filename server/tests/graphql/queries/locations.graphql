@@ -1,0 +1,13 @@
+query Locations {
+    locations {
+        id
+        building {
+            id
+            street
+            house
+        }
+        cabinet
+        floor
+        description
+    }
+}

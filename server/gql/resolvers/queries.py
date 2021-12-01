@@ -7,7 +7,7 @@ from gql.actions.filter import filter_query
 from gql.actions.sort import sort
 from gql.errors import ReadableError
 from gql.resolvers.presentation.computer import gql_computer_convert
-from hardware.models import Computer, Location, User
+from hardware.models import Building, Computer, Location, User
 
 
 @gqt.query.field('hello')
@@ -64,3 +64,8 @@ def resolve_locations(obj, info):
 @gqt.query.field('users')
 def resolve_users(obj, info):
     return User.objects.all()
+
+
+@gqt.query.field('buildings')
+def resolve_buildings(*_):
+    return Building.objects.all()

@@ -1,0 +1,9 @@
+mutation updateBuilding($id: ID!, $street: String!, $house: String!) {
+    updateBuilding(
+        id: $id
+        input: {
+            street: $street
+            house: $house
+        }
+    )
+}
