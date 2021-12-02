@@ -1,9 +1,12 @@
 type Query {
     hello: String!
+
     computer(id: ID!): Computer
     computers(input: AllComputerInput): [Computer!]!
+
     buildings: [Building!]!
     locations: [Location!]!
+
     users: [User!]!
 }
 
@@ -23,11 +26,19 @@ type Mutation {
     createLocation(input: LocationInput!): Unit!
     updateLocation(id: ID!, input: LocationInput!): Unit!
     deleteLocation(id: ID!): Unit!
+
+    auth(username: String!, password: String!): AuthToken!
+    verifyToken(token: String!): Unit!
 }
 
 enum Unit {
     UNIT
 }
+
+type AuthToken {
+    token: String!
+}
+
 
 input UpdateComputerInput {
     name: String

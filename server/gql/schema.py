@@ -10,10 +10,6 @@ from gql.type_defs import resolvers, type_defs
 
 
 def import_submodules(package: Union[ModuleType, str], recursive: bool = True) -> None:
-    """
-    Рекурсивно импортирует все модули в папке.
-    """
-
     if isinstance(package, str):
         package = importlib.import_module(package)
     elif not isinstance(package, ModuleType):
