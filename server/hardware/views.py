@@ -1,4 +1,4 @@
-from collections import Callable
+from typing import Callable
 
 from django.http import HttpRequest, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
