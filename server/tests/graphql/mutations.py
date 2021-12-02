@@ -103,3 +103,20 @@ def send_delete_location_mutation(id: str):
         name='deleteLocation',
         variables={'id': id}
     )
+
+
+def send_auth_mutation(username: str, password: str):
+    return send_mutation(
+        name='auth',
+        variables={
+            'username': username,
+            'password': password
+        }
+    )
+
+
+def send_verify_token_mutation(token: str):
+    return send_mutation(
+        name='verifyToken',
+        variables={'token': token}
+    )
