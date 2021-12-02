@@ -2,19 +2,26 @@ type Query {
     hello: String!
     computer(id: ID!): Computer
     computers(input: AllComputerInput): [Computer!]!
-    locations: [Location]!
-    users: [User]!
+    buildings: [Building!]!
+    locations: [Location!]!
+    users: [User!]!
 }
 
 type Mutation {
-    updateComputer(id: ID!, input: UpdateComputerInput!): Computer!
+    updateComputer(id: ID!, input: UpdateComputerInput!): Unit!
     deleteComputer(ids: [ID!]!): Unit!
-    createComputer(input: CreateComputerInput!): Computer!
-    createUser(input: UserInput!): User!
-    updateUser(id: ID!, input: UserInput!): User!
+    createComputer(input: CreateComputerInput!): Unit!
+
+    createUser(input: UserInput!): Unit!
+    updateUser(id: ID!, input: UserInput!): Unit!
     deleteUser(id: ID!): Unit!
-    createLocation(input: LocationInput!): Location!
-    updateLocation(id: ID!, input: LocationInput!): Location!
+
+    createBuilding(input: BuildingInput!): Unit!
+    updateBuilding(id: ID!, input: BuildingInput!): Unit!
+    deleteBuilding(id: ID!): Unit!
+
+    createLocation(input: LocationInput!): Unit!
+    updateLocation(id: ID!, input: LocationInput!): Unit!
     deleteLocation(id: ID!): Unit!
 }
 
@@ -124,8 +131,8 @@ type Location {
     id: ID!
     building: Building!
     cabinet: String!
-    floor: Int
-    employees: [User]!
+    floor: Int!
+    #    employees: [User]!
     description: String
 }
 
@@ -136,10 +143,10 @@ type Building {
 }
 
 input LocationInput {
-    building: BuildingInput!
+    buildingId: ID!
     cabinet: String!
     floor: Int
-    employees: [ID]
+    #    employees: [ID]
     description: String
 }
 

@@ -1,0 +1,3 @@
+mutation deleteBuilding($id: ID!) {
+    deleteBuilding(id: $id)
+}

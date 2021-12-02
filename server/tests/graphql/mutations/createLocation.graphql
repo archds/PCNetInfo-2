@@ -1,0 +1,8 @@
+mutation createLocation($buildingId: ID!, $cabinet: String!, $floor: Int, $description: String) {
+    createLocation(input: {
+        buildingId: $buildingId
+        cabinet: $cabinet
+        floor: $floor
+        description: $description
+    })
+}
