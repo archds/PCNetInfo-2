@@ -1,0 +1,6 @@
+mutation createBuilding($street: String!, $house: String!) {
+    createBuilding(input: {
+        house: $house
+        street: $street
+    })
+}
