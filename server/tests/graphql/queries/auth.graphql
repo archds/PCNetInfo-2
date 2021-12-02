@@ -1,4 +1,4 @@
-mutation auth($username: String!, $password: String!) {
+query auth($username: String!, $password: String!) {
     auth(username: $username, password: $password) {
         token
     }

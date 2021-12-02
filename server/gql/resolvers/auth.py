@@ -68,7 +68,7 @@ def get_token_from_http_header(request):
     return token
 
 
-@gqt.mutation.field('auth')
+@gqt.query.field('auth')
 def resolve_token_auth(_obj, info, **credentials):
     """Resolves the token auth mutation"""
     user = authenticate(info.context, **credentials)
@@ -80,7 +80,7 @@ def resolve_token_auth(_obj, info, **credentials):
     return {"token": token}
 
 
-@gqt.mutation.field('verifyToken')
+@gqt.query.field('verifyToken')
 def resolve_verify_token(_obj, _info, token: str):
     """Resolves the verify token mutation"""
 

@@ -3,6 +3,7 @@ import '@fontsource/roboto'
 import { createTheme, ThemeProvider } from '@material-ui/core'
 import client from 'apollo-client'
 import { AppProps } from 'next/app'
+import Auth from 'pages/auth'
 import Footer from '../components/footer'
 import Navigation from '../components/navigation'
 import '../styles/main.scss'
@@ -11,22 +12,22 @@ const theme = createTheme({
     palette: {
         primary: {
             // light: will be calculated from palette.primary.main,
-            main: '#41b883',
+            main: '#41B883',
             // dark: will be calculated from palette.primary.main,
             // contrastText: will be calculated to contrast with palette.primary.main
-            contrastText: '#fff',
+            contrastText: '#FFFFFF',
         },
         secondary: {
             light: '#537293',
-            main: '#35495e',
+            main: '#35495E',
             // dark: will be calculated from palette.secondary.main,
-            contrastText: '#fff',
+            contrastText: '#FFFFFF',
         },
         error: {
-            light: '#e57373',
-            main: '#f44336',
-            dark: '#d32f2f',
-            contrastText: '#fff',
+            light: '#E57373',
+            main: '#F44336',
+            dark: '#D32F2F',
+            contrastText: '#FFFFFF',
         },
         // Used by `getContrastText()` to maximize the contrast between
         // the background and the text.
@@ -40,6 +41,13 @@ const theme = createTheme({
 
 
 function MyApp({ Component, pageProps }: AppProps) {
+    return <>
+        <ApolloProvider client={client}>
+            <ThemeProvider theme={theme}>
+                <Auth/>
+            </ThemeProvider>
+        </ApolloProvider>
+    </>
     return (
         <>
             <ApolloProvider client={client}>

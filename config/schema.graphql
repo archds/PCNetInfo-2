@@ -8,6 +8,9 @@ type Query {
     locations: [Location!]!
 
     users: [User!]!
+
+    auth(username: String!, password: String!): AuthToken!
+    verifyToken(token: String!): Unit!
 }
 
 type Mutation {
@@ -26,9 +29,6 @@ type Mutation {
     createLocation(input: LocationInput!): Unit!
     updateLocation(id: ID!, input: LocationInput!): Unit!
     deleteLocation(id: ID!): Unit!
-
-    auth(username: String!, password: String!): AuthToken!
-    verifyToken(token: String!): Unit!
 }
 
 enum Unit {

@@ -1,0 +1,30 @@
+.authContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(150deg, #35495E, #375165, #3C6675, #40888B, #42A18E, #41B187, #41B883);;;
+  height: 100vh;
+}
+
+.authCard {
+  display: flex;
+  flex-flow: column wrap;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px 30px 30px;
+  border-radius: 10px !important;
+
+  h3 {
+    //align-self: flex-start;
+    font-weight: 600;
+    color: #35495E;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  button {
+    margin-top: 20px;
+    width: 100%;
+  }
+}
