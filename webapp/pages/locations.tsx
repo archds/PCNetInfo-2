@@ -3,7 +3,7 @@ import Cards from '../components/computer/cards/cards'
 
 function Location() {
     return <>
-    <Cards hoverable/>
+    <Cards />
     'Зачем нужен иглорюх?'
     </>
 }
