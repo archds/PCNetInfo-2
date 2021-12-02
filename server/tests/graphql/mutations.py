@@ -37,3 +37,69 @@ def send_update_computer_mutation(computer_id: str, data: dict):
             'input': data
         }
     )
+
+
+def send_create_building_mutation(street: str, house: str):
+    return send_mutation(
+        name='createBuilding',
+        variables={
+            'street': street,
+            'house': house
+        }
+    )
+
+
+def send_update_building_mutation(id: str, street: str, house: str):
+    return send_mutation(
+        name='updateBuilding',
+        variables={
+            'id': id,
+            'street': street,
+            'house': house
+        }
+    )
+
+
+def send_delete_building_mutation(id: str):
+    return send_mutation(
+        name='deleteBuilding',
+        variables={'id': id}
+    )
+
+
+def send_create_location_mutation(building_id: str, cabinet: str, floor: int = None, description: str = None):
+    return send_mutation(
+        name='createLocation',
+        variables={
+            'buildingId': building_id,
+            'cabinet': cabinet,
+            'floor': floor,
+            'description': description,
+        }
+    )
+
+
+def send_update_location_mutation(
+        id: str,
+        building_id: str,
+        cabinet: str,
+        floor: int = None,
+        description: str = None
+):
+    return send_mutation(
+        name='updateLocation',
+        variables={
+            'id': id,
+            'buildingId': building_id,
+            'cabinet': cabinet,
+            'floor': floor,
+            'description': description,
+        }
+    )
+
+
+def send_delete_location_mutation(id: str):
+    return send_mutation(
+        name='deleteLocation',
+        variables={'id': id}
+    )

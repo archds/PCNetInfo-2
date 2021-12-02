@@ -60,7 +60,6 @@ class ComputerQueryTests(TestCase):
 
         # Assert
         self.assertNotIn('errors', response)
-        self.assertEqual(data['name'], response['data']['createComputer']['name'])
         self.assertTrue(Computer.objects.filter(name=data['name']).exists())
 
     def test_delete_computer_mutation(self):
@@ -90,5 +89,3 @@ class ComputerQueryTests(TestCase):
 
         # Assert
         self.assertNotIn('errors', response)
-        self.assertEqual(response['data']['updateComputer']['name'], data['name'])
-        self.assertEqual(response['data']['updateComputer']['serial'], data['serial'])

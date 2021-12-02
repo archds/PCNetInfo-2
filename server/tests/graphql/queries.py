@@ -29,3 +29,11 @@ def send_computer_query(computer_id: str):
             'id': computer_id
         }
     )
+
+
+def send_locations_query():
+    return send_query(name='locations')
+
+
+def send_buildings_query():
+    return send_query(name='buildings')
