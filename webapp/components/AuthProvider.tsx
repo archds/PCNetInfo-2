@@ -1,5 +1,5 @@
 import { LoadingButton } from '@mui/lab'
-import { Card, TextField } from '@mui/material'
+import { Card, LinearProgress, TextField } from '@mui/material'
 import { useAuthLazyQuery, useVerifyTokenQuery } from 'api/generated/graphql'
 import { getCookie, setCookies } from 'cookies-next'
 import style from 'pages/auth.module.scss'
@@ -7,7 +7,7 @@ import React, { useRef, useState } from 'react'
 
 function AuthProvider(props) {
     const [authLoading, setAuthLoading] = useState(false)
-    const [auth, { data: authData, error: authError }] = useAuthLazyQuery({
+    const [auth, { error: authError }] = useAuthLazyQuery({
         onCompleted: data => {
             setCookies('authToken', data.auth.token, { path: '/', maxAge: 259200 })
             setAuthLoading(true)
@@ -32,6 +32,7 @@ function AuthProvider(props) {
         })
     }
 
+    if (verifyLoading) return <LinearProgress/>
     if (verifyData) return props.children
 
     return (

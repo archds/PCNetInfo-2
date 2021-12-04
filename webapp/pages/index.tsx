@@ -54,6 +54,7 @@ function Index() {
             <Snackbar
                 open={snackbar.show}
                 autoHideDuration={6000}
+                anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
                 onClose={() => setSnackbar({ severity: 'success', show: false })}
             >
                 <Alert variant='filled' severity={snackbar.severity}>{snackbar.message}</Alert>

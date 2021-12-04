@@ -54,6 +54,9 @@ const theme: ThemeOptions = {
             dark: '#D32F2F',
             contrastText: '#FFFFFF',
         },
+        success: {
+            main: '#28a745',
+        },
         // Used by `getContrastText()` to maximize the contrast between
         // the background and the text.
         contrastThreshold: 3,
