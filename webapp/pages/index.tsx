@@ -1,6 +1,6 @@
 import style from '/pages/index.module.scss'
-import { Snackbar } from '@material-ui/core'
-import Alert, { Color } from '@material-ui/lab/Alert'
+import { Snackbar } from '@mui/material'
+import Alert, { Color } from '@mui/material/Alert'
 import ActionsDashboard from 'components/computer/actions/ActionsDashboard'
 import ComputersDashboard from 'components/computer/ComputersDashboard'
 import { StateContext } from 'core/interfaces'

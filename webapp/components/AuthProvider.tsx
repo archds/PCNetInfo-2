@@ -1,4 +1,4 @@
-import { Button, Card, TextField } from '@material-ui/core'
+import { Button, Card, TextField } from '@mui/material'
 import { useAuthLazyQuery, useVerifyTokenQuery } from 'api/generated/graphql'
 import Loading from 'components/shared/loading/Loading'
 import { getCookie, setCookies } from 'cookies-next'

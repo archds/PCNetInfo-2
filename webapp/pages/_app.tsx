@@ -1,6 +1,6 @@
 import { ApolloProvider } from '@apollo/client'
 import '@fontsource/roboto'
-import { createTheme, ThemeProvider } from '@material-ui/core'
+import { createTheme, CssBaseline, StyledEngineProvider, Theme, ThemeProvider } from '@mui/material'
 import client from 'apollo-client'
 import AuthProvider from 'components/AuthProvider'
 import Footer from 'components/Footer'
@@ -8,6 +8,14 @@ import HeadProvider from 'components/HeadProvider'
 import Navigation from 'components/Navigation'
 import { AppProps } from 'next/app'
 import '../styles/main.scss'
+
+
+declare module '@mui/styles/defaultTheme' {
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface DefaultTheme extends Theme {
+    }
+}
+
 
 const theme = createTheme({
     palette: {
@@ -42,11 +50,12 @@ const theme = createTheme({
 
 
 function MyApp({ Component, pageProps }: AppProps) {
-    return (
-        <>
-            <ApolloProvider client={client}>
+    return <>
+        <ApolloProvider client={client}>
+            <StyledEngineProvider injectFirst>
                 <ThemeProvider theme={theme}>
                     <HeadProvider>
+                        <CssBaseline/>
                         <AuthProvider>
                             <Navigation/>
                             <Component {...pageProps} />
@@ -54,9 +63,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                         </AuthProvider>
                     </HeadProvider>
                 </ThemeProvider>
-            </ApolloProvider>
-        </>
-    )
+            </StyledEngineProvider>
+        </ApolloProvider>
+    </>
 }
 
 export default MyApp

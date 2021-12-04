@@ -1,4 +1,4 @@
-import { Button, Paper, Tab, Tabs } from '@material-ui/core'
+import { Button, Paper, Tab, Tabs } from '@mui/material'
 import { removeCookies } from 'cookies-next'
 import { useRouter } from 'next/router'
 import { useState } from 'react'

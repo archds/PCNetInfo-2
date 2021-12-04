@@ -1,6 +1,6 @@
 import style from '/components/computer/controller/ControllerDashboard.module.scss'
-import { Button } from '@material-ui/core'
-import DeleteIcon from '@material-ui/icons/Delete'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { Button } from '@mui/material'
 import * as CSS from 'csstype'
 import React from 'react'
 
