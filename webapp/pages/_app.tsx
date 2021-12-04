@@ -2,10 +2,11 @@ import { ApolloProvider } from '@apollo/client'
 import '@fontsource/roboto'
 import { createTheme, ThemeProvider } from '@material-ui/core'
 import client from 'apollo-client'
+import AuthProvider from 'components/AuthProvider'
+import Footer from 'components/Footer'
+import HeadProvider from 'components/HeadProvider'
+import Navigation from 'components/Navigation'
 import { AppProps } from 'next/app'
-import Auth from 'pages/auth'
-import Footer from '../components/footer'
-import Navigation from '../components/navigation'
 import '../styles/main.scss'
 
 const theme = createTheme({
@@ -41,20 +42,17 @@ const theme = createTheme({
 
 
 function MyApp({ Component, pageProps }: AppProps) {
-    return <>
-        <ApolloProvider client={client}>
-            <ThemeProvider theme={theme}>
-                <Auth/>
-            </ThemeProvider>
-        </ApolloProvider>
-    </>
     return (
         <>
             <ApolloProvider client={client}>
                 <ThemeProvider theme={theme}>
-                    <Navigation/>
-                    <Component {...pageProps} />
-                    <Footer/>
+                    <HeadProvider>
+                        <AuthProvider>
+                            <Navigation/>
+                            <Component {...pageProps} />
+                            <Footer/>
+                        </AuthProvider>
+                    </HeadProvider>
                 </ThemeProvider>
             </ApolloProvider>
         </>

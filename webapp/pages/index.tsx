@@ -3,7 +3,6 @@ import { Snackbar } from '@material-ui/core'
 import Alert, { Color } from '@material-ui/lab/Alert'
 import ActionsDashboard from 'components/computer/actions/ActionsDashboard'
 import ComputersDashboard from 'components/computer/ComputersDashboard'
-import HeadComponent from 'components/head'
 import { StateContext } from 'core/interfaces'
 import React, { createContext, useState } from 'react'
 
@@ -39,7 +38,6 @@ function Index() {
 
     return (
         <>
-            <HeadComponent/>
             <div className={style.indexContainer}>
                 <SnackbarContext.Provider value={snackbarContextValue}>
                     <ComputersDashboard
