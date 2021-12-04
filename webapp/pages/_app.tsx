@@ -2,31 +2,33 @@ import { ApolloProvider } from '@apollo/client'
 import '@fontsource/roboto'
 import { createTheme, ThemeProvider } from '@material-ui/core'
 import client from 'apollo-client'
+import AuthProvider from 'components/AuthProvider'
+import Footer from 'components/Footer'
+import HeadProvider from 'components/HeadProvider'
+import Navigation from 'components/Navigation'
 import { AppProps } from 'next/app'
-import Footer from '../components/footer'
-import Navigation from '../components/navigation'
 import '../styles/main.scss'
 
 const theme = createTheme({
     palette: {
         primary: {
             // light: will be calculated from palette.primary.main,
-            main: '#41b883',
+            main: '#41B883',
             // dark: will be calculated from palette.primary.main,
             // contrastText: will be calculated to contrast with palette.primary.main
-            contrastText: '#fff',
+            contrastText: '#FFFFFF',
         },
         secondary: {
             light: '#537293',
-            main: '#35495e',
+            main: '#35495E',
             // dark: will be calculated from palette.secondary.main,
-            contrastText: '#fff',
+            contrastText: '#FFFFFF',
         },
         error: {
-            light: '#e57373',
-            main: '#f44336',
-            dark: '#d32f2f',
-            contrastText: '#fff',
+            light: '#E57373',
+            main: '#F44336',
+            dark: '#D32F2F',
+            contrastText: '#FFFFFF',
         },
         // Used by `getContrastText()` to maximize the contrast between
         // the background and the text.
@@ -44,9 +46,13 @@ function MyApp({ Component, pageProps }: AppProps) {
         <>
             <ApolloProvider client={client}>
                 <ThemeProvider theme={theme}>
-                    <Navigation/>
-                    <Component {...pageProps} />
-                    <Footer/>
+                    <HeadProvider>
+                        <AuthProvider>
+                            <Navigation/>
+                            <Component {...pageProps} />
+                            <Footer/>
+                        </AuthProvider>
+                    </HeadProvider>
                 </ThemeProvider>
             </ApolloProvider>
         </>

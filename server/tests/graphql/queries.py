@@ -37,3 +37,20 @@ def send_locations_query():
 
 def send_buildings_query():
     return send_query(name='buildings')
+
+
+def send_auth_query(username: str, password: str):
+    return send_query(
+        name='auth',
+        variables={
+            'username': username,
+            'password': password
+        }
+    )
+
+
+def send_verify_token_query(token: str):
+    return send_query(
+        name='verifyToken',
+        variables={'token': token}
+    )
