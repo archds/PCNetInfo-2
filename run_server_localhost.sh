@@ -6,7 +6,6 @@ if ! python3 server/manage.py migrate; then
   exit 1
 fi
 
-
 # Create test superuser if it does not exist yet
 if ! python3 server/manage.py shell -c "
 import sys
