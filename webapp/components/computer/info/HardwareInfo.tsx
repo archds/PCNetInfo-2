@@ -21,7 +21,7 @@ export function MemoryInfo(props: MemProps) {
     } else {
         content = defaultNoDataMessage
     }
-    return <p><FaMemory/>{content}</p>
+    return <p><FaMemory/> {content}</p>
 }
 
 export interface OSProps extends BaseProps {
@@ -29,11 +29,12 @@ export interface OSProps extends BaseProps {
 }
 
 export function OSInfo(props: OSProps) {
-    let content
+    let content: JSX.Element | string
     if (props.loading) {
         content = skeletonText
-    } else if (props.os) {
-        content = `${props.os.name}, ${props.os.architecture}`
+    } else if (props.os.name) {
+        content = `${props.os.name}`
+        props.os.architecture? content += `, ${props.os.architecture}`: null
     } else {
         content = defaultNoDataMessage
     }
@@ -45,10 +46,10 @@ export interface CPUProps extends BaseProps {
 }
 
 export function CpuInfo(props: CPUProps) {
-    let content
+    let content: JSX.Element | string
     if (props.loading) {
         content = skeletonText
-    } else if (props.cpu) {
+    } else if (props.cpu.name) {
         content = <>
             {props.cpu.name}<br/>
             Clock: {props.cpu.clock} MHz<br/>
@@ -65,10 +66,10 @@ export interface VCProps extends BaseProps {
 }
 
 export function VideocardInfo(props: VCProps) {
-    let content
+    let content: JSX.Element | string
     if (props.loading) {
         content = skeletonText
-    } else if (props.videocard) {
+    } else if (props.videocard.name) {
         content = `${props.videocard.name}, ${props.videocard.memory} GB`
     } else {
         content = defaultNoDataMessage

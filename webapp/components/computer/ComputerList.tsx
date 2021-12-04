@@ -22,7 +22,7 @@ function ComputerList(props: Props) {
     const { state: selectedContext, setState: setSelectedContext } = useContext(SelectedComputersContext)
 
     const columnDefaults = {
-        width: 200,
+        flex: 1,
         sortable: false,
         filterable: false,
         cellClassName: 'defaultCell',
@@ -32,8 +32,8 @@ function ComputerList(props: Props) {
         {
             ...columnDefaults,
             field: 'type',
-            headerName: 'Desktop',
-            width: 130,
+            headerName: 'Type',
+            flex: 0.5,
             renderCell: (params) => <ComputerTypeIdentifier type={params.value} id={params.id}/>,
         },
         { ...columnDefaults, field: 'name', headerName: 'Name' },
