@@ -1,5 +1,5 @@
 import { LoadingButton } from '@mui/lab'
-import { Card, LinearProgress, TextField } from '@mui/material'
+import { Card, LinearProgress, TextField, Typography } from '@mui/material'
 import { useAuthLazyQuery, useVerifyTokenQuery } from 'api/generated/graphql'
 import { getCookie, setCookies } from 'cookies-next'
 import style from 'pages/auth.module.scss'
@@ -39,7 +39,9 @@ function AuthProvider(props) {
         <>
             <div className={style.authContainer}>
                 <Card className={style.authCard}>
-                    <h3>Login</h3>
+                    <Typography variant='h3' fontSize={26}>
+                        Login
+                    </Typography>
                     <TextField id='username' label='Username' type='text' ref={usernameEl} error={!!authError}/>
                     <TextField id='password' label='Password' type='password' ref={passwordEl} error={!!authError}/>
                     <LoadingButton
