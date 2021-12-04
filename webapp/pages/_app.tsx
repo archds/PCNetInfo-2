@@ -1,6 +1,14 @@
 import { ApolloProvider } from '@apollo/client'
 import '@fontsource/roboto'
-import { createTheme, CssBaseline, StyledEngineProvider, Theme, ThemeProvider } from '@mui/material'
+import {
+    createMuiTheme as createThemeV4,
+    StylesProvider,
+    ThemeProvider as ThemeProviderV4,
+} from '@material-ui/core/styles'
+import { CssBaseline, StyledEngineProvider, Theme } from '@mui/material'
+import { createTheme as createThemeV5, ThemeProvider as ThemeProviderV5 } from '@mui/material/styles'
+import { ThemeOptions } from '@mui/material/styles/createTheme'
+import { createGenerateClassName } from '@mui/styles'
 import client from 'apollo-client'
 import AuthProvider from 'components/AuthProvider'
 import Footer from 'components/Footer'
@@ -16,8 +24,16 @@ declare module '@mui/styles/defaultTheme' {
     }
 }
 
+const generateClassName = createGenerateClassName({
+    // By enabling this option, if you have non-MUI elements (e.g. `<div />`)
+    // using MUI classes (e.g. `.MuiButton`) they will lose styles.
+    // Make sure to convert them to use `styled()` or `<Box />` first.
+    disableGlobal: true,
+    // Class names will receive this seed to avoid name collisions.
+    seed: 'mui-jss',
+})
 
-const theme = createTheme({
+const theme: ThemeOptions = {
     palette: {
         primary: {
             // light: will be calculated from palette.primary.main,
@@ -46,23 +62,43 @@ const theme = createTheme({
         // E.g., shift from Red 500 to Red 300 or Red 700.
         tonalOffset: 0.2,
     },
-})
+    components: {
+        MuiSelect: {
+            defaultProps: {
+                size: 'small',
+            },
+        },
+        MuiTextField: {
+            defaultProps: {
+                size: 'small',
+            },
+        },
+    },
+}
+
+// @ts-ignore
+const themeV4 = createThemeV4(theme)
+const themeV5 = createThemeV5(theme)
 
 
 function MyApp({ Component, pageProps }: AppProps) {
     return <>
         <ApolloProvider client={client}>
             <StyledEngineProvider injectFirst>
-                <ThemeProvider theme={theme}>
-                    <HeadProvider>
-                        <CssBaseline/>
-                        <AuthProvider>
-                            <Navigation/>
-                            <Component {...pageProps} />
-                            <Footer/>
-                        </AuthProvider>
-                    </HeadProvider>
-                </ThemeProvider>
+                <StylesProvider generateClassName={generateClassName}>
+                    <ThemeProviderV4 theme={themeV4}>
+                        <ThemeProviderV5 theme={themeV5}>
+                            <HeadProvider>
+                                <CssBaseline/>
+                                <AuthProvider>
+                                    <Navigation/>
+                                    <Component {...pageProps} />
+                                    <Footer/>
+                                </AuthProvider>
+                            </HeadProvider>
+                        </ThemeProviderV5>
+                    </ThemeProviderV4>
+                </StylesProvider>
             </StyledEngineProvider>
         </ApolloProvider>
     </>

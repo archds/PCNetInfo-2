@@ -1,6 +1,6 @@
 import style from '/pages/index.module.scss'
 import { Snackbar } from '@mui/material'
-import Alert, { Color } from '@mui/material/Alert'
+import Alert, { AlertColor } from '@mui/material/Alert'
 import ActionsDashboard from 'components/computer/actions/ActionsDashboard'
 import ComputersDashboard from 'components/computer/ComputersDashboard'
 import { StateContext } from 'core/interfaces'
@@ -8,7 +8,7 @@ import React, { createContext, useState } from 'react'
 
 
 export interface SnackbarContextInterface {
-    severity: Color
+    severity: AlertColor
     message?: string
     show: boolean
 }
