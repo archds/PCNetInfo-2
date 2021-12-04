@@ -7,7 +7,7 @@ services:
       - "8000:8000"
     volumes:
       - /database
-      - ./config:/app/config
+      - ./config:/config
 
 
   frontend:
@@ -15,5 +15,4 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./config:/app/config
-
+      - ./config:/config
