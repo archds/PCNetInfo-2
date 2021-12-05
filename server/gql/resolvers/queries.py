@@ -1,6 +1,7 @@
 from typing import Dict, Optional
 
 from django.db.models import Q
+from graphql import GraphQLResolveInfo
 
 import gql.type_defs as gqt
 from gql.actions.filter import filter_query
@@ -11,7 +12,7 @@ from hardware.models import Building, Computer, Location, User
 
 
 @gqt.query.field('hello')
-def resolve_hello(*_):
+def resolve_hello(obj, info: GraphQLResolveInfo):
     return 'Hello PCNetInfo!'
 
 

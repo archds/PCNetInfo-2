@@ -1,18 +1,17 @@
 import re
-from typing import Optional
+from datetime import datetime, timedelta
 
 import jwt
 from django.conf import settings
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import AnonymousUser, User
-from django.http import HttpRequest
-from jwt import DecodeError, InvalidTokenError
 
 from gql import type_defs as gqt
-from gql.errors import AuthenticatedUserRequiredError, AuthenticationFailed, GQLError
+from gql.errors import AuthenticatedUserRequiredError
 
 HTTP_AUTHORIZATION_HEADER = f"HTTP_{settings.AUTH_TOKEN_HEADER.upper().replace('-', '_')}"
 AUTHORIZATION_HEADER_PREFIX = "Token"
+
+TOKEN_EXP_DELTA = timedelta(days=3)
 
 
 def create_jwt(user, extra_payload=None):
@@ -22,6 +21,7 @@ def create_jwt(user, extra_payload=None):
 
     payload = {
         'user': user.username,
+        'exp': datetime.now() + TOKEN_EXP_DELTA,
         **(extra_payload or dict())
     }
 
@@ -30,26 +30,13 @@ def create_jwt(user, extra_payload=None):
 
 def decode_jwt(token, verify_expiration=True):
     """Decodes a JWT"""
-    try:
-        decoded = jwt.decode(
-            jwt=token,
-            key=settings.SECRET_KEY,
-            algorithms=["HS256"],
-        )
-
-    except DecodeError:
-        raise InvalidTokenError()
+    decoded = jwt.decode(
+        jwt=token,
+        key=settings.SECRET_KEY,
+        algorithms=["HS256"],
+    )
 
     return decoded
-
-
-def get_user_from_request(request: HttpRequest) -> Optional[User]:
-    if not isinstance(request, HttpRequest):
-        raise GQLError(f'Expexted an HttpRequest context, got {type(request)}')
-
-    user = getattr(request, 'user')
-    if user and not isinstance(user, AnonymousUser):
-        return user
 
 
 def get_token_from_http_header(request):
@@ -68,22 +55,41 @@ def get_token_from_http_header(request):
     return token
 
 
+def login_required(resolver):
+    def wrapper(parent, info, *args, **kwargs):
+        token = get_token_from_http_header(info.context.get('request'))
+        decode_jwt(token)
+        return resolver(parent, info, *args, **kwargs)
+
+    return wrapper
+
+
 @gqt.query.field('auth')
 def resolve_token_auth(_obj, info, **credentials):
     """Resolves the token auth mutation"""
     user = authenticate(info.context, **credentials)
     if not user:
-        raise AuthenticationFailed
+        return {'valid': False}
 
     token = create_jwt(user)
 
-    return {"token": token}
+    return {
+        'valid': True,
+        'token': token
+    }
 
 
 @gqt.query.field('verifyToken')
 def resolve_verify_token(_obj, _info, token: str):
     """Resolves the verify token mutation"""
+    result = {'valid': False}
 
-    decode_jwt(token)
+    try:
+        decode_jwt(token)
+        result['valid'] = True
+    except jwt.ExpiredSignatureError as err:
+        result['message'] = 'Expired token'
+    except jwt.InvalidTokenError:
+        result['message'] = 'Invalid token'
 
-    return gqt.Unit
+    return result
