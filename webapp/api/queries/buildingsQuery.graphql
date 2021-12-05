@@ -1,5 +1,6 @@
 query Buildings{
   buildings {
+    id
     house
     street
   }

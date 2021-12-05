@@ -1,10 +1,12 @@
+import { Container } from '@material-ui/core'
 import React from 'react'
 import Cards from '../components/computer/cards/cards'
 
 function Location() {
     return <>
-    < Cards />
-    'Зачем нужен иглорюх?'
+    <Container maxWidth="lg">
+        < Cards />
+    </Container>
     </>
 }
 

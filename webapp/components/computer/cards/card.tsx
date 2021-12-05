@@ -2,10 +2,8 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { Grid } from '@material-ui/core';
 import { Modal } from 'components/computer/modal/modal'
@@ -25,7 +23,7 @@ export default function Onecard({ data }) {
 
   return (
     <Grid item xs={3}>
-        <Card className={classes.root}>
+        <Card >
         <CardActionArea onClick={() => setModalActive(!modalActive)}>
             <CardMedia
             className={classes.media}
@@ -39,7 +37,7 @@ export default function Onecard({ data }) {
             </CardContent>
         </CardActionArea>
         </Card>
-        <Modal active={modalActive} setActive={setModalActive} locali={modalActive}/>
+        <Modal active={modalActive} setActive={setModalActive} name={data}/>
     </Grid>
   );
 }

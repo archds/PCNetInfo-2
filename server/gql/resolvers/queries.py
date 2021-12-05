@@ -60,12 +60,15 @@ def resolve_get_pc(obj, info, id: str):
 def resolve_locations(obj, info):
     return Location.objects.all()
 
+@gqt.query.field('buildingLocations')
+def resolve_locations(obj, info, buildingId: str):
+    return Location.objects.filter(building_id=buildingId)
 
 @gqt.query.field('users')
 def resolve_users(obj, info):
     return User.objects.all()
 
-
 @gqt.query.field('buildings')
 def resolve_buildings(*_):
     return Building.objects.all()
+
