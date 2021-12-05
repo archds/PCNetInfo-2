@@ -1,5 +1,5 @@
 import style from '/components/computer/controller/Filter.module.scss'
-import { FormControl, InputLabel, MenuItem, Select } from '@material-ui/core'
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import { FilterValue, FormFactor } from 'api/generated/graphql'
 import React, { useEffect, useRef, useState } from 'react'
 

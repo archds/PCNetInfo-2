@@ -1,6 +1,6 @@
 import style from '/pages/index.module.scss'
-import { Snackbar } from '@material-ui/core'
-import Alert, { Color } from '@material-ui/lab/Alert'
+import { Snackbar } from '@mui/material'
+import Alert, { AlertColor } from '@mui/material/Alert'
 import ActionsDashboard from 'components/computer/actions/ActionsDashboard'
 import ComputersDashboard from 'components/computer/ComputersDashboard'
 import { StateContext } from 'core/interfaces'
@@ -8,7 +8,7 @@ import React, { createContext, useState } from 'react'
 
 
 export interface SnackbarContextInterface {
-    severity: Color
+    severity: AlertColor
     message?: string
     show: boolean
 }
@@ -54,6 +54,7 @@ function Index() {
             <Snackbar
                 open={snackbar.show}
                 autoHideDuration={6000}
+                anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
                 onClose={() => setSnackbar({ severity: 'success', show: false })}
             >
                 <Alert variant='filled' severity={snackbar.severity}>{snackbar.message}</Alert>
