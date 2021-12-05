@@ -1,5 +1,6 @@
 from graphql import GraphQLError
-from jwt import InvalidTokenError
+
+from gql.errors import AuthenticationError
 
 
 def format_error(error: GraphQLError, debug: bool = False):
@@ -11,13 +12,13 @@ def format_error(error: GraphQLError, debug: bool = False):
     elif input_field := getattr(error.original_error, 'field', None):
         formatted['__typename'] = 'InputError'
         formatted['field'] = input_field
-    elif isinstance(error.original_error, InvalidTokenError):
-        formatted['__typename'] = 'InvalidTokenError'
+    elif isinstance(error.original_error, AuthenticationError):
+        formatted['__typename'] = 'AuthenticationError'
         message = error.message
     else:
         formatted['__typename'] = 'UnexpectedError'
         message = error.message
 
-    formatted['message'] = message
+    formatted['message'] = message  # noqa
 
     return formatted

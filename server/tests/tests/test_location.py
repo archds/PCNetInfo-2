@@ -2,6 +2,7 @@ from django.db.models import Q
 from django.test import TestCase
 
 from hardware.models import Building, Location
+from tests.common.data_generation import create_test_user
 from tests.graphql.mutations import (
     send_create_building_mutation,
     send_create_location_mutation, send_delete_building_mutation,
@@ -11,8 +12,23 @@ from tests.graphql.queries import send_buildings_query, send_locations_query
 
 
 class LocationTests(TestCase):
+    def setUp(self) -> None:
+        self.location_payload = {
+            'cabinet': '404',
+            'floor': 4,
+            'description': 'Cabinet not found :)',
+        }
+
+        self.building_payload = {
+            'street': 'Founders',
+            'house': '500'
+        }
+
     @classmethod
-    def setUpTestData(cls):
+    def setUpClass(cls):
+        username = 'loc_test_user'
+        password = 'test_pass'
+        cls.user, cls.token = create_test_user(username, password)
         default_building = Building.objects.create(
             street='Test',
             house='200'
@@ -25,22 +41,11 @@ class LocationTests(TestCase):
             floor=4,
             description='Bad request in cabinet :#'
         )
-
-    def setUp(self) -> None:
-        self.location_payload = {
-            'cabinet': '404',
-            'floor': 4,
-            'description': 'Cabinet not found :)'
-        }
-
-        self.building_payload = {
-            'street': 'Founders',
-            'house': '500'
-        }
+        super(LocationTests, cls).setUpClass()
 
     def test_buildings_query(self):
         # Act
-        response = send_buildings_query()
+        response = send_buildings_query(self.token)
 
         # Assert
         self.assertNotIn('errors', response)
@@ -50,7 +55,7 @@ class LocationTests(TestCase):
 
     def test_locations_query(self):
         # Act
-        response = send_locations_query()
+        response = send_locations_query(self.token)
 
         # Assert
         self.assertNotIn('errors', response)
@@ -60,7 +65,7 @@ class LocationTests(TestCase):
 
     def test_create_building_mutation(self):
         # Act
-        response = send_create_building_mutation(**self.building_payload)
+        response = send_create_building_mutation(token=self.token, **self.building_payload)
 
         # Assert
         self.assertNotIn('errors', response)
@@ -71,7 +76,8 @@ class LocationTests(TestCase):
         response = send_update_building_mutation(
             id=self.default_building.pk,
             street='Another',
-            house=self.building_payload['house']
+            house=self.building_payload['house'],
+            token=self.token
         )
         self.default_building.refresh_from_db()
 
@@ -81,7 +87,7 @@ class LocationTests(TestCase):
 
     def test_delete_building_mutation(self):
         # Act
-        response = send_delete_building_mutation(self.default_building.pk)
+        response = send_delete_building_mutation(self.default_building.pk, self.token)
 
         # Assert
         self.assertNotIn('errors', response)
@@ -91,6 +97,7 @@ class LocationTests(TestCase):
         # Act
         response = send_create_location_mutation(
             building_id=self.default_building.pk,
+            token=self.token,
             **self.location_payload
         )
 
@@ -105,6 +112,7 @@ class LocationTests(TestCase):
             building_id=self.default_building.pk,
             cabinet='500',
             floor=2,
+            token=self.token
         )
         self.default_location.refresh_from_db()
 
@@ -114,7 +122,7 @@ class LocationTests(TestCase):
 
     def test_delete_location_mutation(self):
         # Act
-        response = send_delete_location_mutation(self.default_location.pk)
+        response = send_delete_location_mutation(self.default_location.pk, self.token)
 
         # Assert
         self.assertNotIn('errors', response)

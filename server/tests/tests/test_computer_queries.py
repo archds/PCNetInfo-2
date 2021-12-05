@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from hardware.models import Computer
-from tests.common.data_generation import create_test_computers
+from tests.common.data_generation import create_test_computers, create_test_user
 from tests.graphql.mutations import (
     send_create_computer_mutation,
     send_delete_computer_mutation,
@@ -11,13 +11,20 @@ from tests.graphql.queries import send_computer_query, send_computers_query
 
 
 class ComputerQueryTests(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        username = 'com_test_user'
+        password = 'test_pass'
+        cls.user, cls.token = create_test_user(username, password)
+        super(ComputerQueryTests, cls).setUpClass()
+
     def test_computers_query(self):
         # Arrange
         amount = 5
         create_test_computers(amount)
 
         # Act
-        response = send_computers_query()
+        response = send_computers_query(token=self.token)
 
         # Assert
         self.assertNotIn('errors', response)
@@ -28,7 +35,7 @@ class ComputerQueryTests(TestCase):
         [computer] = create_test_computers(1)
 
         # Act
-        response = send_computer_query(Computer.objects.get(name=computer.name).pk)
+        response = send_computer_query(Computer.objects.get(name=computer.name).pk, self.token)
 
         # Assert
         self.assertNotIn('errors', response)
@@ -56,7 +63,7 @@ class ComputerQueryTests(TestCase):
         }
 
         # Act
-        response = send_create_computer_mutation(data)
+        response = send_create_computer_mutation(data, self.token)
 
         # Assert
         self.assertNotIn('errors', response)
@@ -67,7 +74,7 @@ class ComputerQueryTests(TestCase):
         [computer] = create_test_computers(1)
 
         # Act
-        response = send_delete_computer_mutation(Computer.objects.get(name=computer.name).pk)
+        response = send_delete_computer_mutation(Computer.objects.get(name=computer.name).pk, self.token)
 
         # Assert
         self.assertNotIn('errors', response)
@@ -84,7 +91,8 @@ class ComputerQueryTests(TestCase):
         # Act
         response = send_update_computer_mutation(
             computer_id=Computer.objects.get(name=computer.name).pk,
-            data=data
+            data=data,
+            token=self.token
         )
 
         # Assert

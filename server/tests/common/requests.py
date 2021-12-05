@@ -1,5 +1,6 @@
 from functools import lru_cache
 
+from django.conf import settings
 from django.test import Client
 
 from hardware.domain import Locale
@@ -12,8 +13,14 @@ def get_request_body(name, file_dir):
         return '\n'.join(file.readlines())
 
 
-def send_request(request_body_dir, name, variables=None, additional_headers=None):
+def send_request(request_body_dir, name, variables=None, additional_headers=None, token=None):
     additional_headers = additional_headers or dict()
+    if token is not None:
+        additional_headers.update(
+            {
+                f"HTTP_{settings.AUTH_TOKEN_HEADER.upper().replace('-', '_')}": f'Token {token}'
+            }
+        )
 
     response = Client().post(
         path='/api/',

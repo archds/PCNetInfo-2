@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib.auth import authenticate
 
 from gql import type_defs as gqt
-from gql.errors import AuthenticatedUserRequiredError
+from gql.errors import AuthenticatedUserRequiredError, AuthenticationError
 
 HTTP_AUTHORIZATION_HEADER = f"HTTP_{settings.AUTH_TOKEN_HEADER.upper().replace('-', '_')}"
 AUTHORIZATION_HEADER_PREFIX = "Token"
@@ -58,7 +58,10 @@ def get_token_from_http_header(request):
 def login_required(resolver):
     def wrapper(parent, info, *args, **kwargs):
         token = get_token_from_http_header(info.context.get('request'))
-        decode_jwt(token)
+        try:
+            decode_jwt(token)
+        except jwt.InvalidTokenError:
+            raise AuthenticationError
         return resolver(parent, info, *args, **kwargs)
 
     return wrapper

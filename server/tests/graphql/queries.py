@@ -11,32 +11,39 @@ send_query = partial(
 )
 
 
-def send_computers_query(filtration_criteria: dict = None, search_string: str = None, sort_field: str = None):
+def send_computers_query(
+        token: str,
+        filtration_criteria: dict = None,
+        search_string: str = None,
+        sort_field: str = None,
+):
     return send_query(
         name='computers',
         variables={
             'filter': filtration_criteria,
             'search': search_string,
             'sort': sort_field,
-        }
+        },
+        token=token
     )
 
 
-def send_computer_query(computer_id: str):
+def send_computer_query(computer_id: str, token: str):
     return send_query(
         name='computer',
         variables={
             'id': computer_id
-        }
+        },
+        token=token
     )
 
 
-def send_locations_query():
-    return send_query(name='locations')
+def send_locations_query(token: str):
+    return send_query(name='locations', token=token)
 
 
-def send_buildings_query():
-    return send_query(name='buildings')
+def send_buildings_query(token: str):
+    return send_query(name='buildings', token=token)
 
 
 def send_auth_query(username: str, password: str):
