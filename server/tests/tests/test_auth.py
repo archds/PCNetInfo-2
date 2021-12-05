@@ -28,3 +28,10 @@ class ComputerQueryTests(TestCase):
 
         # Assert
         self.assertNotIn('errors', response)
+
+    def test_invalid_credentials(self):
+        # Act
+        response = send_auth_query('test_user', 'test_pass')['data']['auth']
+
+        # Assert
+        self.assertEqual(response['valid'], False)
