@@ -17,6 +17,7 @@ from corsheaders.defaults import default_methods
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 CONFIG_DIR = BASE_DIR.parent / 'config'
+LOGS_DIR = BASE_DIR / 'logs'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -150,14 +151,14 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR / 'logs' / 'common.log',
+            'filename': LOGS_DIR / 'common.log',
             'formatter': 'verbose',
             'maxBytes': 1024,
         },
         'django-file': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR / 'logs' / 'django.log',
+            'filename': LOGS_DIR / 'django.log',
             'formatter': 'verbose',
             'maxBytes': 1024,
         },
