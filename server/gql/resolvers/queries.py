@@ -1,3 +1,4 @@
+from logging import getLogger
 from typing import Dict, Optional
 
 from django.db.models import Q
@@ -10,6 +11,8 @@ from gql.errors import ReadableError
 from gql.resolvers.auth import login_required
 from gql.resolvers.presentation.computer import gql_computer_convert
 from hardware.models import Building, Computer, Location, User
+
+logger = getLogger(__file__)
 
 
 @gqt.query.field('hello')

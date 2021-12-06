@@ -17,6 +17,7 @@ from corsheaders.defaults import default_methods
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 CONFIG_DIR = BASE_DIR.parent / 'config'
+LOGS_DIR = BASE_DIR / 'logs'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -119,8 +120,58 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# CORS
+
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_METHODS = list(default_methods)
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 
 AUTH_TOKEN_HEADER = 'Authorization'
+
+# Logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'level': 'INFO',
+            'formatter': 'simple',
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': LOGS_DIR / 'common.log',
+            'formatter': 'verbose',
+            'maxBytes': 1024,
+        },
+        'django-file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': LOGS_DIR / 'django.log',
+            'formatter': 'verbose',
+            'maxBytes': 1024,
+        },
+    },
+    'root': {
+        'level': 'INFO',
+        'handlers': ['console', 'file']
+    },
+    'loggers': {
+        'django': {
+            'level': 'INFO',
+            'handlers': ['console', 'django-file'],
+            'propagate': False,
+        },
+    }
+}

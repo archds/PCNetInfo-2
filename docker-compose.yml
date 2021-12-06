@@ -8,6 +8,7 @@ services:
     volumes:
       - /database
       - ./config:/config
+      - ./server/docker-logs:/app/logs
 
 
   frontend:
