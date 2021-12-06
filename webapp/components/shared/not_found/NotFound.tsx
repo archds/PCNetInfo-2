@@ -1,5 +1,5 @@
-import { IconButton, Tooltip } from '@material-ui/core'
-import HelpIcon from '@material-ui/icons/Help'
+import HelpIcon from '@mui/icons-material/Help'
+import { IconButton, Tooltip } from '@mui/material'
 import copy from 'copy-to-clipboard'
 import Image from 'next/image'
 import React, { useState } from 'react'
@@ -21,7 +21,7 @@ function NotFound(props: Props) {
 
     const tooltip = (
         <Tooltip title={tooltipTitle} placement='top'>
-            <IconButton onClick={handleCopy}>
+            <IconButton onClick={handleCopy} size='large'>
                 <HelpIcon color='primary' fontSize='medium'/>
             </IconButton>
         </Tooltip>

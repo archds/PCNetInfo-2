@@ -1,4 +1,5 @@
 import style from '/components/computer/stub/ActiveComputerStub.module.scss'
+import { Typography } from '@mui/material'
 import Image from 'next/image'
 import React from 'react'
 import ReactFitText from 'react-fittext'
@@ -8,9 +9,9 @@ function ActiveComputerStub() {
     return (
         <div className={style.ActiveComputerStubContainer}>
             <ReactFitText compressor={0.5}>
-                <h1 style={{ textAlign: 'center' }}>
+                <Typography variant='h1' align='center' fontWeight={700}>
                     <Clock format={'HH:mm:ss'} ticking={true}/>
-                </h1>
+                </Typography>
             </ReactFitText>
             <Image
                 src='/img/love.svg'

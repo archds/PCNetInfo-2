@@ -103,3 +103,4 @@ def send_delete_location_mutation(id: str):
         name='deleteLocation',
         variables={'id': id}
     )
+

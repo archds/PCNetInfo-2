@@ -1,4 +1,4 @@
-import { Skeleton } from '@material-ui/lab'
+import { Skeleton } from '@mui/material'
 import { ComputerType, CPU, OS, Videocard } from 'api/generated/graphql'
 import { BaseProps, defaultNoDataMessage, skeletonText } from 'components/shared/defaults'
 import Image from 'next/image'
@@ -84,7 +84,7 @@ export interface TypeProps extends BaseProps {
 export function TypeIdentifier(props: TypeProps) {
     const dimensionProps = { width: 160, height: 100 }
     if (props.loading) {
-        return <Skeleton variant='rect' {...dimensionProps}/>
+        return <Skeleton variant='rectangular' {...dimensionProps}/>
     }
     switch (props.type) {
         case ComputerType.DESKTOP:

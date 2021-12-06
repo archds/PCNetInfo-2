@@ -1,10 +1,16 @@
 type Query {
     hello: String!
+
     computer(id: ID!): Computer
     computers(input: AllComputerInput): [Computer!]!
+
     buildings: [Building!]!
     locations: [Location!]!
+
     users: [User!]!
+
+    auth(username: String!, password: String!): AuthToken!
+    verifyToken(token: String!): Unit!
 }
 
 type Mutation {
@@ -28,6 +34,11 @@ type Mutation {
 enum Unit {
     UNIT
 }
+
+type AuthToken {
+    token: String!
+}
+
 
 input UpdateComputerInput {
     name: String

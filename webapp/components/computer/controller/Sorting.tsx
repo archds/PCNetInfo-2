@@ -1,4 +1,4 @@
-import { Button, ButtonGroup } from '@material-ui/core'
+import { Button, ButtonGroup } from '@mui/material'
 import { SortField } from 'api/generated/graphql'
 import React, { useEffect, useRef, useState } from 'react'
 
