@@ -1,5 +1,3 @@
 mutation CreateComputer($input: CreateComputerInput!) {
-    createComputer(input: $input) {
-        name
-    }
+    createComputer(input: $input)
 }

@@ -1,0 +1,6 @@
+query verifyToken($token: String!) {
+    verifyToken(token: $token) {
+        valid
+        message
+    }
+}

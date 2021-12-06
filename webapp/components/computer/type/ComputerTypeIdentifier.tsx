@@ -1,10 +1,10 @@
 import style from '/components/computer/type/ComputerType.module.scss'
-import DesktopWindowsIcon from '@material-ui/icons/DesktopWindows'
-import LaptopIcon from '@material-ui/icons/Laptop'
+import DesktopWindowsIcon from '@mui/icons-material/DesktopWindows'
+import LaptopIcon from '@mui/icons-material/Laptop'
 import { ComputerType, useUpdateComputerMutation } from 'api/generated/graphql'
 import { notifyError, notifySuccess } from 'core/actions/notification'
-import { SnackbarContext } from 'pages'
 import React, { useContext, useState } from 'react'
+import { SnackbarContext } from 'pages/_app'
 
 
 export interface Props {

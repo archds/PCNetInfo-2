@@ -1,5 +1,5 @@
 import style from '/components/computer/controller/ControllerDashboard.module.scss'
-import { Button, Collapse } from '@material-ui/core'
+import { Button, Collapse } from '@mui/material'
 import { FilterInput, FilterValue, FormFactor, SortField } from 'api/generated/graphql'
 import Filter from 'components/computer/controller/Filter'
 import Search from 'components/computer/controller/Search'
@@ -65,7 +65,7 @@ function TableController(props: Props) {
         <div>
             <div className={style.controller}>
                 <Button
-                    variant='outlined'
+                    variant='contained'
                     color='primary'
                     onClick={() => switchCollapse(ActiveAction.SORTING)}
                     disabled={props.disabled}

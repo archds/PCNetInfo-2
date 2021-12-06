@@ -1,0 +1,11 @@
+mutation updateLocation($id: ID!, $buildingId: ID!, $cabinet: String!, $floor: Int, $description: String) {
+    updateLocation(
+        id: $id
+        input: {
+            buildingId: $buildingId
+            cabinet: $cabinet
+            floor: $floor
+            description: $description
+        }
+    )
+}

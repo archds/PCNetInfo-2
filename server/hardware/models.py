@@ -1,7 +1,6 @@
 from django.db import models
 
 
-# ToDo: location refactor
 class Monitor(models.Model):
     serial_number = models.CharField(max_length=50, unique=True)
     model = models.CharField(max_length=100)
@@ -17,12 +16,18 @@ class Building(models.Model):
     street = models.CharField(max_length=100)
     house = models.CharField(max_length=50)
 
+    class Meta:
+        unique_together = ['street', 'house']
+
 
 class Location(models.Model):
     building = models.ForeignKey(Building, related_name='locations', on_delete=models.CASCADE)
     cabinet = models.CharField(max_length=50)
-    floor = models.SmallIntegerField()
-    description = models.TextField()
+    floor = models.SmallIntegerField(null=True)
+    description = models.TextField(null=True)
+
+    class Meta:
+        unique_together = ['building', 'cabinet']
 
 
 class User(models.Model):

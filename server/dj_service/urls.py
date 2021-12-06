@@ -13,14 +13,28 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from ariadne.contrib.django.views import GraphQLView
+from django.conf import settings
 from django.urls import path
 
 from gql.error_formatter import format_error
 from gql.schema import schema
 from hardware.views import collect_msinfo
 
+base_settings = {
+    'schema': schema,
+    'error_formatter': format_error,
+    'http_method_names': [method for method in GraphQLView.http_method_names if method != 'get']
+}
+
+debug_settings = {
+    'http_method_names': GraphQLView.http_method_names
+}
+
+ariadne_settings = base_settings | debug_settings if settings.DEBUG else base_settings
+
 urlpatterns = [
-    path('api/', GraphQLView.as_view(schema=schema, error_formatter=format_error), name='api'),
-    path('api/collect-msinfo/', collect_msinfo)
+    path('api/collect-msinfo/', collect_msinfo),
+    path('api/', GraphQLView.as_view(**ariadne_settings), name='api'),
 ]
