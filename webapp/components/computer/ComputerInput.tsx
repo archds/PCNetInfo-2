@@ -6,9 +6,9 @@ import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined'
 import { Button, FormControl, Grid, InputAdornment, InputLabel, Select, TextField } from '@mui/material'
 import { ComputersDocument, ComputerType, useCreateComputerMutation } from 'api/generated/graphql'
 import { notifyError, notifySuccess } from 'core/actions/notification'
-import { SnackbarContext } from 'pages'
 import React, { useContext, useRef, useState } from 'react'
 import { GrClose } from 'react-icons/gr'
+import { SnackbarContext } from 'pages/_app'
 
 export interface Props {
     resetComputerInput(): void

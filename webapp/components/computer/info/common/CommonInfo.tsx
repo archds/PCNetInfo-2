@@ -2,7 +2,7 @@ import { ComputerDocument, ComputersDocument, FormFactor, useUpdateComputerMutat
 import commonStyle from 'components/computer/info/common/Common.module.scss'
 import { BaseProps } from 'components/shared/defaults'
 import { notifyError, notifySuccess } from 'core/actions/notification'
-import { SnackbarContext } from 'pages'
+import { SnackbarContext } from 'pages/_app'
 import React, { useContext } from 'react'
 import { EditText } from 'react-edit-text'
 import 'react-edit-text/dist/index.css'

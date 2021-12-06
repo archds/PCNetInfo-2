@@ -14,7 +14,7 @@ import ModalConfirm from 'components/shared/ModalConfirm'
 import NotFound from 'components/shared/not_found/NotFound'
 import { notifyError, notifySuccess } from 'core/actions/notification'
 import { StateContext } from 'core/interfaces'
-import { SnackbarContext } from 'pages'
+import { SnackbarContext } from 'pages/_app'
 import React, { createContext, ReactElement, useContext, useState } from 'react'
 
 export interface Props {

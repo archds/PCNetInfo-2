@@ -1,0 +1,18 @@
+name: Webapp build
+
+on:
+  push:
+    branches-ignore:
+      - 'main'
+    paths:
+      - 'webapp/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16
+      - run: npm i
+      - run: npm run build

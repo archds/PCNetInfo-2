@@ -1,8 +1,10 @@
 from gql import type_defs as gqt
+from gql.resolvers.auth import login_required
 from hardware.models import User, UserRole
 
 
 @gqt.mutation.field('createUser')
+@login_required
 def create_user(obj, info, input: dict):
     role = input.get('role')
     if role:
