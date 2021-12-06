@@ -1,5 +1,6 @@
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client'
+import { ApolloClient, createHttpLink, from, InMemoryCache } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context'
+import { onError } from '@apollo/client/link/error'
 import { getCookie } from 'cookies-next'
 
 const httpLink = createHttpLink({
@@ -18,8 +19,22 @@ const authLink = setContext((_, { headers }) => {
     }
 })
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors) {
+        console.log(graphQLErrors)
+    }
+
+    if (networkError) {
+        console.log(`[Network error]: ${networkError}`)
+    }
+})
+
 const client = new ApolloClient({
-    link: authLink.concat(httpLink),
+    link: from([
+        errorLink,
+        authLink,
+        httpLink,
+    ]),
     cache: new InMemoryCache(),
 })
 
