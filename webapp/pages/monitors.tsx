@@ -1,28 +1,18 @@
 import Image from 'next/image'
+import { Box, Typography } from '@mui/material'
 
 export default function monitors() {
     return (
         <>
-            <div className={'wipContainer'}>
-                <h1>Work in progress here.</h1>
-            </div>
-            <div className={'wipContainer'}>
-                <p> You need to wait until this guys setting all up.</p>
-            </div>
-            <div className={'wipContainer'}>
-                <Image
-                    src='/img/wip_cover.svg'
-                    width={1000}
-                    height={600}
-                />
-            </div>
-            <style jsx>{`
-              .wipContainer {
-                display: flex;
-                justify-content: center;
-                margin-top: 10px;
-              }
-            `}</style>
+            <Box><Typography variant='h3' fontWeight={600} align='center'>Work in progress here.</Typography></Box>
+            <Box>
+                <Typography align='center' marginTop='20px' marginBottom='20px'>
+                    You need to wait until this guys setting all up.
+                </Typography>
+            </Box>
+            <Box justifyContent='center' display='flex'>
+                <Image src='/img/wip_cover.svg' width={1000} height={600}/>
+            </Box>
         </>
     )
 }

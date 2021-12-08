@@ -1,4 +1,3 @@
-import style from '/components/computer/controller/ControllerDashboard.module.scss'
 import { GridRowId, GridSelectionModel } from '@mui/x-data-grid'
 import {
     ComputersDocument,
@@ -9,17 +8,18 @@ import {
 } from 'api/generated/graphql'
 import ComputerList from 'components/computer/ComputerList'
 import ControllerDashboard from 'components/computer/controller/ControllerDashboard'
-import Loading from 'components/shared/loading/Loading'
+import Loading from 'components/shared/Loading'
 import ModalConfirm from 'components/shared/ModalConfirm'
-import NotFound from 'components/shared/not_found/NotFound'
+import NotFound from 'components/shared/NotFound'
 import { notifyError, notifySuccess } from 'core/actions/notification'
-import { StateContext } from 'core/interfaces'
 import { SnackbarContext } from 'pages/_app'
 import React, { createContext, ReactElement, useContext, useState } from 'react'
+import { StateContext } from 'core/interfaces'
+import { Box } from '@mui/system'
+import { Paper } from '@mui/material'
 
 export interface Props {
     onAddComputer(): void,
-
     onComputerClick(id: GridRowId): void,
 }
 
@@ -92,7 +92,7 @@ function ComputersDashboard(props: Props) {
     }
 
     return (
-        <div className={style.computersContainer}>
+        <Box display='grid' gridTemplateRows='auto 10fr' gap='20px' minWidth='65%'>
             <SelectedComputersContext.Provider value={selectedComputerContextValue}>
                 <ControllerDashboard
                     onControllerChange={onControllerChange}
@@ -101,7 +101,7 @@ function ComputersDashboard(props: Props) {
                     onAddComputer={props.onAddComputer}
                     disabled={!!computersFetchError}
                 />
-                <div className='dashboard' style={{ display: 'flex', height: '100%' }}>{dashboard}</div>
+                <Paper sx={{ display: 'flex', height: '100%' }}>{dashboard}</Paper>
                 <ModalConfirm
                     onClose={() => setShowDeleteModal(false)}
                     onConfirm={deleteComputersQuery}
@@ -110,7 +110,7 @@ function ComputersDashboard(props: Props) {
                     isOpen={showDeleteModal}
                 />
             </SelectedComputersContext.Provider>
-        </div>
+        </Box>
     )
 }
 

@@ -1,6 +1,5 @@
-import style from '/components/computer/controller/ControllerDashboard.module.scss'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Button } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import * as CSS from 'csstype'
 import React from 'react'
 
@@ -21,7 +20,7 @@ function ComputerActions(props: Props) {
     }
 
     return (
-        <div className={style.computerActions}>
+        <Box display='flex' gap='20px' maxHeight='38px'>
             <Button
                 disableElevation
                 variant='contained'
@@ -41,7 +40,7 @@ function ComputerActions(props: Props) {
             >
                 Add
             </Button>
-        </div>
+        </Box>
     )
 }
 

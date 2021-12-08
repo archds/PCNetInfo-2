@@ -1,8 +1,8 @@
-import style from '/components/computer/controller/ControllerDashboard.module.scss'
 import { FilterInput, SortField } from 'api/generated/graphql'
 import ComputerActions from 'components/computer/controller/ComputerActions'
 import TableController from 'components/computer/controller/TableController'
 import React from 'react'
+import { Box, Paper } from '@mui/material'
 
 export interface Props {
     showActions: boolean,
@@ -14,16 +14,14 @@ export interface Props {
 
 function ControllerDashboard(props: Props) {
     return (
-        <div className='dashboard'>
-            <div className={style.controllerContainer}>
-                <TableController onControllerChange={props.onControllerChange} disabled={props.disabled}/>
-                <ComputerActions
-                    onDelete={props.onDelete} show={props.showActions}
-                    onAddComputer={props.onAddComputer}
-                    disabled={props.disabled}
-                />
-            </div>
-        </div>
+        <Paper sx={{ padding: '15px 40px', display: 'flex', justifyContent: 'space-between' }}>
+            <Box><TableController onControllerChange={props.onControllerChange} disabled={props.disabled}/></Box>
+            <ComputerActions
+                onDelete={props.onDelete} show={props.showActions}
+                onAddComputer={props.onAddComputer}
+                disabled={props.disabled}
+            />
+        </Paper>
     )
 }
 

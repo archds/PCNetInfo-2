@@ -1,8 +1,7 @@
 import { LoadingButton } from '@mui/lab'
-import { Card, LinearProgress, TextField, Typography } from '@mui/material'
+import { Box, Card, LinearProgress, TextField, Typography } from '@mui/material'
 import { useAuthLazyQuery, useVerifyTokenQuery } from 'api/generated/graphql'
 import { getCookie, setCookies } from 'cookies-next'
-import style from 'pages/auth.module.scss'
 import React, { useRef, useState } from 'react'
 
 function AuthProvider(props) {
@@ -20,9 +19,7 @@ function AuthProvider(props) {
     })
 
     const { loading: verifyLoading, data: verifyResult, error: verifyError } = useVerifyTokenQuery({
-        variables: {
-            token: String(getCookie('authToken')),
-        },
+        variables: { token: String(getCookie('authToken')) }
     })
 
     const usernameEl = useRef<HTMLInputElement>()
@@ -41,9 +38,23 @@ function AuthProvider(props) {
     if (verifyResult && verifyResult.verifyToken.valid) return props.children
 
     return (
-        <div className={style.authContainer}>
-            <Card className={style.authCard}>
-                <Typography variant='h3' fontSize={26}>
+        <Box
+            display='flex'
+            justifyContent='center'
+            alignItems='center'
+            height='100vh'
+            sx={{ background: 'linear-gradient(150deg, #35495E, #375165, #3C6675, #40888B, #42A18E, #41B187, #41B883)' }}
+        >
+            <Card
+                sx={{
+                    display: 'flex',
+                    flexFlow: 'column',
+                    padding: '10px 30px 30px 30px',
+                    gap: '10px',
+                    width: '15rem',
+                }}
+            >
+                <Typography variant='h4' sx={{ fontWeight: '600', margin: '20px 0 20px 0', textAlign: 'center' }}>
                     Login
                 </Typography>
                 <TextField
@@ -68,10 +79,11 @@ function AuthProvider(props) {
                     disableElevation
                     color='primary'
                     onClick={handleAuth}
+                    sx={{ marginTop: '20px' }}
                 >Submit</LoadingButton>
                 <Typography hidden={!verifyError} fontSize={12} color='error'>Server is not reachable</Typography>
             </Card>
-        </div>
+        </Box>
     )
 }
 

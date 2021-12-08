@@ -1,5 +1,4 @@
-import style from '/components/computer/controller/ControllerDashboard.module.scss'
-import { Button, Collapse } from '@mui/material'
+import { Box, Button, Collapse } from '@mui/material'
 import { FilterInput, FilterValue, FormFactor, SortField } from 'api/generated/graphql'
 import Filter from 'components/computer/controller/Filter'
 import Search from 'components/computer/controller/Search'
@@ -13,6 +12,7 @@ enum ActiveAction {
 
 export interface Props {
     disabled: boolean
+
     onControllerChange(sorting: SortField, filter: FilterInput, search: string): void
 }
 
@@ -62,8 +62,8 @@ function TableController(props: Props) {
     }, [sorting, filter, search])
 
     return (
-        <div>
-            <div className={style.controller}>
+        <>
+            <Box display='flex' gap='20px'>
                 <Button
                     variant='contained'
                     color='primary'
@@ -81,16 +81,12 @@ function TableController(props: Props) {
                     Filter
                 </Button>
                 <Search onSearchChange={onSearchChange} inputProps={{ disabled: props.disabled }}/>
-            </div>
-            <div>
-                <Collapse in={showSorting}>
-                    <Sorting onSortingChange={onSortingChange}/>
-                </Collapse>
-                <Collapse in={showFilter}>
-                    <Filter filterComputers={onFilterChange}/>
-                </Collapse>
-            </div>
-        </div>
+            </Box>
+            <Box>
+                <Collapse in={showSorting}><Sorting onSortingChange={onSortingChange}/></Collapse>
+                <Collapse in={showFilter}><Filter filterComputers={onFilterChange}/></Collapse>
+            </Box>
+        </>
     )
 }
 

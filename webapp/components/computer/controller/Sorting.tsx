@@ -1,4 +1,4 @@
-import { Button, ButtonGroup } from '@mui/material'
+import { Box, Button, ButtonGroup } from '@mui/material'
 import { SortField } from 'api/generated/graphql'
 import React, { useEffect, useRef, useState } from 'react'
 
@@ -21,7 +21,7 @@ function Sorting(props: Props) {
     }, [sorting])
 
     return (
-        <div style={{ paddingTop: 20 }}>
+        <Box paddingTop='20px'>
             <ButtonGroup disableElevation color='secondary'>
                 <Button
                     variant={sorting === SortField.LABEL ? 'contained' : 'outlined'}
@@ -48,7 +48,7 @@ function Sorting(props: Props) {
                     Memory size
                 </Button>
             </ButtonGroup>
-        </div>
+        </Box>
     )
 }
 

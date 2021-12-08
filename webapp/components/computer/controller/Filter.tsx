@@ -1,5 +1,4 @@
-import style from '/components/computer/controller/Filter.module.scss'
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
+import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import { FilterValue, FormFactor } from 'api/generated/graphql'
 import React, { useEffect, useRef, useState } from 'react'
 
@@ -27,11 +26,9 @@ function Filter(props: Props) {
 
 
     return (
-        <div className={style.filterContainer}>
+        <Box display='flex' gap='20px' paddingTop='20px'>
             <FormControl>
-                <InputLabel shrink id='serial-label'>
-                    Serial number
-                </InputLabel>
+                <InputLabel shrink id='serial-label'>Serial number</InputLabel>
                 <Select
                     labelId='serial-label'
                     id='serial'
@@ -88,7 +85,7 @@ function Filter(props: Props) {
                     </MenuItem>
                 </Select>
             </FormControl>
-        </div>
+        </Box>
     )
 }
 

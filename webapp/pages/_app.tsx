@@ -79,7 +79,22 @@ const theme: ThemeOptions = {
                 size: 'small',
             },
         },
+        MuiPaper: {
+            styleOverrides: {
+                rounded: {
+                    borderRadius: '10px'
+                },
+            }
+        },
     },
+    typography: {
+        h1: { color: '#35495E' },
+        h2: { color: '#35495E' },
+        h3: { color: '#35495E' },
+        h4: { color: '#35495E' },
+        h5: { color: '#35495E' },
+        h6: { color: '#35495E' },
+    }
 }
 
 // @ts-ignore
