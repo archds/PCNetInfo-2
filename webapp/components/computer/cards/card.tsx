@@ -1,43 +1,58 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
-import { Grid } from '@material-ui/core';
+import React, { useState } from 'react'
 import { Modal } from 'components/computer/modal/modal'
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardActionArea from '@mui/material/CardActionArea';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid'
+import Image from 'next/image'
+import building from 'C:/Users/Dan/PCNetInfo-2/webapp/public/img/buildings/building.png'
+import hotel from 'C:/Users/Dan/PCNetInfo-2/webapp/public/img/buildings/hotel.png'
+import skyscraper from 'C:/Users/Dan/PCNetInfo-2/webapp/public/img/buildings/skyscraper.png'
+import style from '/components/computer/cards/card.module.scss'
+import skyscraperadd from 'C:/Users/Dan/PCNetInfo-2/webapp/public/img/buildings/skyscraperadd.png'
 
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 140,
-  },
-});
+const buildings = [building, hotel, skyscraper]
 
+  
 export default function Onecard({ data }) {
-  const classes = useStyles();
   const [modalActive, setModalActive] = useState(false)
 
-  return (
-    <Grid item xs={3}>
-        <Card >
-        <CardActionArea onClick={() => setModalActive(!modalActive)}>
-            <CardMedia
-            className={classes.media}
-            image="/static/images/cards/contemplative-reptile.jpg"
-            title="Contemplative Reptile"
-            />
-            <CardContent>
+    if (data) {
+    return (
+      <Grid item xs={6} md={4} lg={3}>
+          <Card >
+          <CardActionArea className={style.Butthurt} onClick={() => setModalActive(!modalActive)}>
+              <Image
+                src={buildings[data.random]}
+                alt="Picture of the author" />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="h2">
+                    {data.street }, {data.house}
+                </Typography>
+              </CardContent>
+          </CardActionArea>
+          </Card>
+          <Modal active={modalActive} setActive={setModalActive} name={data} />
+      </Grid>
+    );
+  } else {
+    return(
+    <Grid item xs={6} md={4} lg={3}>
+      <Card >
+        <CardActionArea className={style.Butthurt} onClick={() => setModalActive(!modalActive)}>
+          <Image
+            src={skyscraperadd}
+            alt="Picture of the author" />
+          <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
-                {data.street }, {data.house}
+              Добавить
             </Typography>
-            </CardContent>
+          </CardContent>
         </CardActionArea>
-        </Card>
-        <Modal active={modalActive} setActive={setModalActive} name={data}/>
+      </Card>
+      <Modal active={modalActive} setActive={setModalActive} name={'add'} />
     </Grid>
-  );
+    )
+  }
 }

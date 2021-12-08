@@ -22,6 +22,7 @@ export default function Navigation() {
                 <Tabs centered value={value} textColor='primary' indicatorColor='primary'>
                     <Tab value='/' label='Computers' onClick={() => handleClick('/')}/>
                     <Tab value='/monitors' label='Monitors' onClick={() => handleClick('/monitors')}/>
+                    <Tab value='/locations' label='Locations' onClick={() => handleClick('/locations')}/>
                 </Tabs>
                 <Button style={{ marginRight: '10px' }} onClick={handleLogout}>
                     Logout

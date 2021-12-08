@@ -1,6 +1,6 @@
-import { Container } from '@material-ui/core'
-import React from 'react'
+import { Container } from '@mui/material'
 import Cards from '../components/computer/cards/cards'
+import React from 'react'
 
 function Location() {
     return <>
