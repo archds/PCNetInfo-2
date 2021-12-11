@@ -1,6 +1,6 @@
 import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material'
 import { FilterValue, FormFactor } from 'api/generated/graphql'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { ReactElement, useEffect, useRef, useState } from 'react'
 
 
 export interface Props {
@@ -24,66 +24,32 @@ function Filter(props: Props) {
         }
     }, [serialNumberFilter, locationFilter])
 
+    const FilterSelect = ({ name, state, setState }): ReactElement => {
+        const kebabName = name.replaceAll(' ', '-')
+        const labelId = `${kebabName}-label`
+        return <>
+            <InputLabel id={labelId}>{name}</InputLabel>
+            <Select label={name} labelId={labelId} id={kebabName} value={state || 'Any'} sx={{ width: 150 }}>
+                <MenuItem value='Any' onClick={() => setState(undefined)}>Any</MenuItem>
+                {[FilterValue.SPECIFIED, FilterValue.NOT_SPECIFIED].map((value) => {
+                    let lowerValue = value.replaceAll('_', ' ').toLowerCase()
+                    return <MenuItem
+                        value={value}
+                        onClick={() => setState(value)}
+                    >{lowerValue[0].toUpperCase() + lowerValue.slice(1)}</MenuItem>
+                })}
+            </Select>
+        </>
+    }
+
 
     return (
         <Box display='flex' gap='20px' paddingTop='20px'>
             <FormControl>
-                <InputLabel shrink id='serial-label'>Serial number</InputLabel>
-                <Select
-                    labelId='serial-label'
-                    id='serial'
-                    value={serialNumberFilter || 'Any'}
-                    style={{ width: 150 }}
-                >
-                    <MenuItem
-                        value='Any'
-                        onClick={() => setSerialNumberFilter(undefined)}
-                    >
-                        Any
-                    </MenuItem>
-                    <MenuItem
-                        value={FilterValue.SPECIFIED}
-                        onClick={() => setSerialNumberFilter(FilterValue.SPECIFIED)}
-                    >
-                        Specified
-                    </MenuItem>
-                    <MenuItem
-                        value={FilterValue.NOT_SPECIFIED}
-                        onClick={() => setSerialNumberFilter(FilterValue.NOT_SPECIFIED)}
-                    >
-                        Not specified
-                    </MenuItem>
-                </Select>
+                <FilterSelect name='Serial number' state={serialNumberFilter} setState={setSerialNumberFilter}/>
             </FormControl>
             <FormControl disabled>
-                <InputLabel shrink id='serial-label'>
-                    Location
-                </InputLabel>
-                <Select
-                    labelId='serial-label'
-                    id='serial'
-                    value={locationFilter || 'Any'}
-                    style={{ width: 150 }}
-                >
-                    <MenuItem
-                        value='Any'
-                        onClick={() => setLocationFilter(undefined)}
-                    >
-                        Any
-                    </MenuItem>
-                    <MenuItem
-                        value={FilterValue.SPECIFIED}
-                        onClick={() => setLocationFilter(FilterValue.SPECIFIED)}
-                    >
-                        Specified
-                    </MenuItem>
-                    <MenuItem
-                        value={FilterValue.NOT_SPECIFIED}
-                        onClick={() => setLocationFilter(FilterValue.NOT_SPECIFIED)}
-                    >
-                        Not specified
-                    </MenuItem>
-                </Select>
+                <FilterSelect name='Location' state={locationFilter} setState={setLocationFilter}/>
             </FormControl>
         </Box>
     )
