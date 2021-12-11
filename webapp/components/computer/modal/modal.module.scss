@@ -10,3 +10,16 @@
     display: flex;
     justify-content: center;
 }
+.title {
+    input {
+        font-size: x-large;
+        width:8rem;
+        border: none;
+        outline: none;
+        background: rgba(220, 220, 220, 0.4);
+    }
+    font-size: x-large;
+    p{
+        font-size: x-large;
+    }
+}

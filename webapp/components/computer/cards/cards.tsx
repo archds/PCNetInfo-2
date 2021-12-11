@@ -2,7 +2,6 @@
 import { Typography, Grid } from '@mui/material'
 import { useBuildingsQuery } from 'api/generated/graphql'
 import Onecard from './card'
-import CardAddMore from './cardaddmore'
 import React from 'react'
 
 function Cards() {
@@ -19,7 +18,9 @@ function Cards() {
       {buildings.buildings.map(card => {
         const random = Math.floor(Math.random() * 3)
         const Modicard = {...card, random: `${random}`}
-      return <Onecard data={Modicard} />
+      return <>
+              <Onecard data={Modicard} />
+            </>
     })}
       <Onecard data={null}/>
     </Grid>

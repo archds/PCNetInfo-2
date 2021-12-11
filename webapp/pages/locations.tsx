@@ -1,4 +1,4 @@
-import { Container } from '@mui/material'
+import {  Container } from '@mui/material'
 import Cards from '../components/computer/cards/cards'
 import React from 'react'
 
