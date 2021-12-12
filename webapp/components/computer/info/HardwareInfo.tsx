@@ -1,4 +1,4 @@
-import { Skeleton } from '@mui/material'
+import { Skeleton, Typography } from '@mui/material'
 import { ComputerType, CPU, OS, Videocard } from 'api/generated/graphql'
 import { BaseProps, defaultNoDataMessage, skeletonText } from 'components/shared/defaults'
 import Image from 'next/image'
@@ -12,6 +12,8 @@ export interface MemProps extends BaseProps {
     memoryUnit: 'MB' | 'GB' | 'KB'
 }
 
+const Info = ({ children }) => <Typography marginTop='10px'>{children}</Typography>
+
 export function MemoryInfo(props: MemProps) {
     let content
     if (props.loading) {
@@ -21,7 +23,7 @@ export function MemoryInfo(props: MemProps) {
     } else {
         content = defaultNoDataMessage
     }
-    return <p><FaMemory/> {content}</p>
+    return <Info><FaMemory/> {content}</Info>
 }
 
 export interface OSProps extends BaseProps {
@@ -34,11 +36,11 @@ export function OSInfo(props: OSProps) {
         content = skeletonText
     } else if (props.os.name) {
         content = `${props.os.name}`
-        props.os.architecture? content += `, ${props.os.architecture}`: null
+        props.os.architecture ? content += `, ${props.os.architecture}` : null
     } else {
         content = defaultNoDataMessage
     }
-    return <p><RiWindowsFill/> {content}</p>
+    return <Info><RiWindowsFill/> {content}</Info>
 }
 
 export interface CPUProps extends BaseProps {
@@ -58,7 +60,7 @@ export function CpuInfo(props: CPUProps) {
     } else {
         content = defaultNoDataMessage
     }
-    return <p><RiCpuLine/> {content}</p>
+    return <Info><RiCpuLine/> {content}</Info>
 }
 
 export interface VCProps extends BaseProps {
@@ -74,7 +76,7 @@ export function VideocardInfo(props: VCProps) {
     } else {
         content = defaultNoDataMessage
     }
-    return <p><BsDisplayFill/> {content}</p>
+    return <Info><BsDisplayFill/> {content}</Info>
 }
 
 export interface TypeProps extends BaseProps {
