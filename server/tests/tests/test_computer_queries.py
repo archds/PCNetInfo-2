@@ -97,3 +97,18 @@ class ComputerQueryTests(TestCase):
 
         # Assert
         self.assertNotIn('errors', response)
+
+    def test_computer_search_query(self):
+        # Arrange
+        create_test_computers(10)
+        computer = Computer.objects.first()
+        computer.label = 'test label'
+        computer.save()
+
+        # Act
+        response = send_computers_query(token=self.token, search_string=computer.label)
+
+        # Assert
+        self.assertNotIn('errors', response)
+        self.assertEqual(1, len(response['data']['computers']))
+        self.assertEqual(computer.label, response['data']['computers'][0]['label'])
