@@ -17,7 +17,7 @@ function ControllerDashboard(props: Props) {
         <Paper sx={{ padding: '15px 40px', display: 'flex', justifyContent: 'space-between' }}>
             <Box><TableController onControllerChange={props.onControllerChange} disabled={props.disabled}/></Box>
             <ComputerActions
-                onDelete={props.onDelete} show={props.showActions}
+                onDelete={props.onDelete} showDelete={props.showActions}
                 onAddComputer={props.onAddComputer}
                 disabled={props.disabled}
             />

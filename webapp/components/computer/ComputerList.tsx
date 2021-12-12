@@ -1,32 +1,26 @@
-import { DataGrid, GridRowId, GridSelectionModel } from '@mui/x-data-grid'
-import { ComputerType } from 'api/generated/graphql'
+import {
+    DataGrid,
+    GridRowId,
+    GridSelectionModel,
+    GridToolbarColumnsButton,
+    GridToolbarContainer,
+    GridToolbarExport,
+    GridToolbarFilterButton
+} from '@mui/x-data-grid'
+import { Computer, ComputerType } from 'api/generated/graphql'
 import { SelectedComputersContext } from 'components/computer/ComputersDashboard'
 import ComputerTypeIdentifier from 'components/computer/ComputerTypeIdentifier'
 import React, { useContext } from 'react'
 
-interface Computer {
-    id: string,
-    name: string,
-    type: string,
-    label?: string,
-    serial?: string,
-    location?: string,
-}
 
 export interface Props {
-    computers: Computer[],
+    computers: Computer[]
     onComputerClick(name: GridRowId): void,
 }
 
 function ComputerList(props: Props) {
     const { state: selectedContext, setState: setSelectedContext } = useContext(SelectedComputersContext)
-
-    const columnDefaults = {
-        flex: 1,
-        sortable: false,
-        filterable: false,
-        cellClassName: 'defaultCell',
-    }
+    const columnDefaults = { flex: 1, cellClassName: 'defaultCell' }
 
     const columns = [
         {
@@ -42,7 +36,6 @@ function ComputerList(props: Props) {
         { ...columnDefaults, field: 'location', headerName: 'Location' },
     ]
 
-
     const rows = props.computers.map((computer) => {
         return {
             id: computer.id,
@@ -54,18 +47,26 @@ function ComputerList(props: Props) {
         }
     })
 
+    const toolbar = () => {
+        return (
+            <GridToolbarContainer>
+                <GridToolbarColumnsButton/>
+                <GridToolbarFilterButton/>
+                <GridToolbarExport/>
+            </GridToolbarContainer>
+        )
+    }
+
     return (
         <DataGrid
             columns={columns}
             rows={rows}
-            // autoPageSize
             checkboxSelection
             disableSelectionOnClick
+            selectionModel={selectedContext}
             onSelectionModelChange={(newSelected: GridSelectionModel) => setSelectedContext(newSelected)}
             onRowClick={(params) => props.onComputerClick(params.id)}
-            // sortingMode='server'
-            // sortModel={sorting}
-            // onSortModelChange={handleSorting}
+            components={{ Footer: toolbar }}
         />
     )
 }

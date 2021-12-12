@@ -104,13 +104,13 @@ export interface SnackbarContextInterface {
     show: boolean
 }
 
-export const SnackbarContext = createContext<StateContext>(null)
+export const SnackbarContext = createContext<StateContext<SnackbarContextInterface>>(null)
 
 
 function MyApp({ Component, pageProps }: AppProps) {
     const [snackbar, setSnackbar] = useState<SnackbarContextInterface>({ severity: 'success', show: false })
 
-    const snackbarContextValue: StateContext = {
+    const snackbarContextValue: StateContext<SnackbarContextInterface> = {
         state: snackbar,
         setState: setSnackbar,
     }

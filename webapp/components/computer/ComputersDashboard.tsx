@@ -1,13 +1,6 @@
 import { GridRowId, GridSelectionModel } from '@mui/x-data-grid'
-import {
-    ComputersDocument,
-    FilterInput,
-    SortField,
-    useComputersQuery,
-    useDeleteComputersMutation,
-} from 'api/generated/graphql'
+import { ComputersDocument, useComputersQuery, useDeleteComputersMutation, } from 'api/generated/graphql'
 import ComputerList from 'components/computer/ComputerList'
-import ControllerDashboard from 'components/computer/controller/ControllerDashboard'
 import Loading from 'components/shared/Loading'
 import ModalConfirm from 'components/shared/ModalConfirm'
 import NotFound from 'components/shared/NotFound'
@@ -17,6 +10,8 @@ import React, { createContext, ReactElement, useContext, useState } from 'react'
 import { StateContext } from 'core/interfaces'
 import { Box } from '@mui/system'
 import { Paper } from '@mui/material'
+import ComputerActions from 'components/computer/controller/ComputerActions'
+import Search from 'components/computer/controller/Search'
 
 export interface Props {
     onAddComputer(): void,
@@ -24,7 +19,7 @@ export interface Props {
 }
 
 
-export const SelectedComputersContext = createContext<StateContext>(null)
+export const SelectedComputersContext = createContext<StateContext<GridSelectionModel>>(null)
 
 function ComputersDashboard(props: Props) {
     const {
@@ -40,16 +35,14 @@ function ComputersDashboard(props: Props) {
     // Context
     const { setState: setSnackbarContext } = useContext(SnackbarContext)
 
-    const selectedComputerContextValue: StateContext = {
+    const selectedComputerContextValue: StateContext<GridSelectionModel> = {
         state: selectedComputers,
         setState: setSelectedComputers,
     }
 
     const [deleteComputersQuery, { loading: deleteLoading }] = useDeleteComputersMutation(
         {
-            variables: {
-                ids: selectedComputers as string[],
-            },
+            variables: { ids: selectedComputers as string[], },
             onCompleted: (): void => {
                 notifySuccess('Computer successfully deleted!', setSnackbarContext)
                 setSelectedComputers([])
@@ -64,13 +57,6 @@ function ComputersDashboard(props: Props) {
         },
     )
 
-    const onControllerChange = (sorting: SortField, filter: FilterInput, search: string): void => {
-        refetchComputers({
-            sorting: sorting,
-            filter: filter,
-            search: search,
-        })
-    }
 
     let dashboard: ReactElement
     if (computersLoading || deleteLoading) {
@@ -88,19 +74,21 @@ function ComputersDashboard(props: Props) {
             })}
         />
     } else if (computers) {
-        dashboard = <ComputerList onComputerClick={props.onComputerClick} computers={computers.computers}/>
+        dashboard = <ComputerList computers={computers.computers} onComputerClick={props.onComputerClick}/>
     }
 
     return (
         <Box display='grid' gridTemplateRows='auto 10fr' gap='20px' minWidth='65%'>
             <SelectedComputersContext.Provider value={selectedComputerContextValue}>
-                <ControllerDashboard
-                    onControllerChange={onControllerChange}
-                    onDelete={() => setShowDeleteModal(true)}
-                    showActions={!!selectedComputers.length}
-                    onAddComputer={props.onAddComputer}
-                    disabled={!!computersFetchError}
-                />
+                <Paper sx={{ padding: '15px 40px', display: 'flex', justifyContent: 'space-between' }}>
+                    <Box><Search onSearchChange={(value => refetchComputers({ search: value }))}/></Box>
+                    <ComputerActions
+                        onDelete={() => setShowDeleteModal(true)}
+                        showDelete={!!selectedComputers.length}
+                        onAddComputer={props.onAddComputer}
+                        disabled={!!computersFetchError}
+                    />
+                </Paper>
                 <Paper sx={{ display: 'flex', height: '100%' }}>{dashboard}</Paper>
                 <ModalConfirm
                     onClose={() => setShowDeleteModal(false)}
