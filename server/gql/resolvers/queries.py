@@ -34,13 +34,10 @@ def resolve_all_pc(obj, info, input: Optional[Dict] = None):
     if search_input := input.get('search'):
         query = query.filter(
             Q(label__contains=search_input)
-            | Q(pc_name__contains=search_input)
+            | Q(name__contains=search_input)
             | Q(cpu_name__contains=search_input)
-            | Q(motherboard_manufacturer__contains=search_input)
-            | Q(videocard__contains=search_input)
+            | Q(videocard_name__contains=search_input)
             | Q(username__contains=search_input)
-            | Q(user__contains=search_input)
-            | Q(location__contains=search_input)
             | Q(comment__contains=search_input)
         )
 
