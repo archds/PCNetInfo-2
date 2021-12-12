@@ -30,7 +30,7 @@ class Location(models.Model):
         unique_together = ['building', 'cabinet']
 
 
-class User(models.Model):
+class ComputerUser(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     role = models.ForeignKey(UserRole, null=True, related_name='users', on_delete=models.SET_NULL)
@@ -74,7 +74,7 @@ class Computer(models.Model):
     domain = models.CharField(max_length=50, null=True)
     ip = models.GenericIPAddressField(null=True)
     username = models.CharField(max_length=100, null=True)
-    user = models.OneToOneField(User, null=True, on_delete=models.SET_NULL, related_name='computer')
+    user = models.ManyToManyField(ComputerUser, null=True)
     serial_number = models.CharField(null=True, max_length=50, unique=True)
     location = models.ForeignKey(Location, related_name='computers', on_delete=models.SET_NULL, null=True)
     updated = models.DateTimeField(auto_now=True)

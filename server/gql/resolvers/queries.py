@@ -10,7 +10,7 @@ from gql.actions.sort import sort
 from gql.errors import ReadableError
 from gql.resolvers.auth import login_required
 from gql.resolvers.presentation.computer import gql_computer_convert
-from hardware.models import Building, Computer, Location, User
+from hardware.models import Building, Computer, ComputerUser, Location
 
 logger = getLogger(__file__)
 
@@ -69,7 +69,7 @@ def resolve_locations(obj, info):
 @gqt.query.field('users')
 @login_required
 def resolve_users(obj, info):
-    return User.objects.all()
+    return ComputerUser.objects.all()
 
 
 @gqt.query.field('buildings')
