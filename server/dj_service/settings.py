@@ -18,6 +18,7 @@ from corsheaders.defaults import default_methods
 BASE_DIR = Path(__file__).resolve().parent.parent
 CONFIG_DIR = BASE_DIR.parent / 'config'
 LOGS_DIR = BASE_DIR / 'logs'
+TESTS_DIR = BASE_DIR / 'tests'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/

@@ -12,7 +12,7 @@ def gql_computer_convert(comp: Computer) -> dict:
         'ip': comp.ip,
         'comment': comp.comment,
         'label': comp.label,
-        'user': comp.user,
+        'users': comp.users,
         'location': comp.location,
         'updated': comp.updated,
         'formFactor': comp.form_factor,

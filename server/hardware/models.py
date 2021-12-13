@@ -33,8 +33,7 @@ class Location(models.Model):
 class ComputerUser(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    role = models.ForeignKey(UserRole, null=True, related_name='users', on_delete=models.SET_NULL)
-    location = models.ForeignKey(Location, null=True, related_name='employees', on_delete=models.SET_NULL)
+    roles = models.ManyToManyField(UserRole)
 
 
 class Computer(models.Model):
@@ -74,7 +73,7 @@ class Computer(models.Model):
     domain = models.CharField(max_length=50, null=True)
     ip = models.GenericIPAddressField(null=True)
     username = models.CharField(max_length=100, null=True)
-    user = models.ManyToManyField(ComputerUser, null=True)
+    users = models.ManyToManyField(ComputerUser, related_name='computers')
     serial_number = models.CharField(null=True, max_length=50, unique=True)
     location = models.ForeignKey(Location, related_name='computers', on_delete=models.SET_NULL, null=True)
     updated = models.DateTimeField(auto_now=True)

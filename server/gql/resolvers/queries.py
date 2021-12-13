@@ -76,3 +76,21 @@ def resolve_users(obj, info):
 @login_required
 def resolve_buildings(*_):
     return Building.objects.all()
+
+
+@gqt.query.field('users')
+@login_required
+def resolve_users(*_):
+    return [
+        {
+            'id': user.pk,
+            'firstName': user.first_name,
+            'lastName': user.last_name,
+            'roles': [
+                {'title': role.title, 'priority': role.priority}
+                for role in user.roles.all()
+            ],
+            'computers': [gql_computer_convert(comp) for comp in user.computers.all()]
+        }
+        for user in ComputerUser.objects.all()
+    ]
