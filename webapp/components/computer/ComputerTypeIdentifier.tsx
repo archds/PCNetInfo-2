@@ -1,10 +1,10 @@
-import style from '/components/computer/type/ComputerType.module.scss'
 import DesktopWindowsIcon from '@mui/icons-material/DesktopWindows'
 import LaptopIcon from '@mui/icons-material/Laptop'
 import { ComputerType, useUpdateComputerMutation } from 'api/generated/graphql'
 import { notifyError, notifySuccess } from 'core/actions/notification'
-import { SnackbarContext } from 'pages'
 import React, { useContext, useState } from 'react'
+import { SnackbarContext } from 'pages/_app'
+import { SxProps } from '@mui/system'
 
 
 export interface Props {
@@ -35,18 +35,30 @@ function ComputerTypeIdentifier(props: Props) {
         })
     }
 
+    const typeIconStyle: SxProps = {
+        borderRadius: '5px',
+        padding: '5px',
+        boxSizing: 'content-box',
+        transition: 'ease 0.2s',
+        '&:hover': {
+            color: '#41B883',
+            background: '#0000000D',
+        }
+    }
+
+
     switch (type) {
         case ComputerType.DESKTOP:
             return <DesktopWindowsIcon
                 onClick={switchType}
                 fontSize='medium'
-                className={style.computerType}
+                sx={typeIconStyle}
             />
         case ComputerType.LAPTOP:
             return <LaptopIcon
                 onClick={switchType}
                 fontSize='medium'
-                className={style.computerType}
+                sx={typeIconStyle}
             />
     }
 }

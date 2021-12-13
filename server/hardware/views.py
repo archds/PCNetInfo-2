@@ -1,12 +1,15 @@
-from typing import Callable
+from collections import Callable
+from logging import getLogger
 
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from dj_service.settings import BASE_DIR
 from hardware.domain import Locale, ProcessingResult
 from hardware.processor import MSInfoProcessor
+
+logger = getLogger(__file__)
 
 
 def _get_console_response() -> str:
@@ -33,8 +36,8 @@ def error_intercept(func: Callable) -> Callable:
         try:
             return func(*args, **kwargs)
         except Exception as err:  # noqa
-            print(err)
-            return HttpResponse('Unexpected error', status=500)
+            logger.exception(err)
+            return HttpResponseServerError(err)
 
     return wrapper
 
@@ -47,7 +50,8 @@ def error_intercept(func: Callable) -> Callable:
 @error_intercept
 def collect_msinfo(request: HttpRequest):
     if 'Locale' not in request.headers:
-        return HttpResponse('Locale not found in request headers!', status=400)
+        logger.error('Locale not found in request headers!')
+        return HttpResponseBadRequest('Locale not found in request headers!')
 
     locale = Locale(request.headers['Locale'])
 

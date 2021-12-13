@@ -1,8 +1,8 @@
 import random as rnd
-import uuid
 
 from django.contrib.auth.models import User
 
+from gql.resolvers.auth import create_jwt
 from hardware.models import Computer
 
 
@@ -25,18 +25,21 @@ def create_test_computers(amount: int, seed: str = 'create_test_computers') -> l
                 videocard_name='NVIDIA GeForce GTX 770',
                 videocard_memory=rnd.randint(1, 4),
                 ram=rnd.randint(2, 32),
-                name=f'PC-{str(uuid.uuid4()).replace("-", "")}',
+                name=f'PC-TEST-{i}',
                 form_factor=rnd.choice(list(Computer.FormFactor))
             )
-            for _ in range(amount)
+            for i in range(amount)
         ]
     )
 
 
-def create_test_user(username: str, password: str) -> User:
-    return User.objects.create_user(
+def create_test_user(username: str, password: str) -> tuple[User, str]:
+    user = User.objects.create_user(
         username=username,
         password=password,
         email='test@example.com',
         is_active=True
     )
+    token = create_jwt(user)
+
+    return user, token

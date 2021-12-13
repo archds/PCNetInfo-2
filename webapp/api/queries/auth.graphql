@@ -1,5 +1,6 @@
 query Auth($username: String!, $password: String!) {
     auth(username: $username, password: $password) {
+        valid
         token
     }
 }

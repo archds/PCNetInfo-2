@@ -1,4 +1,4 @@
-import { Button, Paper, Tab, Tabs } from '@mui/material'
+import { Box, Button, Paper, Tab, Tabs } from '@mui/material'
 import { removeCookies } from 'cookies-next'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -18,7 +18,7 @@ export default function Navigation() {
     return (
         <header>
             <Paper style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div/>
+                <Box/>
                 <Tabs centered value={value} textColor='primary' indicatorColor='primary'>
                     <Tab value='/' label='Computers' onClick={() => handleClick('/')}/>
                     <Tab value='/monitors' label='Monitors' onClick={() => handleClick('/monitors')}/>

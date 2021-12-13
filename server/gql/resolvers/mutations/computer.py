@@ -1,16 +1,19 @@
 from gql import type_defs as gqt
 from gql.actions.domain import convert_gql_pc
 from gql.errors import InputError
+from gql.resolvers.auth import login_required
 from hardware.models import Computer
 
 
 @gqt.mutation.field('deleteComputer')
+@login_required
 def delete_computer(obj, info, ids: list[str]) -> str:
     Computer.objects.filter(pk__in=ids).delete()
     return gqt.Unit
 
 
 @gqt.mutation.field('createComputer')
+@login_required
 def create_computer(obj, info, input: dict):
     converted = convert_gql_pc(gql_input=input)
     if Computer.objects.filter(name=converted['name']).exists():
@@ -25,6 +28,7 @@ def create_computer(obj, info, input: dict):
 
 
 @gqt.mutation.field('updateComputer')
+@login_required
 def update_computer(obj, info, id: str, input: dict):
     input = convert_gql_pc(gql_input=input)
 

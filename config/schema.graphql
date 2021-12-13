@@ -10,8 +10,8 @@ type Query {
 
     users: [User!]!
 
-    auth(username: String!, password: String!): AuthToken!
-    verifyToken(token: String!): Unit!
+    auth(username: String!, password: String!): AuthResult!
+    verifyToken(token: String!): VerifyTokenResult!
 }
 
 type Mutation {
@@ -36,8 +36,14 @@ enum Unit {
     UNIT
 }
 
-type AuthToken {
-    token: String!
+type AuthResult {
+    valid: Boolean!
+    token: String
+}
+
+type VerifyTokenResult {
+    valid: Boolean!
+    message: String
 }
 
 

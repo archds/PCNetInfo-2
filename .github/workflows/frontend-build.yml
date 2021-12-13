@@ -1,0 +1,16 @@
+name: Webapp build
+
+on:
+  push:
+    branches-ignore:
+      - 'main'
+    paths:
+      - 'webapp/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build webapp
+        run: docker-compose up -d --build frontend

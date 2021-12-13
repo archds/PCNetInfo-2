@@ -5,7 +5,8 @@ import {
     StylesProvider,
     ThemeProvider as ThemeProviderV4,
 } from '@material-ui/core/styles'
-import { CssBaseline, StyledEngineProvider, Theme } from '@mui/material'
+import { CssBaseline, Snackbar, StyledEngineProvider, Theme } from '@mui/material'
+import Alert, { AlertColor } from '@mui/material/Alert'
 import { createTheme as createThemeV5, ThemeProvider as ThemeProviderV5 } from '@mui/material/styles'
 import { ThemeOptions } from '@mui/material/styles/createTheme'
 import { createGenerateClassName } from '@mui/styles'
@@ -14,7 +15,9 @@ import AuthProvider from 'components/AuthProvider'
 import Footer from 'components/Footer'
 import HeadProvider from 'components/HeadProvider'
 import Navigation from 'components/Navigation'
+import { StateContext } from 'core/interfaces'
 import { AppProps } from 'next/app'
+import React, { createContext, useState } from 'react'
 import '../styles/main.scss'
 
 
@@ -25,11 +28,7 @@ declare module '@mui/styles/defaultTheme' {
 }
 
 const generateClassName = createGenerateClassName({
-    // By enabling this option, if you have non-MUI elements (e.g. `<div />`)
-    // using MUI classes (e.g. `.MuiButton`) they will lose styles.
-    // Make sure to convert them to use `styled()` or `<Box />` first.
     disableGlobal: true,
-    // Class names will receive this seed to avoid name collisions.
     seed: 'mui-jss',
 })
 
@@ -55,7 +54,7 @@ const theme: ThemeOptions = {
             contrastText: '#FFFFFF',
         },
         success: {
-            main: '#28a745',
+            main: '#28A745',
         },
         // Used by `getContrastText()` to maximize the contrast between
         // the background and the text.
@@ -76,7 +75,22 @@ const theme: ThemeOptions = {
                 size: 'small',
             },
         },
+        MuiPaper: {
+            styleOverrides: {
+                rounded: {
+                    borderRadius: '10px'
+                },
+            }
+        },
     },
+    typography: {
+        h1: { color: '#35495E' },
+        h2: { color: '#35495E' },
+        h3: { color: '#35495E' },
+        h4: { color: '#35495E' },
+        h5: { color: '#35495E' },
+        h6: { color: '#35495E' },
+    }
 }
 
 // @ts-ignore
@@ -84,7 +98,23 @@ const themeV4 = createThemeV4(theme)
 const themeV5 = createThemeV5(theme)
 
 
+export interface SnackbarContextInterface {
+    severity: AlertColor
+    message?: string
+    show: boolean
+}
+
+export const SnackbarContext = createContext<StateContext<SnackbarContextInterface>>(null)
+
+
 function MyApp({ Component, pageProps }: AppProps) {
+    const [snackbar, setSnackbar] = useState<SnackbarContextInterface>({ severity: 'success', show: false })
+
+    const snackbarContextValue: StateContext<SnackbarContextInterface> = {
+        state: snackbar,
+        setState: setSnackbar,
+    }
+
     return <>
         <ApolloProvider client={client}>
             <StyledEngineProvider injectFirst>
@@ -92,12 +122,22 @@ function MyApp({ Component, pageProps }: AppProps) {
                     <ThemeProviderV4 theme={themeV4}>
                         <ThemeProviderV5 theme={themeV5}>
                             <HeadProvider>
-                                <CssBaseline/>
-                                <AuthProvider>
-                                    <Navigation/>
-                                    <Component {...pageProps} />
-                                    <Footer/>
-                                </AuthProvider>
+                                <SnackbarContext.Provider value={snackbarContextValue}>
+                                    <CssBaseline/>
+                                    <AuthProvider>
+                                        <Navigation/>
+                                        <Component {...pageProps} />
+                                        <Footer/>
+                                    </AuthProvider>
+                                </SnackbarContext.Provider>
+                                <Snackbar
+                                    open={snackbar.show}
+                                    autoHideDuration={6000}
+                                    anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+                                    onClose={() => setSnackbar({ severity: 'success', show: false })}
+                                >
+                                    <Alert variant='filled' severity={snackbar.severity}>{snackbar.message}</Alert>
+                                </Snackbar>
                             </HeadProvider>
                         </ThemeProviderV5>
                     </ThemeProviderV4>

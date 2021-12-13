@@ -1,27 +1,26 @@
-import style from '/components/computer/controller/ControllerDashboard.module.scss'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { Button } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import * as CSS from 'csstype'
 import React from 'react'
 
 export interface Props {
     disabled: boolean
-    show: boolean
+    showDelete: boolean
     onAddComputer(): void
     onDelete(): void
 }
 
 function ComputerActions(props: Props) {
     const delButtonStyles: CSS.Properties = {
-        visibility: props.show ? 'visible' : 'hidden',
-        opacity: props.show ? 100 : 0,
+        visibility: props.showDelete ? 'visible' : 'hidden',
+        opacity: props.showDelete ? 100 : 0,
         backgroundColor: '#D32F2F',
         color: 'white',
         transition: '0.3s',
     }
 
     return (
-        <div className={style.computerActions}>
+        <Box display='flex' gap='20px' maxHeight='38px'>
             <Button
                 disableElevation
                 variant='contained'
@@ -41,7 +40,7 @@ function ComputerActions(props: Props) {
             >
                 Add
             </Button>
-        </div>
+        </Box>
     )
 }
 

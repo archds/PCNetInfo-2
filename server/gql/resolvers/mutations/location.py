@@ -1,9 +1,11 @@
 from gql import type_defs as gqt
 from gql.errors import ReadableError
+from gql.resolvers.auth import login_required
 from hardware.models import Building, Location
 
 
 @gqt.mutation.field('createBuilding')
+@login_required
 def create_building(obj, info, input: dict):
     street = input['street']
     house = input['house']
@@ -17,6 +19,7 @@ def create_building(obj, info, input: dict):
 
 
 @gqt.mutation.field('updateBuilding')
+@login_required
 def update_building(obj, info, id: str, input: dict):
     if buiding := Building.objects.filter(pk=id):
         buiding.update(
@@ -30,6 +33,7 @@ def update_building(obj, info, id: str, input: dict):
 
 
 @gqt.mutation.field('deleteBuilding')
+@login_required
 def delete_building(obj, info, id: str):
     if buiding := Building.objects.filter(pk=id):
         buiding.delete()
@@ -40,6 +44,7 @@ def delete_building(obj, info, id: str):
 
 
 @gqt.mutation.field('createLocation')
+@login_required
 def create_location(obj, info, input: dict):
     if Location.objects.filter(building_id=input['buildingId'], cabinet=input['cabinet']).exists():
         raise ReadableError('Location in this building already exists!')
@@ -55,6 +60,7 @@ def create_location(obj, info, input: dict):
 
 
 @gqt.mutation.field('updateLocation')
+@login_required
 def update_location(obj, info, id: str, input: dict):
     if location := Location.objects.filter(pk=id):
         kwargs = {
@@ -71,6 +77,7 @@ def update_location(obj, info, id: str, input: dict):
 
 
 @gqt.mutation.field('deleteLocation')
+@login_required
 def delete_location(obj, info, id: str):
     if location := Location.objects.filter(pk=id):
         location.delete()

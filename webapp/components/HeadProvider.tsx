@@ -12,6 +12,10 @@ function HeadComponent(props) {
                 <link rel='manifest' href='/img/favicon/safari-pinned-tab.svg'/>
                 <link rel='mask-icon' href='/img/favicon/safari-pinned-tab.svg' color='#41b883'/>
                 <link rel='shortcut icon' href='/img/favicon/favicon.ico'/>
+                <link
+                    rel='stylesheet'
+                    href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap'
+                />
                 <meta name='msapplication-TileColor' content='#41b883'/>
                 <meta name='msapplication-config' content='/img/favicon/browserconfig.xml'/>
                 <meta name='theme-color' content='#ffffff'/>
