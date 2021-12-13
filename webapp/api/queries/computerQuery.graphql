@@ -13,7 +13,9 @@ query Computer ($id: ID!) {
             id
             firstName
             lastName
-            role
+            roles {
+                title
+            }
         }
         location
         updated
