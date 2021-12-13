@@ -1,0 +1,15 @@
+query users {
+    users {
+        id
+        firstName
+        lastName
+        roles {
+            title
+            priority
+        }
+        computers {
+            id
+            name
+        }
+    }
+}

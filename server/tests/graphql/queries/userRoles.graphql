@@ -1,0 +1,7 @@
+query userRoles {
+    userRoles {
+        id
+        title
+        priority
+    }
+}

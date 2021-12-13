@@ -25,7 +25,7 @@ def convert_gql_pc(gql_input: Dict) -> Dict:
         'ip': gql_input.get('ip'),
         'ram': gql_input.get('ram'),
         'username': gql_input.get('username'),
-        'user': gql_input.get('user'),
+        # 'user': gql_input.get('user'),
         'serial_number': gql_input.get('serial'),
         'location': gql_input.get('location'),
         'updated': gql_input.get('updated'),

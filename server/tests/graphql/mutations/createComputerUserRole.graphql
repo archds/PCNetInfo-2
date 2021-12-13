@@ -1,0 +1,6 @@
+mutation createComputerUserRole($priority: Int, $title: String!) {
+    createUserRole(input: {
+        title: $title
+        priority: $priority
+    })
+}

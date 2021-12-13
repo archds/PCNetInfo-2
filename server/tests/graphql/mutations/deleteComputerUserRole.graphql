@@ -1,0 +1,3 @@
+mutation deleteComputerUserRole($id: ID!) {
+    deleteUserRole(id: $id)
+}
