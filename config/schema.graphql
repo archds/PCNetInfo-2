@@ -8,7 +8,8 @@ type Query {
     buildings: [Building!]!
     locations: [Location!]!
 
-    users: [User!]!
+    users: [ComputerUser!]!
+    userRoles: [ComputerUserRole!]!
 
     auth(username: String!, password: String!): AuthResult!
     verifyToken(token: String!): VerifyTokenResult!
@@ -22,6 +23,9 @@ type Mutation {
     createUser(input: UserInput!): Unit!
     updateUser(id: ID!, input: UserInput!): Unit!
     deleteUser(id: ID!): Unit!
+
+    createUserRole(input: UserRoleInput!): Unit!
+    deleteUserRole(id: ID!): Unit!
 
     createBuilding(input: BuildingInput!): Unit!
     updateBuilding(id: ID!, input: BuildingInput!): Unit!
@@ -121,7 +125,7 @@ type Computer {
     ip: String
     comment: String
     label: String
-    user: User
+    user: ComputerUser
     location: String
     updated: String
     formFactor: FormFactor
@@ -131,18 +135,29 @@ type Computer {
     videocard: Videocard
 }
 
-type User {
+type ComputerUser {
     id: ID!
     firstName: String!
     lastName: String
-    role: String
-    computer: Computer
+    roles: [ComputerUserRole!]!
+    computers: [Computer!]!
+}
+
+type ComputerUserRole {
+    id: ID!
+    title: String!
+    priority: Int
 }
 
 input UserInput {
     firstName: String!
     lastName: String
-    role: String
+    roleTitles: [String!]!
+}
+
+input UserRoleInput {
+    title: String!
+    priority: Int
 }
 
 type Location {

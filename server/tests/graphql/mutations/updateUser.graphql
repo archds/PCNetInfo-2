@@ -1,0 +1,7 @@
+mutation updateUser($id: ID!, $firstName: String!, $lastName: String, $roleTitles: [String!]!) {
+    updateUser(input: {
+        firstName: $firstName
+        lastName: $lastName
+        roleTitles: $roleTitles
+    }, id: $id)
+}

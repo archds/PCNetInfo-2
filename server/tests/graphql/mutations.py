@@ -119,3 +119,61 @@ def send_delete_location_mutation(id: str, token: str):
         variables={'id': id},
         token=token
     )
+
+
+def send_create_user_role_mutation(token: str, title: str, priority: int = None):
+    return send_mutation(
+        name='createComputerUserRole',
+        token=token,
+        variables={
+            'title': title,
+            'priority': priority
+        }
+    )
+
+
+def send_delete_user_role_mutation(token: str, role_id: str):
+    return send_mutation(
+        name='deleteComputerUserRole',
+        token=token,
+        variables={'id': role_id}
+    )
+
+
+def send_create_user_mutation(token: str, first_name: str, last_name: str = None, roles: list[str] = None):
+    return send_mutation(
+        name='createUser',
+        token=token,
+        variables={
+            'firstName': first_name,
+            'lastName': last_name,
+            'roleTitles': roles or [],
+        }
+    )
+
+
+def send_update_user_mutation(
+        token: str,
+        user_id: str,
+        first_name: str,
+        last_name: str = None,
+        roles: list[str] = None
+):
+    return send_mutation(
+        name='updateUser',
+        token=token,
+        variables={
+            'firstName': first_name,
+            'lastName': last_name,
+            'roleTitles': roles or [],
+            'id': user_id
+        }
+    )
+
+
+def send_delete_user_mutation(token: str, user_id: str):
+    return send_mutation(
+        name='deleteUser',
+        token=token,
+        variables={'id': user_id}
+    )

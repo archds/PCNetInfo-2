@@ -13,4 +13,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build webapp
-        run: docker-compose up -d --build frontend
+        run: docker-compose up --build frontend-test-build

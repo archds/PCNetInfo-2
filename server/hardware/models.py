@@ -11,6 +11,9 @@ class UserRole(models.Model):
     title = models.CharField(max_length=100, unique=True)
     priority = models.SmallIntegerField(null=True)
 
+    def __str__(self):
+        return self.title
+
 
 class Building(models.Model):
     street = models.CharField(max_length=100)
@@ -30,11 +33,10 @@ class Location(models.Model):
         unique_together = ['building', 'cabinet']
 
 
-class User(models.Model):
+class ComputerUser(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    role = models.ForeignKey(UserRole, null=True, related_name='users', on_delete=models.SET_NULL)
-    location = models.ForeignKey(Location, null=True, related_name='employees', on_delete=models.SET_NULL)
+    roles = models.ManyToManyField(UserRole)
 
 
 class Computer(models.Model):
@@ -74,7 +76,7 @@ class Computer(models.Model):
     domain = models.CharField(max_length=50, null=True)
     ip = models.GenericIPAddressField(null=True)
     username = models.CharField(max_length=100, null=True)
-    user = models.OneToOneField(User, null=True, on_delete=models.SET_NULL, related_name='computer')
+    users = models.ManyToManyField(ComputerUser, related_name='computers')
     serial_number = models.CharField(null=True, max_length=50, unique=True)
     location = models.ForeignKey(Location, related_name='computers', on_delete=models.SET_NULL, null=True)
     updated = models.DateTimeField(auto_now=True)
