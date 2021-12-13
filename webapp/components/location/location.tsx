@@ -16,7 +16,7 @@ export default function Locatio({locationData}) {
     return (
         <Box sx={{height:'95%'}} onMouseLeave={()=>{setShow(true)}} onMouseEnter={()=>{setShow(false)}}>
             <Badge invisible={show} sx={{marginTop:'10px', width:'99%', height:'100%'}} badgeContent={
-                    <><IconButton onClick={deleteLocation}><DeleteIcon /></IconButton></>}>
+                    <><IconButton onClick={()=>{deleteLocation()}}><DeleteIcon /></IconButton></>}>
                 <Paper sx={{width:'100%'}} elevation={12}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} lg={7}>

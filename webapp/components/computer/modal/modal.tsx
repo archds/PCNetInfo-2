@@ -1,9 +1,9 @@
-import { Dialog, DialogContent, DialogTitle, Grid, Paper, Typography, Badge, IconButton} from '@material-ui/core';
+import { Dialog, DialogContent, Grid, Paper, Typography, Badge, IconButton} from '@material-ui/core';
 import { BuildingsDocument, LocationsDocument, useLocationsQuery, useUpdateBuildingMutation, useCreateLocationMutation } from 'api/generated/graphql';
 import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { Box, Button, styled, TextField } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import style from 'components/computer/modal/modal.module.scss';
 import { EditText } from 'react-edit-text';
 import Locatio from 'components/location/location'
@@ -69,7 +69,7 @@ export function Modal({active, setActive, name}) {
                                         <TextField type='number' id="standard-basic" label="floor" variant="standard" onChange={(event) => setFloor(event.target.value)} />
                                         <TextField multiline id="standard-basic" label="description" variant="standard" onChange={(event) => setDescription(event.target.value)} />
                                     </Box>
-                                    <Button disabled={(floor==''|| cabinet=='' ||description=='')} onClick={addLocation}>Добавить location</Button>
+                                    <Button disabled={( floor!==0 || cabinet=='' || description=='' )} onClick={()=>{addLocation()}}>Добавить location</Button>
                                 </Paper>
                             </Badge>
                         </Box>

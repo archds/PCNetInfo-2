@@ -4,15 +4,14 @@ import { Grid, Typography, Badge, Box, Button, IconButton, TextField, Card, Card
 import Image from 'next/image'
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
-import building from 'C:/Users/Dan/PCNetInfo-2/webapp/public/img/buildings/building.png'
-import hotel from 'C:/Users/Dan/PCNetInfo-2/webapp/public/img/buildings/hotel.png'
-import skyscraper from 'C:/Users/Dan/PCNetInfo-2/webapp/public/img/buildings/skyscraper.png'
+import building from 'public/img/buildings/building.png'
+import hotel from 'public/img/buildings/hotel.png'
+import skyscraper from 'public/img/buildings/skyscraper.png'
 import style from '/components/computer/cards/card.module.scss'
-import skyscraperadd from 'C:/Users/Dan/PCNetInfo-2/webapp/public/img/buildings/skyscraperadd.png'
+import skyscraperadd from 'public/img/buildings/skyscraperadd.png'
 import { useCreateBuildingMutation, BuildingsDocument, useDeleteBuildingMutation } from 'api/generated/graphql';
 
 const buildings = [building, hotel, skyscraper]
-
   
 export default function Onecard({ data }) {
 
@@ -24,18 +23,22 @@ export default function Onecard({ data }) {
       variables:{input:{street:street, house:house}},
       refetchQueries:[BuildingsDocument]})
   const [show, setShow]=useState(true)
-
   
     if (data) {
       const [deleteBuilding] = useDeleteBuildingMutation({
       variables:{id: data.id},
     refetchQueries:[BuildingsDocument]
       })
+      const deleteButton = 
+    <>
+      <IconButton onClick={()=>{deleteBuilding()}}>
+        <DeleteIcon />
+      </IconButton>
+    </> 
     return (
       <Grid item xs={6} md={4} lg={3}>
         <Box onMouseLeave={()=>{setShow(true)}} onMouseEnter={()=>{setShow(false)}}>
-        <Badge invisible={show} badgeContent={
-          <><IconButton onClick={deleteBuilding}><DeleteIcon /></IconButton></>}>
+        <Badge invisible={show} badgeContent={deleteButton}>
           <Card >
           <CardActionArea className={style.Butthurt} onClick={() => setModalActive(!modalActive)}>
               <Image
@@ -84,7 +87,7 @@ export default function Onecard({ data }) {
                   <TextField id="standard-basic" label="Street" variant="standard" margin="dense" value={street} onChange={(event) => setStreet(event.target.value)} /> <br />
                   <TextField id="standard-basic" label="House" variant="standard" value={house} onChange={(event) => setHouse(event.target.value)} />
                 </Box>
-                <Button disabled={(house=='' ||street=='')} onClick={addBuilding}>Добавить здание</Button>
+                <Button disabled={(house=='' ||street=='')} onClick={()=>{addBuilding()}}>Добавить здание</Button>
               </Card>
 
             </Badge>
