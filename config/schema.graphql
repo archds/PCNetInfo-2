@@ -8,6 +8,7 @@ type Query {
     locations: [Location!]!
 
     users: [ComputerUser!]!
+    userRoles: [ComputerUserRole!]!
 
     auth(username: String!, password: String!): AuthResult!
     verifyToken(token: String!): VerifyTokenResult!
@@ -142,6 +143,7 @@ type ComputerUser {
 }
 
 type ComputerUserRole {
+    id: ID!
     title: String!
     priority: Int
 }
@@ -149,7 +151,7 @@ type ComputerUserRole {
 input UserInput {
     firstName: String!
     lastName: String
-    roleId: ID
+    roleTitles: [String!]!
 }
 
 input UserRoleInput {

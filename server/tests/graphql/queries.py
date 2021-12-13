@@ -63,5 +63,9 @@ def send_verify_token_query(token: str):
     )
 
 
+def send_user_roles_query(token: str):
+    return send_query(name='userRoles', token=token)
+
+
 def send_users_query(token: str):
     return send_query(name='users', token=token)

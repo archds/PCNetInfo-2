@@ -1,0 +1,7 @@
+mutation createUser($firstName: String!, $lastName: String, $roleTitles: [String!]!) {
+    createUser(input: {
+        firstName: $firstName
+        lastName: $lastName
+        roleTitles: $roleTitles
+    })
+}

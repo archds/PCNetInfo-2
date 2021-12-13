@@ -11,6 +11,9 @@ class UserRole(models.Model):
     title = models.CharField(max_length=100, unique=True)
     priority = models.SmallIntegerField(null=True)
 
+    def __str__(self):
+        return self.title
+
 
 class Building(models.Model):
     street = models.CharField(max_length=100)
