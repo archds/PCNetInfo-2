@@ -1,7 +1,7 @@
-import style from '/pages/index.module.scss'
-import ActionsDashboard from 'components/computer/actions/ActionsDashboard'
+import ActionsDashboard from 'components/computer/ActionsDashboard'
 import ComputersDashboard from 'components/computer/ComputersDashboard'
 import React, { useState } from 'react'
+import { Box, Paper } from '@mui/material'
 
 
 function Index() {
@@ -20,21 +20,19 @@ function Index() {
 
 
     return (
-        <>
-            <div className={style.indexContainer}>
-
-                <ComputersDashboard
-                    onComputerClick={onComputerClick}
-                    onAddComputer={() => setInputMode(true)}
-                />
+        <Box margin='auto' display='flex' justifyContent='space-around' gap='20px' maxWidth='97%'>
+            <ComputersDashboard
+                onComputerClick={onComputerClick}
+                onAddComputer={() => setInputMode(true)}
+            />
+            <Paper sx={{ width: '100%', minHeight: '70vh', padding: '20px' }}>
                 <ActionsDashboard
                     resetActionsDashboard={resetActionsDashboard}
                     computerId={activeComputer}
                     input={inputMode}
                 />
-
-            </div>
-        </>
+            </Paper>
+        </Box>
     )
 }
 

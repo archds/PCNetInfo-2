@@ -1,4 +1,4 @@
-export interface StateContext {
-    state: any
-    setState(newState: any): void
+export interface StateContext<T> {
+    state: T
+    setState(newState: T): void
 }

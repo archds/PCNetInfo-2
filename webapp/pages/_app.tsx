@@ -28,11 +28,7 @@ declare module '@mui/styles/defaultTheme' {
 }
 
 const generateClassName = createGenerateClassName({
-    // By enabling this option, if you have non-MUI elements (e.g. `<div />`)
-    // using MUI classes (e.g. `.MuiButton`) they will lose styles.
-    // Make sure to convert them to use `styled()` or `<Box />` first.
     disableGlobal: true,
-    // Class names will receive this seed to avoid name collisions.
     seed: 'mui-jss',
 })
 
@@ -79,7 +75,22 @@ const theme: ThemeOptions = {
                 size: 'small',
             },
         },
+        MuiPaper: {
+            styleOverrides: {
+                rounded: {
+                    borderRadius: '10px'
+                },
+            }
+        },
     },
+    typography: {
+        h1: { color: '#35495E' },
+        h2: { color: '#35495E' },
+        h3: { color: '#35495E' },
+        h4: { color: '#35495E' },
+        h5: { color: '#35495E' },
+        h6: { color: '#35495E' },
+    }
 }
 
 // @ts-ignore
@@ -93,13 +104,13 @@ export interface SnackbarContextInterface {
     show: boolean
 }
 
-export const SnackbarContext = createContext<StateContext>(null)
+export const SnackbarContext = createContext<StateContext<SnackbarContextInterface>>(null)
 
 
 function MyApp({ Component, pageProps }: AppProps) {
     const [snackbar, setSnackbar] = useState<SnackbarContextInterface>({ severity: 'success', show: false })
 
-    const snackbarContextValue: StateContext = {
+    const snackbarContextValue: StateContext<SnackbarContextInterface> = {
         state: snackbar,
         setState: setSnackbar,
     }

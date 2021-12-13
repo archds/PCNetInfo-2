@@ -3,7 +3,7 @@ import DnsOutlinedIcon from '@mui/icons-material/DnsOutlined'
 import LabelOutlinedIcon from '@mui/icons-material/LabelOutlined'
 import MemoryIcon from '@mui/icons-material/Memory'
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined'
-import { Button, FormControl, Grid, InputAdornment, InputLabel, Select, TextField } from '@mui/material'
+import { Button, FormControl, Grid, InputAdornment, InputLabel, Select, TextField, Typography } from '@mui/material'
 import { ComputersDocument, ComputerType, useCreateComputerMutation } from 'api/generated/graphql'
 import { notifyError, notifySuccess } from 'core/actions/notification'
 import React, { useContext, useRef, useState } from 'react'
@@ -109,9 +109,7 @@ function ComputerInput(props: Props) {
         <>
             <GrClose className='closeButton' onClick={props.resetComputerInput}/>
             <Grid container spacing={3} ref={formRef}>
-                <Grid item xs={12}>
-                    <h3>Add computer</h3>
-                </Grid>
+                <Grid item xs={12}><Typography variant='h3' color='secondary'>Add computer</Typography></Grid>
                 <Grid item xs={6}>
                     <TextField
                         required

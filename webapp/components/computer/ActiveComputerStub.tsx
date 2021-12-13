@@ -1,5 +1,4 @@
-import style from '/components/computer/stub/ActiveComputerStub.module.scss'
-import { Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import Image from 'next/image'
 import React from 'react'
 import ReactFitText from 'react-fittext'
@@ -7,9 +6,9 @@ import Clock from 'react-live-clock'
 
 function ActiveComputerStub() {
     return (
-        <div className={style.ActiveComputerStubContainer}>
+        <Box display='flex' flexDirection='column'>
             <ReactFitText compressor={0.5}>
-                <Typography variant='h1' align='center' fontWeight={700}>
+                <Typography variant='h1' align='center' fontWeight={700} color='secondary'>
                     <Clock format={'HH:mm:ss'} ticking={true}/>
                 </Typography>
             </ReactFitText>
@@ -18,7 +17,7 @@ function ActiveComputerStub() {
                 width={500}
                 height={500}
             />
-        </div>
+        </Box>
     )
 }
 
