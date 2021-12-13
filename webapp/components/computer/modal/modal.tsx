@@ -3,12 +3,10 @@ import { BuildingsDocument, LocationsDocument, useLocationsQuery, useUpdateBuild
 import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { Box, Button, InputAdornment, TextField } from '@mui/material';
+import { Box, Button, styled, TextField } from '@mui/material';
 import style from 'components/computer/modal/modal.module.scss';
 import { EditText } from 'react-edit-text';
 import Locatio from 'components/location/location'
-
-
 
 export function Modal({active, setActive, name}) {
         
@@ -21,7 +19,7 @@ export function Modal({active, setActive, name}) {
         })
         
         const [cabinet, setCabinet] = useState('')
-        const [floor, setFloor] = useState('')
+        const [floor, setFloor]:[number, any] = useState(0)
         const [description, setDescription] = useState('')
         const [show, setShow]=useState(true)
 
@@ -40,19 +38,17 @@ export function Modal({active, setActive, name}) {
             open={active}
             onClose={() => setActive(false)}
             >
-            <DialogTitle>
-                <Box className={style.title} sx={{display:'flex', flexDirection:'row'}}>
-                    <EditText onSave={({ value }) => editBuilding({variables: { id: name.id, input: { street: value, house:name.house } }})} defaultValue={name.street}/>
-                    <Typography>,&nbsp;</Typography>
-                    <EditText onSave={({ value }) => editBuilding({variables: { id: name.id, input: { street: name.street, house:value } }})} defaultValue={name.house}/>
-                </Box>
-            </DialogTitle>
+            <Box sx={{p:'10px', display:'grid', gridTemplateColumns:'minmax(min-content, 12%) minmax(3%, 5%) 1fr'}}>
+                        <EditText className={style.BuildingStreet} onSave={({ value }) => editBuilding({variables: { id: name.id, input: { street: value, house:name.house } }})} defaultValue={name.street}/> 
+                        <EditText className={style.BuildingHouse} onSave={({ value }) => editBuilding({variables: { id: name.id, input: { street: name.street, house:value } }})} defaultValue={name.house}/>
+            </Box>
             <DialogContent>
             <Grid container spacing={2}>
                 {locations.buildingLocations.map((location => {
+                    const locationinfo={...location, buildingId:name.id}
                     return (
                         <Grid item xs={6} lg={4}>
-                            <Locatio locationinfo={location}/>
+                            <Locatio locationData={locationinfo} />
                         </Grid>
                     )
                 }))}
@@ -64,18 +60,18 @@ export function Modal({active, setActive, name}) {
                         </IconButton>
                     </Grid>:
                     <Grid item xs={6} lg={4}> 
-                        <Box sx={{height:'100%', width:'100%'}} onMouseLeave={()=>{setShow(true)}} onMouseEnter={()=>{setShow(false)}}>
-                            <Badge invisible={show} sx={{ height:'100%'}}  badgeContent={
+                        <Box onMouseLeave={()=>{setShow(true)}} onMouseEnter={()=>{setShow(false)}}>
+                            <Badge invisible={show} className={style.Badge} badgeContent={
                             <><IconButton onClick={()=>{setShowAddPanel(!showAddPanel)}}><CloseIcon/></IconButton></>}>
-                        <Paper sx={{width:'100%', height:'105%'}} elevation={12}>
-                <Box sx={{p:1, width:'100%', display:'flex', justifyContent:'center', flexDirection:'column'}} component="form" >
-                  <TextField id="standard-basic" label="cabinet" variant="standard" margin="dense" onChange={(event) => setCabinet(event.target.value)} /> <br />
-                  <TextField id="standard-basic" label="floor" variant="standard" onChange={(event) => setFloor(event.target.value)} />
-                  <TextField multiline id="standard-basic" label="description" variant="standard" onChange={(event) => setDescription(event.target.value)} />
-                </Box>
-                <Button disabled={(floor==''|| cabinet=='' ||description=='')} onClick={addLocation}>Добавить location</Button>
-                        </Paper>
-                        </Badge>
+                                <Paper className={style.Paper} elevation={12}>
+                                    <Box sx={{p:1, width:'100%', display:'flex', justifyContent:'center', flexDirection:'column'}} component="form" >
+                                        <TextField id="standard-basic" label="cabinet" variant="standard" margin="dense" onChange={(event) => setCabinet(event.target.value)} /> <br />
+                                        <TextField type='number' id="standard-basic" label="floor" variant="standard" onChange={(event) => setFloor(event.target.value)} />
+                                        <TextField multiline id="standard-basic" label="description" variant="standard" onChange={(event) => setDescription(event.target.value)} />
+                                    </Box>
+                                    <Button disabled={(floor==''|| cabinet=='' ||description=='')} onClick={addLocation}>Добавить location</Button>
+                                </Paper>
+                            </Badge>
                         </Box>
                     </Grid>
                     }

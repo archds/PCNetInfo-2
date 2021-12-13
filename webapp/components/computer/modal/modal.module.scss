@@ -1,6 +1,3 @@
-.dialogcontent {
-    height: 105%;
-}
 .Addicon {
     display: flex;
     justify-content: center;
@@ -10,16 +7,33 @@
     display: flex;
     justify-content: center;
 }
-.title {
-    input {
-        font-size: x-large;
-        width:8rem;
-        border: none;
-        outline: none;
-        background: rgba(220, 220, 220, 0.4);
-    }
+.BuildingStreet{
     font-size: x-large;
-    p{
-        font-size: x-large;
+    &::after{
+        content: ',';
     }
+}
+input.BuildingStreet{
+    font-size: x-large;
+    width: 100%;
+    border: none;
+    outline: none;
+    background: rgba(220, 220, 220, 0.4);
+}
+.BuildingHouse{
+    font-size: x-large;
+}
+input.BuildingHouse{
+    font-size: x-large;
+    width: 100%;
+    border: none;
+    outline: none;
+    background: rgba(220, 220, 220, 0.4);
+}
+.Paper{
+    width: 100%;
+}
+.Badge{
+    margin: 10px 0 0 0;
+    width: 99%;
 }

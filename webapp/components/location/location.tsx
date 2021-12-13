@@ -1,47 +1,46 @@
-import { Badge, IconButton, Paper, Grid, TextField, InputAdornment, Divider, Box } from '@mui/material'
+import { Badge, IconButton, Paper, Grid, Divider, Box } from '@mui/material'
 import React, { useState } from 'react'
 import DeleteIcon from '@mui/icons-material/Delete';
-import { LocationsDocument, useDeleteLocationMutation } from 'api/generated/graphql';
+import { LocationsDocument, useDeleteLocationMutation, useUpdateLocationMutation } from 'api/generated/graphql';
+import { EditText, EditTextarea } from 'react-edit-text';
+import style from 'components/location/location.module.scss'
 
-export default function Locatio(locationinfo) {
-    const [deleteLocation]=useDeleteLocationMutation({variables:{id: locationinfo.locationinfo.id}, refetchQueries:[LocationsDocument]})
+
+export default function Locatio({locationData}) {
+    const [editLocation] = useUpdateLocationMutation({
+        refetchQueries:[LocationsDocument]})
+    const [deleteLocation]=useDeleteLocationMutation({variables:{id: locationData.id}, 
+        refetchQueries:[LocationsDocument]})
+
     const [show, setShow]=useState(true)
     return (
-        <Box onMouseLeave={()=>{setShow(true)}} onMouseEnter={()=>{setShow(false)}}>
-            <Badge invisible={show} badgeContent={
+        <Box sx={{height:'95%'}} onMouseLeave={()=>{setShow(true)}} onMouseEnter={()=>{setShow(false)}}>
+            <Badge invisible={show} sx={{marginTop:'10px', width:'99%', height:'100%'}} badgeContent={
                     <><IconButton onClick={deleteLocation}><DeleteIcon /></IconButton></>}>
-                <Paper sx={{height:'105%'}} elevation={12}>
+                <Paper sx={{width:'100%'}} elevation={12}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} lg={7}>
-                            <TextField
-                                id="standard-size-small"
-                                defaultValue={locationinfo.locationinfo.cabinet}
-                                variant="standard"
-                                size="small"
-                                sx={{ m: 1, width: '6ch'}}
-                                InputProps={{
-                                    startAdornment: <InputAdornment position="start">Floor</InputAdornment>,
-                                }}
+
+                            <EditText className={style.cabinet}
+                                defaultValue={locationData.cabinet}
+                                onSave={({value})=>{editLocation({ variables: {id: locationData.id, input: 
+                                    {
+                                        buildingId: locationData.buildingId, 
+                                        cabinet: value, 
+                                        floor: locationData.floor, 
+                                        description: locationData.descrtiption
+                                    }
+                                }})}}
                             />
-                            <TextField
-                                id="standard-size-small"
-                                defaultValue={locationinfo.locationinfo.cabinet}
-                                variant="standard"
-                                size="small"
-                                sx={{ m: 1, width: '8ch' }}
-                                InputProps={{
-                                    startAdornment: <InputAdornment position="start">Cabinet</InputAdornment>,
-                                }}
+
+                            <EditText className={style.floor}
+                                defaultValue={locationData.floor}
                             />
                             <Divider
                             component="hr" />
-                            <TextField
-                                id="outlined-filled-flexable"
-                                label="Описание"
-                                multiline
-                                sx={{ m: 1 }}
+                            <EditTextarea className={style.description}
                                 rows={4}
-                                defaultValue={locationinfo.locationinfo.description} 
+                                defaultValue={locationData.description} 
                             />
                         </Grid>
                         <Grid item xs={12} lg={5}>
