@@ -4,9 +4,8 @@ import { onError } from '@apollo/client/link/error'
 import { getCookie } from 'cookies-next'
 
 const httpLink = createHttpLink({
-    uri: `${process.env.NEXT_PUBLIC_BACKEND_ROOT_URI}/api/`,
+    uri: `${process.env.NEXT_PUBLIC_BACKEND_ROOT_URI}/api/`
 })
-
 
 const authLink = setContext((_, { headers }) => {
     const token = String(getCookie('authToken'))
@@ -14,8 +13,8 @@ const authLink = setContext((_, { headers }) => {
     return {
         headers: {
             ...headers,
-            authorization: token ? `Token ${token}` : '',
-        },
+            authorization: token ? `Token ${token}` : ''
+        }
     }
 })
 
@@ -30,13 +29,8 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 })
 
 const client = new ApolloClient({
-    link: from([
-        errorLink,
-        authLink,
-        httpLink,
-    ]),
-    cache: new InMemoryCache(),
+    link: from([errorLink, authLink, httpLink]),
+    cache: new InMemoryCache()
 })
-
 
 export default client

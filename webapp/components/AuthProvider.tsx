@@ -15,10 +15,14 @@ function AuthProvider(props) {
             } else {
                 setAuthError(true)
             }
-        },
+        }
     })
 
-    const { loading: verifyLoading, data: verifyResult, error: verifyError } = useVerifyTokenQuery({
+    const {
+        loading: verifyLoading,
+        data: verifyResult,
+        error: verifyError
+    } = useVerifyTokenQuery({
         variables: { token: String(getCookie('authToken')) }
     })
 
@@ -29,12 +33,12 @@ function AuthProvider(props) {
         auth({
             variables: {
                 username: usernameEl.current.querySelector('input').value,
-                password: passwordEl.current.querySelector('input').value,
-            },
+                password: passwordEl.current.querySelector('input').value
+            }
         })
     }
 
-    if (verifyLoading) return <LinearProgress/>
+    if (verifyLoading) return <LinearProgress />
     if (verifyResult && verifyResult.verifyToken.valid) return props.children
 
     return (
@@ -43,7 +47,9 @@ function AuthProvider(props) {
             justifyContent='center'
             alignItems='center'
             height='100vh'
-            sx={{ background: 'linear-gradient(150deg, #35495E, #375165, #3C6675, #40888B, #42A18E, #41B187, #41B883)' }}
+            sx={{
+                background: 'linear-gradient(150deg, #35495E, #375165, #3C6675, #40888B, #42A18E, #41B187, #41B883)'
+            }}
         >
             <Card
                 sx={{
@@ -51,7 +57,7 @@ function AuthProvider(props) {
                     flexFlow: 'column',
                     padding: '10px 30px 30px 30px',
                     gap: '10px',
-                    width: '15rem',
+                    width: '15rem'
                 }}
             >
                 <Typography variant='h4' sx={{ fontWeight: '600', margin: '20px 0 20px 0', textAlign: 'center' }}>
@@ -80,8 +86,12 @@ function AuthProvider(props) {
                     color='primary'
                     onClick={handleAuth}
                     sx={{ marginTop: '20px' }}
-                >Submit</LoadingButton>
-                <Typography hidden={!verifyError} fontSize={12} color='error'>Server is not reachable</Typography>
+                >
+                    Submit
+                </LoadingButton>
+                <Typography hidden={!verifyError} fontSize={12} color='error'>
+                    Server is not reachable
+                </Typography>
             </Card>
         </Box>
     )

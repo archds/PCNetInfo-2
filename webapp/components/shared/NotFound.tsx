@@ -21,14 +21,14 @@ function NotFound(props: Props) {
     const tooltip = (
         <Tooltip title={tooltipTitle} placement='top'>
             <IconButton onClick={handleCopy} size='large'>
-                <HelpIcon color='primary' fontSize='medium'/>
+                <HelpIcon color='primary' fontSize='medium' />
             </IconButton>
         </Tooltip>
     )
 
     return (
         <Box>
-            <Image src='/img/not_found.svg' width={1200} height={500}/>
+            <Image src='/img/not_found.svg' width={1200} height={500} />
             <Typography variant='h5' color='secondary' marginTop='20px' align='center'>
                 {props.message}
                 {props.helpMessage ? tooltip : null}

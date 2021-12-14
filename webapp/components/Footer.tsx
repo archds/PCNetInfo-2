@@ -22,9 +22,11 @@ export default function Footer() {
                 position='relative'
                 width={matches? '70%':'90%'}
             >
-                <Box display='grid' gridTemplateColumns='3fr minmax(min-content, max-content) 7fr' width='100%'>
-                    <Typography variant={matches? 'h4': 'h6'}>PC Net <span>Info</span></Typography>
-                    <Box display='flex' flexDirection={matches?'column':'row'}>
+                <Box display='grid' gridTemplateColumns='3fr 2fr 7fr' width='100%'>
+                    <Typography variant='h4'>
+                        PC Net <span>Info</span>
+                    </Typography>
+                    <Box display='flex' flexDirection='column' flexWrap='wrap'>
                         <a target='_blank' href='https://www.techpowerup.com/cpu-specs/' rel='noreferrer'>
                             CPU Database
                         </a> &nbsp;
