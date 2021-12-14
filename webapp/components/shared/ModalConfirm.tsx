@@ -14,16 +14,13 @@ function ModalConfirm(props: Props) {
         <Dialog open={props.isOpen} onClose={props.onClose}>
             <DialogTitle>{props.title}</DialogTitle>
             <DialogContent>
-                <DialogContentText>
-                    {props.text}
-                </DialogContentText>
+                <DialogContentText>{props.text}</DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button onClick={props.onClose}>Cancel</Button>
                 <Button onClick={props.onConfirm}>Confirm</Button>
             </DialogActions>
         </Dialog>
-
     )
 }
 

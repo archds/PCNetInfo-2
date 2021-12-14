@@ -14,7 +14,9 @@ export default function Footer() {
                 width='70%'
             >
                 <Box display='grid' gridTemplateColumns='3fr 2fr 7fr' width='100%'>
-                    <Typography variant='h4'>PC Net <span>Info</span></Typography>
+                    <Typography variant='h4'>
+                        PC Net <span>Info</span>
+                    </Typography>
                     <Box display='flex' flexDirection='column' flexWrap='wrap'>
                         <a target='_blank' href='https://www.techpowerup.com/cpu-specs/' rel='noreferrer'>
                             CPU Database
@@ -25,13 +27,13 @@ export default function Footer() {
                     </Box>
                     <Box display='flex' gap='20px' justifySelf='end'>
                         <a target='_blank' className='tech-logo' href='https://www.djangoproject.com/' rel='noreferrer'>
-                            <Image src='/img/techs/django.png' width={120} height={41}/>
+                            <Image src='/img/techs/django.png' width={120} height={41} />
                         </a>
                         <a target='_blank' className='tech-logo' href='https://ariadnegraphql.org/' rel='noreferrer'>
-                            <Image src='/img/techs/ariadne.png' width={150} height={38}/>
+                            <Image src='/img/techs/ariadne.png' width={150} height={38} />
                         </a>
                         <a target='_blank' className='tech-logo' href='https://graphql.org/' rel='noreferrer'>
-                            <Image src='/img/techs/graphql.png' width={140} height={40}/>
+                            <Image src='/img/techs/graphql.png' width={140} height={40} />
                         </a>
                     </Box>
                 </Box>

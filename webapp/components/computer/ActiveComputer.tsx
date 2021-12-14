@@ -22,24 +22,21 @@ function ActiveComputer(props: Props) {
 
     return (
         <>
-            <GrClose className='closeButton' onClick={props.resetActiveComputer}/>
+            <GrClose className='closeButton' onClick={props.resetActiveComputer} />
             <Box display='grid' gridTemplateRows='auto auto'>
                 <Box display='grid' padding='20px' gridTemplateColumns='1.2fr 2fr' gap='40px'>
                     <Box display='grid' gridTemplateRows='auto auto'>
                         <Box display='flex' flexDirection='column' alignItems='center' gap='20px'>
-                            <TypeIdentifier type={type} loading={loading}/>
-                            <Typography
-                                fontWeight='bold'
-                                variant='h6'
-                                color='secondary'
-                            >{loading ? skeletonText : data.computer.name}
+                            <TypeIdentifier type={type} loading={loading} />
+                            <Typography fontWeight='bold' variant='h6' color='secondary'>
+                                {loading ? skeletonText : data.computer.name}
                             </Typography>
                         </Box>
                         <Box>
-                            <OSInfo os={os} loading={loading}/>
-                            <CpuInfo cpu={cpu} loading={loading}/>
-                            <MemoryInfo memoryAmount={ram} memoryUnit='GB' loading={loading}/>
-                            <VideocardInfo videocard={videocard} loading={loading}/>
+                            <OSInfo os={os} loading={loading} />
+                            <CpuInfo cpu={cpu} loading={loading} />
+                            <MemoryInfo memoryAmount={ram} memoryUnit='GB' loading={loading} />
+                            <VideocardInfo videocard={videocard} loading={loading} />
                         </Box>
                     </Box>
                     <Box>

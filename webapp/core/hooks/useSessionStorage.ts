@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const useSessionStorage = (name) => {
+const useSessionStorage = name => {
     const [value, setValue] = useState('')
 
     useEffect(() => {

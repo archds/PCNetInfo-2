@@ -37,33 +37,33 @@ const validators = {
         const isValid = input.length >= 3
         return {
             result: isValid,
-            reason: isValid ? null : 'Minimum 3 characters',
+            reason: isValid ? null : 'Minimum 3 characters'
         }
     },
     name: (input: string): AddComputerValidationResult => {
         const isValid = input.length >= 3
         return {
             result: isValid,
-            reason: isValid ? null : 'Minimum 3 characters',
+            reason: isValid ? null : 'Minimum 3 characters'
         }
     },
     serial: (input: string): AddComputerValidationResult => {
         const isValid = input.length === 0 || input.length === 4
         return {
             result: isValid,
-            reason: isValid ? null : 'Serial number consist of 4 numbers',
+            reason: isValid ? null : 'Serial number consist of 4 numbers'
         }
-    },
+    }
 }
 
 function ComputerInput(props: Props) {
     // Apollo
     const [addComputerQuery] = useCreateComputerMutation({
-        onError: (error => {
+        onError: error => {
             notifyError(error, setSnackbarContext)
-        }),
+        },
         refetchQueries: [ComputersDocument],
-        onCompleted: () => notifySuccess(`New computer added!`, setSnackbarContext),
+        onCompleted: () => notifySuccess(`New computer added!`, setSnackbarContext)
     })
     // State
     const [validationState, setValidationState] = useState<ValidationState>({})
@@ -91,7 +91,7 @@ function ComputerInput(props: Props) {
             serial: (formElement.querySelector('input#serial') as HTMLInputElement).value,
             // location: (formElement.querySelector('input#location') as HTMLInputElement).value || null,
             type: ComputerType[(formElement.querySelector('select#type') as HTMLInputElement).value],
-            ram: parseInt((formElement.querySelector('input#ram') as HTMLInputElement).value),
+            ram: parseInt((formElement.querySelector('input#ram') as HTMLInputElement).value)
         }
     }
 
@@ -104,12 +104,15 @@ function ComputerInput(props: Props) {
         }
     }
 
-
     return (
         <>
-            <GrClose className='closeButton' onClick={props.resetComputerInput}/>
+            <GrClose className='closeButton' onClick={props.resetComputerInput} />
             <Grid container spacing={3} ref={formRef}>
-                <Grid item xs={12}><Typography variant='h3' color='secondary'>Add computer</Typography></Grid>
+                <Grid item xs={12}>
+                    <Typography variant='h3' color='secondary'>
+                        Add computer
+                    </Typography>
+                </Grid>
                 <Grid item xs={6}>
                     <TextField
                         required
@@ -120,9 +123,9 @@ function ComputerInput(props: Props) {
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position='start'>
-                                    <LabelOutlinedIcon color='secondary'/>
+                                    <LabelOutlinedIcon color='secondary' />
                                 </InputAdornment>
-                            ),
+                            )
                         }}
                     />
                 </Grid>
@@ -136,9 +139,9 @@ function ComputerInput(props: Props) {
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position='start'>
-                                    <DnsOutlinedIcon color='secondary'/>
+                                    <DnsOutlinedIcon color='secondary' />
                                 </InputAdornment>
-                            ),
+                            )
                         }}
                     />
                 </Grid>
@@ -151,9 +154,9 @@ function ComputerInput(props: Props) {
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position='start'>
-                                    <ConfirmationNumberOutlinedIcon color='secondary'/>
+                                    <ConfirmationNumberOutlinedIcon color='secondary' />
                                 </InputAdornment>
-                            ),
+                            )
                         }}
                     />
                 </Grid>
@@ -166,9 +169,9 @@ function ComputerInput(props: Props) {
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position='start'>
-                                    <RoomOutlinedIcon color='secondary'/>
+                                    <RoomOutlinedIcon color='secondary' />
                                 </InputAdornment>
-                            ),
+                            )
                         }}
                     />
                 </Grid>
@@ -181,9 +184,9 @@ function ComputerInput(props: Props) {
                             endAdornment: <InputAdornment position='end'>GB</InputAdornment>,
                             startAdornment: (
                                 <InputAdornment position='start'>
-                                    <MemoryIcon color='secondary'/>
+                                    <MemoryIcon color='secondary' />
                                 </InputAdornment>
-                            ),
+                            )
                         }}
                     />
                 </Grid>
@@ -197,7 +200,9 @@ function ComputerInput(props: Props) {
                     </FormControl>
                 </Grid>
                 <Grid item xs={6}>
-                    <Button variant='contained' color='primary' disableElevation onClick={addComputer}>Add</Button>
+                    <Button variant='contained' color='primary' disableElevation onClick={addComputer}>
+                        Add
+                    </Button>
                 </Grid>
             </Grid>
         </>

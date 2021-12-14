@@ -6,9 +6,8 @@ import React, { useContext, useState } from 'react'
 import { SnackbarContext } from 'pages/_app'
 import { SxProps } from '@mui/system'
 
-
 export interface Props {
-    id: string,
+    id: string
     type: ComputerType
 }
 
@@ -22,16 +21,16 @@ function ComputerTypeIdentifier(props: Props) {
             variables: {
                 id: props.id,
                 input: {
-                    type: newType,
-                },
+                    type: newType
+                }
             },
             onCompleted: () => {
                 setType(newType)
                 notifySuccess('Information updated!', setSnackbar)
             },
-            onError: (error) => {
+            onError: error => {
                 notifyError(error, setSnackbar)
-            },
+            }
         })
     }
 
@@ -42,24 +41,15 @@ function ComputerTypeIdentifier(props: Props) {
         transition: 'ease 0.2s',
         '&:hover': {
             color: '#41B883',
-            background: '#0000000D',
+            background: '#0000000D'
         }
     }
 
-
     switch (type) {
         case ComputerType.DESKTOP:
-            return <DesktopWindowsIcon
-                onClick={switchType}
-                fontSize='medium'
-                sx={typeIconStyle}
-            />
+            return <DesktopWindowsIcon onClick={switchType} fontSize='medium' sx={typeIconStyle} />
         case ComputerType.LAPTOP:
-            return <LaptopIcon
-                onClick={switchType}
-                fontSize='medium'
-                sx={typeIconStyle}
-            />
+            return <LaptopIcon onClick={switchType} fontSize='medium' sx={typeIconStyle} />
     }
 }
 

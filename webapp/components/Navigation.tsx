@@ -6,7 +6,7 @@ import { useState } from 'react'
 export default function Navigation() {
     const router = useRouter()
     const [value, setValue] = useState(router.pathname)
-    const handleClick = (path) => {
+    const handleClick = path => {
         setValue(path)
         router.push(path)
     }
@@ -18,10 +18,10 @@ export default function Navigation() {
     return (
         <header>
             <Paper style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Box/>
+                <Box />
                 <Tabs centered value={value} textColor='primary' indicatorColor='primary'>
-                    <Tab value='/' label='Computers' onClick={() => handleClick('/')}/>
-                    <Tab value='/monitors' label='Monitors' onClick={() => handleClick('/monitors')}/>
+                    <Tab value='/' label='Computers' onClick={() => handleClick('/')} />
+                    <Tab value='/monitors' label='Monitors' onClick={() => handleClick('/monitors')} />
                 </Tabs>
                 <Button style={{ marginRight: '10px' }} onClick={handleLogout}>
                     Logout

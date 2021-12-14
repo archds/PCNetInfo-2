@@ -16,7 +16,7 @@ function ComputerActions(props: Props) {
         opacity: props.showDelete ? 100 : 0,
         backgroundColor: '#D32F2F',
         color: 'white',
-        transition: '0.3s',
+        transition: '0.3s'
     }
 
     return (
@@ -25,7 +25,7 @@ function ComputerActions(props: Props) {
                 disableElevation
                 variant='contained'
                 onClick={props.onDelete}
-                startIcon={<DeleteIcon/>}
+                startIcon={<DeleteIcon />}
                 style={delButtonStyles}
                 disabled={props.disabled}
             >
@@ -45,4 +45,3 @@ function ComputerActions(props: Props) {
 }
 
 export default ComputerActions
-
