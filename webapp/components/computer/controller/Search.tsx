@@ -11,14 +11,14 @@ function Search(props: Props) {
         <Input
             placeholder='Search...'
             id='search'
-            onInput={((event: React.ChangeEvent<HTMLInputElement>) => {
+            onInput={(event: React.ChangeEvent<HTMLInputElement>) => {
                 if (event.target.value.length > 2) {
                     props.onSearchChange(event.target.value)
                 }
                 if (!event.target.value) {
                     props.onSearchChange(null)
                 }
-            })}
+            }}
             {...props.inputProps}
         />
     )

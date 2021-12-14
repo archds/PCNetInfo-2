@@ -23,7 +23,11 @@ export function MemoryInfo(props: MemProps) {
     } else {
         content = defaultNoDataMessage
     }
-    return <Info><FaMemory/> {content}</Info>
+    return (
+        <Info>
+            <FaMemory /> {content}
+        </Info>
+    )
 }
 
 export interface OSProps extends BaseProps {
@@ -36,11 +40,15 @@ export function OSInfo(props: OSProps) {
         content = skeletonText
     } else if (props.os.name) {
         content = `${props.os.name}`
-        props.os.architecture ? content += `, ${props.os.architecture}` : null
+        props.os.architecture ? (content += `, ${props.os.architecture}`) : null
     } else {
         content = defaultNoDataMessage
     }
-    return <Info><RiWindowsFill/> {content}</Info>
+    return (
+        <Info>
+            <RiWindowsFill /> {content}
+        </Info>
+    )
 }
 
 export interface CPUProps extends BaseProps {
@@ -52,15 +60,24 @@ export function CpuInfo(props: CPUProps) {
     if (props.loading) {
         content = skeletonText
     } else if (props.cpu.name) {
-        content = <>
-            {props.cpu.name}<br/>
-            Clock: {props.cpu.clock} MHz<br/>
-            Cores/Threads: {props.cpu.cores}/{props.cpu.threads}<br/>
-        </>
+        content = (
+            <>
+                {props.cpu.name}
+                <br />
+                Clock: {props.cpu.clock} MHz
+                <br />
+                Cores/Threads: {props.cpu.cores}/{props.cpu.threads}
+                <br />
+            </>
+        )
     } else {
         content = defaultNoDataMessage
     }
-    return <Info><RiCpuLine/> {content}</Info>
+    return (
+        <Info>
+            <RiCpuLine /> {content}
+        </Info>
+    )
 }
 
 export interface VCProps extends BaseProps {
@@ -76,7 +93,11 @@ export function VideocardInfo(props: VCProps) {
     } else {
         content = defaultNoDataMessage
     }
-    return <Info><BsDisplayFill/> {content}</Info>
+    return (
+        <Info>
+            <BsDisplayFill /> {content}
+        </Info>
+    )
 }
 
 export interface TypeProps extends BaseProps {
@@ -86,12 +107,12 @@ export interface TypeProps extends BaseProps {
 export function TypeIdentifier(props: TypeProps) {
     const dimensionProps = { width: 160, height: 100 }
     if (props.loading) {
-        return <Skeleton variant='rectangular' {...dimensionProps}/>
+        return <Skeleton variant='rectangular' {...dimensionProps} />
     }
     switch (props.type) {
         case ComputerType.DESKTOP:
-            return <Image src='/img/computer.png' {...dimensionProps}/>
+            return <Image src='/img/computer.png' {...dimensionProps} />
         case ComputerType.LAPTOP:
-            return <Image src='/img/laptop.png' {...dimensionProps}/>
+            return <Image src='/img/laptop.png' {...dimensionProps} />
     }
 }

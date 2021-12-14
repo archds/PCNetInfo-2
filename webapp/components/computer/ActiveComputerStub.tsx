@@ -9,14 +9,10 @@ function ActiveComputerStub() {
         <Box display='flex' flexDirection='column'>
             <ReactFitText compressor={0.5}>
                 <Typography variant='h1' align='center' fontWeight={700} color='secondary'>
-                    <Clock format={'HH:mm:ss'} ticking={true}/>
+                    <Clock format={'HH:mm:ss'} ticking={true} />
                 </Typography>
             </ReactFitText>
-            <Image
-                src='/img/love.svg'
-                width={500}
-                height={500}
-            />
+            <Image src='/img/love.svg' width={500} height={500} />
         </Box>
     )
 }

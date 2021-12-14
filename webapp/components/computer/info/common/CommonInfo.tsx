@@ -19,44 +19,51 @@ export interface Props extends BaseProps {
     loading: boolean
 }
 
-
 function CommonInfo(props: Props) {
     const { setState: setSnackbar } = useContext(SnackbarContext)
     const [updateComputerQuery] = useUpdateComputerMutation({
         refetchQueries: [ComputerDocument, ComputersDocument],
         onError: error => notifyError(error, setSnackbar),
-        onCompleted: () => notifySuccess('Information updated!', setSnackbar),
+        onCompleted: () => notifySuccess('Information updated!', setSnackbar)
     })
 
     const editable: { [K in keyof Props]?: JSX.Element } = {}
     const editableFields: Array<keyof Props> = ['username', 'serial']
 
-    editableFields.map((prop => {
-        editable[prop] = props.loading ? skeletonText : <EditText
-            id={`${prop}-input`}
-            name={prop}
-            defaultValue={props[prop] as string}
-            className={commonStyle.field}
-            style={{ fontSize: '16px', font: 'inherit' }}
-            onSave={({ value }) => {
-                let input = {}
-                input[prop] = value
-                updateComputerQuery({
-                    variables: { id: props.id, input: { ...input } }
-                })
-            }}
-        />
-    }))
+    editableFields.map(prop => {
+        editable[prop] = props.loading ? (
+            skeletonText
+        ) : (
+            <EditText
+                id={`${prop}-input`}
+                name={prop}
+                defaultValue={props[prop] as string}
+                className={commonStyle.field}
+                style={{ fontSize: '16px', font: 'inherit' }}
+                onSave={({ value }) => {
+                    let input = {}
+                    input[prop] = value
+                    updateComputerQuery({
+                        variables: { id: props.id, input: { ...input } }
+                    })
+                }}
+            />
+        )
+    })
 
     const FieldBox = ({ children }) => <Box sx={{ display: 'flex', alignItems: 'center' }}>{children}</Box>
 
     return (
         <Typography>
-            <FieldBox><b>Username: </b>{editable.username}</FieldBox>
-            <FieldBox><b>Serial number: </b> {editable.serial}</FieldBox>
+            <FieldBox>
+                <b>Username: </b>
+                {editable.username}
+            </FieldBox>
+            <FieldBox>
+                <b>Serial number: </b> {editable.serial}
+            </FieldBox>
         </Typography>
     )
-
 }
 
 export default CommonInfo
