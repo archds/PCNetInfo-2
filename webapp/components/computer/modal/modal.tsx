@@ -38,11 +38,11 @@ export function Modal({active, setActive, name}) {
             open={active}
             onClose={() => setActive(false)}
             >
-            <Box sx={{p:'10px', display:'grid', gridTemplateColumns:'minmax(min-content, 12%) minmax(3%, 5%) 1fr'}}>
+            <Box sx={{p:'10px', display:'grid', gridTemplateColumns:'min-content min-content 1fr'}}>
                         <EditText className={style.BuildingStreet} onSave={({ value }) => editBuilding({variables: { id: name.id, input: { street: value, house:name.house } }})} defaultValue={name.street}/> 
                         <EditText className={style.BuildingHouse} onSave={({ value }) => editBuilding({variables: { id: name.id, input: { street: name.street, house:value } }})} defaultValue={name.house}/>
             </Box>
-            <DialogContent>
+            <DialogContent dividers={true}>
             <Grid container spacing={2}>
                 {locations.buildingLocations.map((location => {
                     const locationinfo={...location, buildingId:name.id}
@@ -64,12 +64,12 @@ export function Modal({active, setActive, name}) {
                             <Badge invisible={show} className={style.Badge} badgeContent={
                             <><IconButton onClick={()=>{setShowAddPanel(!showAddPanel)}}><CloseIcon/></IconButton></>}>
                                 <Paper className={style.Paper} elevation={12}>
-                                    <Box sx={{p:1, width:'100%', display:'flex', justifyContent:'center', flexDirection:'column'}} component="form" >
-                                        <TextField id="standard-basic" label="cabinet" variant="standard" margin="dense" onChange={(event) => setCabinet(event.target.value)} /> <br />
-                                        <TextField type='number' id="standard-basic" label="floor" variant="standard" onChange={(event) => setFloor(event.target.value)} />
-                                        <TextField multiline id="standard-basic" label="description" variant="standard" onChange={(event) => setDescription(event.target.value)} />
+                                    <Box sx={{padding:'5px', width:'100%', display:'flex', justifyContent:'center', flexDirection:'column'}} component="form" >
+                                        <TextField id="standard-basic" label="Кабинет" variant="standard" margin="dense" onChange={(event) => setCabinet(event.target.value)} /> <br />
+                                        <TextField type='number' id="standard-basic" label="Этаж"  variant="standard" onChange={(event) => setFloor(event.target.value)} />
+                                        <TextField multiline id="standard-basic" label="Описание" variant="standard" onChange={(event) => setDescription(event.target.value)} />
                                     </Box>
-                                    <Button disabled={( floor!==0 || cabinet=='' || description=='' )} onClick={()=>{addLocation()}}>Добавить location</Button>
+                                    <Button sx={{margin:'20px'}} variant='contained' disabled={( !floor || cabinet=='' || description=='' )} onClick={()=>{addLocation()}}>Добавить локацию</Button>
                                 </Paper>
                             </Badge>
                         </Box>

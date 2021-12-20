@@ -1,4 +1,5 @@
 .Addicon {
+    height: 236px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,14 +9,15 @@
     justify-content: center;
 }
 .BuildingStreet{
+    width: min-content;
     font-size: x-large;
     &::after{
-        content: ',';
+        content: ', ';
     }
 }
 input.BuildingStreet{
     font-size: x-large;
-    width: 100%;
+    width: 170px;
     border: none;
     outline: none;
     background: rgba(220, 220, 220, 0.4);
@@ -25,15 +27,20 @@ input.BuildingStreet{
 }
 input.BuildingHouse{
     font-size: x-large;
-    width: 100%;
+    width: 100px;
     border: none;
     outline: none;
     background: rgba(220, 220, 220, 0.4);
 }
 .Paper{
+    padding: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 220px;
     width: 100%;
 }
 .Badge{
-    margin: 10px 0 0 0;
-    width: 99%;
+    height: 100%;
+    width: 98%;
 }

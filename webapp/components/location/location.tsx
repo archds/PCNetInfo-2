@@ -14,11 +14,11 @@ export default function Locatio({locationData}) {
 
     const [show, setShow]=useState(true)
     return (
-        <Box sx={{height:'95%'}} onMouseLeave={()=>{setShow(true)}} onMouseEnter={()=>{setShow(false)}}>
-            <Badge invisible={show} sx={{marginTop:'10px', width:'99%', height:'100%'}} badgeContent={
+        <Box sx={{height:'100%'}} onMouseLeave={()=>{setShow(true)}} onMouseEnter={()=>{setShow(false)}}>
+            <Badge invisible={show} sx={{ width:'99%', height:'100%'}} badgeContent={
                     <><IconButton onClick={()=>{deleteLocation()}}><DeleteIcon /></IconButton></>}>
-                <Paper sx={{width:'100%'}} elevation={12}>
-                    <Grid container spacing={2}>
+                <Paper sx={{ padding:'2%',width:'100%',height:'220px'}} elevation={12}>
+                    <Grid container spacing={0}>
                         <Grid item xs={12} lg={7}>
 
                             <EditText className={style.cabinet}
@@ -39,12 +39,12 @@ export default function Locatio({locationData}) {
                             <Divider
                             component="hr" />
                             <EditTextarea className={style.description}
-                                rows={4}
+                                rows={5}
                                 defaultValue={locationData.description} 
                             />
                         </Grid>
                         <Grid item xs={12} lg={5}>
-                            computers
+                            Список компьютеров
                         </Grid>
                     </Grid>
                 </Paper>
