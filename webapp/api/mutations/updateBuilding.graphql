@@ -1,0 +1,3 @@
+mutation UpdateBuilding($id: ID!, $input: BuildingInput!) {
+    updateBuilding(id: $id, input: $input)
+    }

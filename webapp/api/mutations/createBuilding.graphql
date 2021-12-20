@@ -1,0 +1,3 @@
+mutation CreateBuilding($input: BuildingInput!) {
+    createBuilding(input: $input)
+}

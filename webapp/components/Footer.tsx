@@ -1,7 +1,16 @@
 import Image from 'next/image'
-import { Box, Typography } from '@mui/material'
+import { Box, Typography, useMediaQuery } from '@mui/material'
+import django from 'public/img/techs/django.png'
+import djangoMini from 'public/img/techs/django-mini.jpg'
+import ariadne from 'public/img/techs/ariadne.png'
+import ariadneMini from 'public/img/techs/ariadne-mini.png'
+import graphql from 'public/img/techs/graphql.png'
+import graphqlMini from 'public/img/techs/graphql-mini.png'
 
 export default function Footer() {
+
+    const matches = useMediaQuery('(min-height:700px)');
+
     return (
         <footer>
             <Box
@@ -11,7 +20,7 @@ export default function Footer() {
                 flexDirection='column'
                 flexWrap='wrap'
                 position='relative'
-                width='70%'
+                width={matches? '70%':'90%'}
             >
                 <Box display='grid' gridTemplateColumns='3fr 2fr 7fr' width='100%'>
                     <Typography variant='h4'>
@@ -20,20 +29,20 @@ export default function Footer() {
                     <Box display='flex' flexDirection='column' flexWrap='wrap'>
                         <a target='_blank' href='https://www.techpowerup.com/cpu-specs/' rel='noreferrer'>
                             CPU Database
-                        </a>
+                        </a> &nbsp;
                         <a target='_blank' href='https://www.techpowerup.com/gpu-specs/' rel='noreferrer'>
                             GPU Database
                         </a>
                     </Box>
                     <Box display='flex' gap='20px' justifySelf='end'>
                         <a target='_blank' className='tech-logo' href='https://www.djangoproject.com/' rel='noreferrer'>
-                            <Image src='/img/techs/django.png' width={120} height={41} />
+                            {matches?<Image src={django} width={120} height={41}/>:<Image src={djangoMini} width={40} height={40}/>}
                         </a>
                         <a target='_blank' className='tech-logo' href='https://ariadnegraphql.org/' rel='noreferrer'>
-                            <Image src='/img/techs/ariadne.png' width={150} height={38} />
+                            {matches?<Image src={ariadne} width={150} height={38}/>:<Image src={ariadneMini} width={40} height={40}/>}
                         </a>
                         <a target='_blank' className='tech-logo' href='https://graphql.org/' rel='noreferrer'>
-                            <Image src='/img/techs/graphql.png' width={140} height={40} />
+                            {matches?<Image src={graphql} width={140} height={40}/>:<Image src={graphqlMini} width={40} height={40}/>}
                         </a>
                     </Box>
                 </Box>

@@ -1,0 +1,8 @@
+query Locations($id: ID!) {
+  buildingLocations(buildingId: $id) {
+    id
+    cabinet
+    floor
+    description
+  }
+}

@@ -1,0 +1,41 @@
+.cabinet{
+    margin: 5px 10px 0 10px;
+    &::before{
+        content: 'Кабинет ';
+        color: gray;
+    }
+}
+input.cabinet{
+    width: 100%;
+    border: none;
+    outline: none;
+    background: rgba(220, 220, 220, 0.4);
+}
+.floor{
+    margin: 0 10px 5px 10px;
+
+    &::before{
+        content:'этаж ';
+        color:gray;
+    }
+}
+input.floor{
+    padding: 2px;
+    width: 100%;
+    border: none;
+    outline: none;
+    background: rgba(220, 220, 220, 0.4);
+}
+.description{
+    padding: 0 10px;
+    border: 1px lightgray solid;
+    border-radius: 10px;
+    margin: 5px 10px;
+}
+input.description{
+    border: 1px lightgray solid;
+    border-radius: 10px;
+    margin: 5px 10px;
+    width: 100%;
+    height: 100%;
+}

@@ -4,6 +4,7 @@ type Query {
     computer(id: ID!): Computer
     computers(input: AllComputerInput): [Computer!]!
 
+    buildingLocations(buildingId: ID!): [Location!]!
     buildings: [Building!]!
     locations: [Location!]!
 

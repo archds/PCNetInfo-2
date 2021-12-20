@@ -1,0 +1,46 @@
+.Addicon {
+    height: 236px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.ModalAdd {
+    display: flex;
+    justify-content: center;
+}
+.BuildingStreet{
+    width: min-content;
+    font-size: x-large;
+    &::after{
+        content: ', ';
+    }
+}
+input.BuildingStreet{
+    font-size: x-large;
+    width: 170px;
+    border: none;
+    outline: none;
+    background: rgba(220, 220, 220, 0.4);
+}
+.BuildingHouse{
+    font-size: x-large;
+}
+input.BuildingHouse{
+    font-size: x-large;
+    width: 100px;
+    border: none;
+    outline: none;
+    background: rgba(220, 220, 220, 0.4);
+}
+.Paper{
+    padding: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 220px;
+    width: 100%;
+}
+.Badge{
+    height: 100%;
+    width: 98%;
+}

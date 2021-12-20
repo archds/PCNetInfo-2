@@ -65,12 +65,14 @@ def resolve_get_pc(obj, info, id: str):
 def resolve_locations(obj, info):
     return Location.objects.all()
 
+@gqt.query.field('buildingLocations')
+def resolve_locations(obj, info, buildingId: str):
+    return Location.objects.filter(building_id=buildingId)
 
 @gqt.query.field('users')
 @login_required
 def resolve_users(obj, info):
     return ComputerUser.objects.all()
-
 
 @gqt.query.field('buildings')
 @login_required
