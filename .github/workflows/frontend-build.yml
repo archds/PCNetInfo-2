@@ -13,6 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build webapp
-        run: docker build webapp/ -f webapp/dockerfile.build -t {{ secrets.CI_WEBAPP_TAG }}
+        run: docker build webapp/ -f webapp/dockerfile.build -t ${{ secrets.CI_WEBAPP_TAG }}
       - name: Run container
-        run: docker run {{ secrets.CI_WEBAPP_TAG }}
+        run: docker run -v `pwd`/config:/config ${{ secrets.CI_WEBAPP_TAG }}
