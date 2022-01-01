@@ -17,10 +17,3 @@ services:
       - "3000:3000"
     volumes:
       - ./config:/config
-
-  frontend-test-build:
-    build:
-      context: webapp
-      dockerfile: dockerfile.build
-    volumes:
-      - ./config:/config
